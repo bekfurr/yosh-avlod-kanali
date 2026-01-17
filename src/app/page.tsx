@@ -3,7 +3,7 @@ import Section from '@/components/ui/Section';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Link from 'next/link';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, Send } from 'lucide-react';
 import { getLatestVideos } from '@/lib/youtube';
 import { formatDistanceToNow } from 'date-fns';
 import { uz } from 'date-fns/locale';
@@ -50,6 +50,11 @@ export default async function Home() {
                 Dasturlar
               </Button>
             </Link>
+            <a href="https://t.me/Yosh_avlod_kanali" target="_blank" rel="noopener noreferrer">
+              <Button size="lg" className="text-lg px-8 py-6 bg-[#229ED9] hover:bg-[#1f8ebf] text-white shadow-[0_0_15px_rgba(34,158,217,0.4)] border-none">
+                <Send className="w-5 h-5 mr-3 fill-current" /> Telegram
+              </Button>
+            </a>
           </div>
         </div>
       </section>
