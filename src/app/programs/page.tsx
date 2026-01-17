@@ -69,7 +69,7 @@ export default function ProgramsPage() {
                 <div className="mb-12">
                     <h1 className="text-4xl font-bold mb-4">Dasturlar va Resurslar</h1>
                     <p className="text-gray-400 max-w-2xl mb-8">
-                        Yosh Avlod Kanali tomonidan ishlab chiqilgan eksklyuziv dasturlar, vositalar va o&apos;quv materiallarini yuklab oling.
+                        Yosh Avlod Kanali tomonidan yuklangan videolarda foydalanilgan va foydali dasturlar va resurslarni yuklab oling.
                     </p>
 
                     {/* Search Bar */}
