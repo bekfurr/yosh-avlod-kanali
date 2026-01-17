@@ -14,30 +14,43 @@ export default async function Home() {
   return (
     <div className="flex flex-col items-center">
       {/* Hero Section */}
-      <section className="min-h-[85vh] flex flex-col items-center justify-center text-center px-4 max-w-5xl mx-auto space-y-10">
-        <div className="space-y-6">
-          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[1.1]">
-            <GradientText animate>Yosh Avlod Kanali</GradientText>
-          </h1>
-          <p className="text-2xl md:text-4xl font-light text-white/90">
-            Kelajak Avlodini Ilhomlantirib
-          </p>
-          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Yosh Avlod Kanali yoshlarni ta&apos;lim, ilhom va zamonaviy texnologiyalar orqali kuchaytirishga bag&apos;ishlangan eng so&apos;nggi loyihadir. Bizning safimizga qo&apos;shiling va kelajakni birga quring.
-          </p>
+      <section className="relative min-h-[90vh] w-full flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+
+        {/* Spline 3D Background */}
+        <div className="absolute inset-0 z-0">
+          <iframe
+            src='https://my.spline.design/particlesforwebsite-afe1L6HxdBemti7mcb6YiXvp/'
+            frameBorder='0'
+            width='100%'
+            height='100%'
+            className="w-full h-full pointer-events-none opacity-60"
+          ></iframe>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black pointer-events-none" />
         </div>
 
-        <div className="flex flex-wrap gap-4 justify-center pt-4">
-          <Link href="/videos">
-            <Button size="lg" glow className="text-lg px-8 py-6">
-              <Play className="w-5 h-5 mr-3 fill-current" /> Videolarni Ko&apos;rish
-            </Button>
-          </Link>
-          <Link href="/programs">
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6">
-              Dasturlar
-            </Button>
-          </Link>
+        <div className="relative z-10 space-y-10 max-w-5xl mx-auto mt-20">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[1.1] drop-shadow-2xl">
+            <GradientText animate>Yosh Avlod Kanali</GradientText>
+          </h1>
+          <p className="text-2xl md:text-4xl font-light text-white/90 drop-shadow-lg">
+            Kelajak Avlodini Ilhomlantirib
+          </p>
+          <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed drop-shadow-md font-medium">
+            Yosh Avlod Kanali yoshlarni ta&apos;lim, ilhom va zamonaviy texnologiyalar orqali kuchaytirishga bag&apos;ishlangan eng so&apos;nggi loyihadir. Bizning safimizga qo&apos;shiling va kelajakni birga quring.
+          </p>
+
+          <div className="flex flex-wrap gap-4 justify-center pt-8">
+            <Link href="/videos">
+              <Button size="lg" glow className="text-lg px-8 py-6 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white">
+                <Play className="w-5 h-5 mr-3 fill-current" /> Videolarni Ko&apos;rish
+              </Button>
+            </Link>
+            <Link href="/programs">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6 bg-black/50 backdrop-blur-md border-white/20 hover:bg-white/10">
+                Dasturlar
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -15,24 +15,47 @@
   --color-card-border: var(--card-border);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  
+
   --animate-fade-in: fadeIn 0.8s ease-out forwards;
   --animate-fade-blur: fadeBlur 1s ease-out forwards;
   --animate-glow-pulse: glowPulse 3s infinite;
-  
+
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  
+
   @keyframes fadeBlur {
-    from { opacity: 0; filter: blur(10px); transform: scale(0.95); }
-    to { opacity: 1; filter: blur(0); transform: scale(1); }
+    from {
+      opacity: 0;
+      filter: blur(10px);
+      transform: scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+    }
   }
-  
+
   @keyframes glowPulse {
-    0%, 100% { box-shadow: 0 0 10px rgba(255,255,255,0.05); }
-    50% { box-shadow: 0 0 20px rgba(255,255,255,0.15); }
+
+    0%,
+    100% {
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+    }
+
+    50% {
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+    }
   }
 }
 
@@ -42,6 +65,7 @@ body {
   font-family: var(--font-sans), sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%23FFF" stroke="%23000" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
 }
 
 /* Custom Utilities */
