@@ -36,7 +36,7 @@ export default async function Home() {
             Kelajak Avlodini Ilhomlantirib
           </p>
           <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed drop-shadow-md font-medium">
-            Yosh Avlod Kanali yoshlarni ta&apos;lim, ilhom va zamonaviy texnologiyalar orqali kuchaytirishga bag&apos;ishlangan eng so&apos;nggi loyihadir. Bizning safimizga qo&apos;shiling va kelajakni birga quring.
+            Yosh Avlod Kanali yoshlar ilmini zamonaviy texnologiyalar orqali kuchaytirishga bag&apos;ishlangan eng so&apos;nggi loyihadir. Bizning safimizga qo&apos;shiling va kelajakni birga quring.
           </p>
 
           <div className="flex flex-wrap gap-4 justify-center pt-8">
