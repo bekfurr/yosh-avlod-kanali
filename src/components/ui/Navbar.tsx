@@ -6,13 +6,13 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Menu, X, Youtube } from 'lucide-react';
 import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import Image from 'next/image';
 
 const navLinks = [
     { name: 'Bosh Sahifa', href: '/' },
     { name: 'Videolar', href: '/videos' },
     { name: 'Dasturlar', href: '/programs' },
+    { name: 'Ramazon Taqvimi', href: '/ramazon-taqvimi' },
     { name: 'Statistika', href: '/stats' },
 ];
 
