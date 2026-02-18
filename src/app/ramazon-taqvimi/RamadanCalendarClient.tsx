@@ -172,6 +172,40 @@ export default function RamadanCalendarClient({
             </table>
           </div>
         </Card>
+
+        <div className="mt-10 grid grid-cols-1 gap-6">
+          <Card className="p-6" hoverEffect={false}>
+            <h3 className="text-2xl font-semibold mb-4">Ro&apos;za tutish (saharlik, og&apos;iz yopish) duosi</h3>
+            <p className="text-2xl leading-relaxed text-right mb-4" dir="rtl">
+              نَوَيْتُ أَنْ أَصُومَ صَوْمَ شَهْرَ رَمَضَانَ مِنَ الْفَجْرِ إِلَى الْمَغْرِبِ، خَالِصًا لِلهِ تَعَالَى أَللهُ أَكْبَرُ
+            </p>
+            <p className="text-gray-300 leading-relaxed mb-3">
+              Navaytu an asuvma sovma shahri ramazona minal fajri ilal mag&apos;ribi, xolisan lillahi ta&apos;aalaa
+              Allohu akbar.
+            </p>
+            <p className="text-gray-400 leading-relaxed">
+              Ma&apos;nosi: Ramazon oyining ro&apos;zasini subhdan to kun botguncha tutmoqni niyat qildim. Xolis
+              Alloh uchun Alloh buyukdir.
+            </p>
+          </Card>
+
+          <Card className="p-6" hoverEffect={false}>
+            <h3 className="text-2xl font-semibold mb-4">Iftorlik (og&apos;iz ochish) duosi</h3>
+            <p className="text-2xl leading-relaxed text-right mb-4" dir="rtl">
+              اَللَّهُمَّ لَكَ صُمْتُ وَ بِكَ آمَنْتُ وَ عَلَيْكَ تَوَكَّلْتُ وَ عَلَى رِزْقِكَ أَفْتَرْتُ، فَغْفِرْلِى مَا
+              قَدَّمْتُ وَ مَا أَخَّرْتُ بِرَحْمَتِكَ يَا أَرْحَمَ الرَّاحِمِينَ
+            </p>
+            <p className="text-gray-300 leading-relaxed mb-3">
+              Allohumma laka sumtu va bika aamantu va a&apos;layka tavakkaltu va a&apos;laa rizqika aftartu, fag&apos;firliy
+              ma qoddamtu va maa axxortu birohmatika yaa arhamar roohimiyn.
+            </p>
+            <p className="text-gray-400 leading-relaxed">
+              Ma&apos;nosi: Ey Alloh, ushbu ro&apos;zamni Sen uchun tutdim va Senga iymon keltirdim va Senga tavakkal
+              qildim va bergan rizqing bilan iftor qildim. Ey mehribonlarning eng mehriboni, mening avvalgi va
+              keyingi gunohlarimni mag&apos;firat qilgil.
+            </p>
+          </Card>
+        </div>
       </Section>
     </div>
   );
