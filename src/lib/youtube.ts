@@ -56,6 +56,7 @@ export async function getLatestVideos(limit = 9): Promise<YouTubeVideo[]> {
         );
         const videosData = await videosRes.json();
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return videosData.items.map((item: any) => ({
             id: item.snippet.resourceId.videoId,
             title: item.snippet.title,

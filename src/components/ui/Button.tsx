@@ -1,8 +1,7 @@
 'use client';
 
 import { ButtonHTMLAttributes, forwardRef } from 'react';
-import { motion, HTMLMotionProps } from 'framer-motion';
-import { clsx } from 'clsx';
+import { motion } from 'framer-motion';
 import { twMerge } from 'tailwind-merge';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -36,6 +35,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={twMerge(baseStyles, variants[variant], sizes[size], glowStyles, className)}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 {...(props as any)}
             >
                 {children}

@@ -120,7 +120,7 @@ export default function ProgramsPage() {
                             ))
                         ) : (
                             <div className="col-span-full py-12 text-center text-gray-400">
-                                Sizning so'rovingiz bo'yicha hech narsa topilmadi.
+                                Sizning so&apos;rovingiz bo&apos;yicha hech narsa topilmadi.
                             </div>
                         )}
                     </div>
