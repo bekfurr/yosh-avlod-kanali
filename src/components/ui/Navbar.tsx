@@ -12,7 +12,7 @@ const navLinks = [
     { name: 'Bosh Sahifa', href: '/' },
     { name: 'Videolar', href: '/videos' },
     { name: 'Dasturlar', href: '/programs' },
-    { name: 'Ramazon Taqvimi', href: '/ramazon-taqvimi' },
+    { name: 'Avtor', href: '/author' },
     { name: 'Statistika', href: '/stats' },
 ];
 
