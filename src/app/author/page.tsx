@@ -144,12 +144,12 @@ export default function AuthorPage() {
 
         {/* 3D Overlapping/Layered Intro Section */}
         <Section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-6">
-          
+
           {/* Left: Blurred, Semi-Transparent Image Box (Back/Middle Layer) */}
           <div className="lg:col-span-5 relative flex items-center justify-center min-h-[350px] lg:min-h-[500px] group">
             {/* Glowing background behind image */}
             <div className="absolute inset-4 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-85 transition-opacity duration-700" />
-            
+
             {/* Image Wrapper with blur & transparency */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -165,10 +165,10 @@ export default function AuthorPage() {
                   priority
                   className="object-cover filter blur-[1.2px] opacity-75 contrast-110 saturate-75 group-hover:blur-0 group-hover:opacity-100 group-hover:scale-105 group-hover:saturate-100 transition-all duration-700 ease-out"
                 />
-                
+
                 {/* Overlay filter */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
-                
+
                 {/* Age Badge */}
                 <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg text-xs font-mono text-gray-300">
                   Tug&apos;ilgan yili: 2005
@@ -186,20 +186,20 @@ export default function AuthorPage() {
           >
             {/* Front Overlapping Glass Card */}
             <div className="glass-panel p-8 md:p-10 rounded-2xl border border-white/10 bg-black/75 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] space-y-6 transform hover:-translate-y-1 hover:border-white/20 transition-all duration-500">
-              
+
               <div className="space-y-2">
                 <span className="text-blue-400 font-mono text-sm tracking-widest uppercase font-semibold">Mutaxassisligi</span>
                 <h2 className="text-2xl md:text-3xl font-extrabold text-white">AI / ML muhandisi</h2>
               </div>
 
               <p className="text-gray-300 leading-relaxed text-base font-normal">
-                Men Shamsiddin Kamoliddinov Aqliddin o&apos;g&apos;li 2005-yil 15-fevral Farg&apos;ona viloyati Toshloq tumanida tavallud topganman. 
-                Hozirda Farg&apos;ona Davlat Texnika Universiteti Axborot texnologiyalari va telekommunikatsiyalar fakulteti 
-                Sun&apos;iy intellekt yo&apos;nalishi 3-bosqich talabasiman.
+                Men Shamsiddin Kamoliddinov Aqliddin o&apos;g&apos;li 2005-yil 15-fevral Farg&apos;ona viloyati Toshloq tumanida tavallud topganman.
+                Hozirda Farg&apos;ona Davlat Texnika Universiteti Axborot texnologiyalari va telekommunikatsiyalar fakulteti
+                Sun&apos;iy intellekt yo&apos;nalishi 4-bosqich talabasiman.
               </p>
 
               <p className="text-gray-300 leading-relaxed text-base font-normal">
-                Dasturlash bo&apos;yicha 7 yillik tajribaga egaman. Kiberxavfsizlik, AI menejmenti va Computer Science sohalarida ish olib boraman. 
+                Dasturlash bo&apos;yicha 7 yillik tajribaga egaman. Kiberxavfsizlik, AI menejmenti va Computer Science sohalarida ish olib boraman.
                 Sun&apos;iy intellekt bo&apos;yicha ko&apos;plab loyihalar va tadqiqotlar muallifiman. Kiberxavfsizlik va IT bo&apos;yicha YouTube va Telegram tarmoqlarida shaxsiy blog yuritib, yosh avlodni zamonaviy texnologiyalar bilan tanishtirib kelaman.
               </p>
 
