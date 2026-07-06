@@ -1,0 +1,493 @@
+'use client';
+
+import { useState, useMemo } from 'react';
+import Section from '@/components/ui/Section';
+import Card from '@/components/ui/Card';
+import Button from '@/components/ui/Button';
+import GradientText from '@/components/ui/GradientText';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+    Search, 
+    Download, 
+    Users, 
+    Cpu, 
+    Shield, 
+    Info, 
+    HardDrive,
+    Sparkles
+} from 'lucide-react';
+
+// --- Custom SVG Logos for OS ---
+
+const KaliLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="kali-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#00c6ff" />
+                <stop offset="100%" stopColor="#0072ff" />
+            </linearGradient>
+        </defs>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="url(#kali-grad)" strokeWidth="2" />
+        <path d="M12 6v6m0 0l-3-3m3 3l3-3" stroke="url(#kali-grad)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M9 16c1.5 1.5 4.5 1.5 6 0" stroke="url(#kali-grad)" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+);
+
+const ParrotLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="parrot-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#00E5FF" />
+                <stop offset="100%" stopColor="#00FF87" />
+            </linearGradient>
+        </defs>
+        <path d="M12 2a10 10 0 00-7.07 17.07l2.83-2.83A6 6 0 1112 18v3.5a10 10 0 000-20z" fill="url(#parrot-grad)" />
+        <circle cx="12" cy="12" r="3" fill="#00E5FF" opacity="0.3" />
+    </svg>
+);
+
+const BlackArchLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="blackarch-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ff0055" />
+                <stop offset="100%" stopColor="#800020" />
+            </linearGradient>
+        </defs>
+        <path d="M12 2L1 21h22L12 2zm0 5l7.5 12h-15L12 7z" fill="url(#blackarch-grad)" />
+        <circle cx="12" cy="14" r="2" fill="#ff0055" />
+    </svg>
+);
+
+const WindowsLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="win-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#0078D4" />
+                <stop offset="100%" stopColor="#00bcf2" />
+            </linearGradient>
+        </defs>
+        <path d="M2 2h9.5v9.5H2V2zm10.5 0H22v9.5h-9.5V2zM2 12.5h9.5V22H2v-9.5zm10.5 0H22V22h-9.5v-9.5z" fill="url(#win-grad)" />
+    </svg>
+);
+
+const WindowsLTSCLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="win-ltsc-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#005A9E" />
+                <stop offset="100%" stopColor="#0086F0" />
+            </linearGradient>
+        </defs>
+        <path d="M2 2h9.5v9.5H2V2zm10.5 0H22v9.5h-9.5V2zM2 12.5h9.5V22H2v-9.5zm10.5 0H22V22h-9.5v-9.5z" fill="url(#win-ltsc-grad)" />
+        <circle cx="12" cy="12" r="2" fill="#ffffff" />
+    </svg>
+);
+
+const CachyOSLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="cachy-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FF6B00" />
+                <stop offset="100%" stopColor="#FFA800" />
+            </linearGradient>
+        </defs>
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10h-2c0 4.41-3.59 8-8 8s-8-3.59-8-8 3.59-8 8-8V2z" fill="url(#cachy-grad)" />
+        <path d="M12 6a6 6 0 00-6 6h2a4 4 0 018 0h2a6 6 0 00-6-6z" fill="#FF6B00" />
+        <circle cx="12" cy="12" r="2" fill="#FFA800" />
+    </svg>
+);
+
+const UbuntuLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="ubuntu-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#E95420" />
+                <stop offset="100%" stopColor="#ff7900" />
+            </linearGradient>
+        </defs>
+        <circle cx="12" cy="12" r="10" stroke="url(#ubuntu-grad)" strokeWidth="2" />
+        <circle cx="12" cy="6" r="2" fill="url(#ubuntu-grad)" />
+        <circle cx="7" cy="15" r="2" fill="url(#ubuntu-grad)" />
+        <circle cx="17" cy="15" r="2" fill="url(#ubuntu-grad)" />
+        <path d="M12 9a3 3 0 00-2.82 2H8.1a5 5 0 017.8 0h-1.08A3 3 0 0012 9z" fill="url(#ubuntu-grad)" />
+    </svg>
+);
+
+const ArchLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="arch-grad" x1="0%" y1="100%" x2="50%" y2="0%">
+                <stop offset="0%" stopColor="#1793D1" />
+                <stop offset="100%" stopColor="#33aadd" />
+            </linearGradient>
+        </defs>
+        <path d="M12 2L1 21h4.5L12 9.5l6.5 11.5H23L12 2zm0 5l5 9H7l5-9z" fill="url(#arch-grad)" />
+    </svg>
+);
+
+const ManjaroLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="manjaro-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#35BF5C" />
+                <stop offset="100%" stopColor="#168039" />
+            </linearGradient>
+        </defs>
+        <path d="M2 2h6v20H2V2zm8 0h6v8h-6V2zm0 10h6v10h-6V12zm8-10h4v20h-4V2z" fill="url(#manjaro-grad)" />
+    </svg>
+);
+
+const OmarchyLogo = () => (
+    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="omarchy-grad" x1="0%" y1="100%" x2="50%" y2="0%">
+                <stop offset="0%" stopColor="#8B5CF6" />
+                <stop offset="100%" stopColor="#A78BFA" />
+            </linearGradient>
+        </defs>
+        <path d="M12 2L1 21h4.5L12 9.5l6.5 11.5H23L12 2zm0 5l5 9H7l5-9z" fill="url(#omarchy-grad)" />
+        <path d="M12 11a3 3 0 100 6 3 3 0 000-6z" fill="#ffffff" opacity="0.8" />
+    </svg>
+);
+
+// --- Interface ---
+interface OperatingSystem {
+    id: string;
+    name: string;
+    description: string;
+    downloadUrl: string;
+    targetAudience: string;
+    category: 'Cybersecurity' | 'Windows' | 'General';
+    tags: string[];
+    accentColor: string;
+    logo: React.ComponentType;
+    downloadSize: string;
+}
+
+// --- Data ---
+const OPERATING_SYSTEMS: OperatingSystem[] = [
+    {
+        id: 'kali',
+        name: 'Kali Linux',
+        category: 'Cybersecurity',
+        description: 'Kiberxavfsizlik, penetratsion testlar va zaifliklarni aniqlash uchun eng kuchli va mashhur Linux distributivi. Minglab maxsus xavfsizlik qurollari bilan jihozlangan.',
+        downloadUrl: 'https://www.kali.org/get-kali/#kali-installer-images',
+        targetAudience: 'Kiberxavfsizlik mutaxassislari, etika xakerlar (ethical hackers) va penetratsion testlovchilar.',
+        tags: ['Security', 'Pen-testing', 'Debian'],
+        accentColor: '#00c6ff',
+        logo: KaliLogo,
+        downloadSize: '~4.1 GB'
+    },
+    {
+        id: 'parrot',
+        name: 'Parrot Security OS',
+        category: 'Cybersecurity',
+        description: 'Xavfsizlik, maxfiylik va dasturiy ta\'minot yaratish uchun maxsus ishlab chiqilgan, tizim resurslariga juda yengil va qulay operatsion tizim.',
+        downloadUrl: 'https://parrotsec.org/download/',
+        targetAudience: 'Xavfsizlik tahlilchilari, dasturchilar, kriptografiya ixlosmandlari va shaxsiy daxlsizlik tarafdorlari.',
+        tags: ['Privacy', 'Cybersec', 'MATE/KDE'],
+        accentColor: '#00E5FF',
+        logo: ParrotLogo,
+        downloadSize: '~4.9 GB'
+    },
+    {
+        id: 'blackarch',
+        name: 'BlackArch Linux',
+        category: 'Cybersecurity',
+        description: 'Arch Linux-ga asoslangan, ichiga 2800 dan ortiq professional xavfsizlik va sinov vositalari o\'rnatilgan juda katta hajmli professional tizim.',
+        downloadUrl: 'https://blackarch.org/downloads.html',
+        targetAudience: 'Tajribali penetratsion testlovchilar, reverse-muhandislar va kiberxavfsizlik ekspertlari.',
+        tags: ['Arch-based', 'Ultra-Heavy', 'Security'],
+        accentColor: '#ff0055',
+        logo: BlackArchLogo,
+        downloadSize: '~22 GB'
+    },
+    {
+        id: 'win11',
+        name: 'Windows 11 Pro',
+        category: 'Windows',
+        description: 'Eng so\'nggi interfeys, mukammal o\'yin unumdorligi va yangilangan xavfsizlik tizimiga ega eng mashhur Microsoft operatsion tizimi.',
+        downloadUrl: 'https://buzzheavier.com/piy2m79cwp6f',
+        targetAudience: 'Kundalik foydalanuvchilar, geymerlar, ofis xodimlari va Windows ilovalari dasturchilari.',
+        tags: ['Microsoft', 'Gaming', 'User-Friendly'],
+        accentColor: '#0078D4',
+        logo: WindowsLogo,
+        downloadSize: '~5.4 GB'
+    },
+    {
+        id: 'win11-ltsc',
+        name: 'Windows 11 Enterprise LTSC',
+        category: 'Windows',
+        description: 'Ortiqcha keraksiz dasturlar (bloatware) va keraksiz foniy jarayonlarsiz, uzoq yillik rasmiy yordamga va yuqori barqarorlikka ega korporativ tizim.',
+        downloadUrl: 'https://buzzheavier.com/2gtemvaqgfm3',
+        targetAudience: 'Tizim administratorlari, optimal tezlikni istovchi geymerlar va barqaror ish muhitini qadrlovchilar.',
+        tags: ['LTSC 2024', 'Bloat-Free', 'Stability'],
+        accentColor: '#0086F0',
+        logo: WindowsLTSCLogo,
+        downloadSize: '~4.8 GB'
+    },
+    {
+        id: 'cachyos',
+        name: 'CachyOS',
+        category: 'General',
+        description: 'Tezlik va unumdorlik uchun optimallashtirilgan kernel va CPU schedulers bilan jihozlangan, eng so\'nggi x86-64-v3/v4 arxitekturalarini qo\'llab-quvvatlovchi zamonaviy Arch-distro.',
+        downloadUrl: 'https://cachyos.org/download/',
+        targetAudience: 'O\'yin o\'ynovchilar (gamers), video montaj qiluvchilar va tizimning maksimal tezligidan bahramand bo\'lmoqchi bo\'lganlar.',
+        tags: ['Performance', 'Arch-based', 'Optimized'],
+        accentColor: '#FF6B00',
+        logo: CachyOSLogo,
+        downloadSize: '~2.8 GB'
+    },
+    {
+        id: 'ubuntu',
+        name: 'Ubuntu Desktop',
+        category: 'General',
+        description: 'Dunyodagi eng ko\'p ishlatiladigan, juda katta hamjamiyatga va dasturlar omboriga ega, o\'rnatish va ishlatish juda oson bo\'lgan Linux distributivi.',
+        downloadUrl: 'https://ubuntu.com/download/desktop',
+        targetAudience: 'Linux dunyosiga endi kirgan yangi o\'rganuvchilar, server/web dasturchilar va umumiy foydalanuvchilar.',
+        tags: ['LTS', 'Beginner', 'Popular'],
+        accentColor: '#E95420',
+        logo: UbuntuLogo,
+        downloadSize: '~4.1 GB'
+    },
+    {
+        id: 'arch',
+        name: 'Arch Linux',
+        category: 'General',
+        description: 'Tizimni noldan boshlab har bir detalini o\'zingiz yig\'ishingiz imkonini beruvchi, minimalist, rolling-release (doimiy eng yangi paketlar) distributivi.',
+        downloadUrl: 'https://archlinux.org/',
+        targetAudience: 'Linux operatsion tizimi qanday ishlashini mukammal o\'rganishni istaganlar va minimalist tizim yig\'uvchilar.',
+        tags: ['DIY', 'Rolling Release', 'Minimalist'],
+        accentColor: '#1793D1',
+        logo: ArchLogo,
+        downloadSize: '~1.1 GB'
+    },
+    {
+        id: 'manjaro',
+        name: 'Manjaro Linux',
+        category: 'General',
+        description: 'Arch Linux qudrati va rolling-release tizimini sodda, grafik interfeysli o\'rnatuvchi bilan birlashtirgan, foydalanishga tayyor mukammal tizim.',
+        downloadUrl: 'https://manjaro.org/products/download/x86',
+        targetAudience: 'Arch Linux paketlaridan oddiy va xavfsiz foydalanishni, barqaror o\'yin va dasturlash muhitiga ega bo\'lishni istovchilar.',
+        tags: ['Arch-based', 'Graphical', 'Stable-Rolls'],
+        accentColor: '#35BF5C',
+        logo: ManjaroLogo,
+        downloadSize: '~3.4 GB'
+    },
+    {
+        id: 'omarchy',
+        name: 'Omarchy Linux',
+        category: 'General',
+        description: 'Arch Linux-ga asoslangan, pre-konfiguratsiya qilingan (oldindan sozlangan) va chiroyli dizaynga ega o\'zbek hamjamiyati uchun ajoyib, yengil va qulay distributiv.',
+        downloadUrl: 'https://iso.omarchy.org/omarchy-3.8.2.iso',
+        targetAudience: 'Arch Linux-ni sozlashga vaqt sarflamay, noldan tayyor va tezkor ishga tushadigan tizimni xohlovchilar hamda mahalliy hamjamiyat a\'zolari.',
+        tags: ['Custom Arch', 'Local Spin', 'Out-Of-Box'],
+        accentColor: '#8B5CF6',
+        logo: OmarchyLogo,
+        downloadSize: '~2.5 GB'
+    }
+];
+
+export default function OSPage() {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [activeCategory, setActiveCategory] = useState<string>('All');
+    const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
+    const categories = [
+        { id: 'All', name: 'Barchasi' },
+        { id: 'Cybersecurity', name: 'Kiberxavfsizlik' },
+        { id: 'Windows', name: 'Windows' },
+        { id: 'General', name: 'Kundalik & Dasturlash' }
+    ];
+
+    // Filter systems
+    const filteredOS = useMemo(() => {
+        return OPERATING_SYSTEMS.filter(os => {
+            const matchesSearch = 
+                os.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                os.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                os.targetAudience.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                os.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+            
+            const matchesCategory = activeCategory === 'All' || os.category === activeCategory;
+
+            return matchesSearch && matchesCategory;
+        });
+    }, [searchQuery, activeCategory]);
+
+    return (
+        <div className="pt-8 px-6 max-w-7xl mx-auto min-h-screen">
+            <Section>
+                <div className="mb-12 relative">
+                    <div className="absolute top-0 right-0 opacity-10 blur-xl pointer-events-none">
+                        <Sparkles className="w-48 h-48 text-blue-500 animate-pulse" />
+                    </div>
+
+                    <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">
+                        <GradientText animate>Operatsion Tizimlar</GradientText>
+                    </h1>
+                    <p className="text-gray-400 max-w-2xl mb-8">
+                        Loyihalarimiz, videodarslarimiz va kundalik ishingiz uchun eng maqbul, sinovdan o&apos;tgan va ishonchli operatsion tizimlarni yuklab oling.
+                    </p>
+
+                    {/* Filter and Search Bar */}
+                    <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+                        {/* Category Selector */}
+                        <div className="flex flex-wrap gap-2 w-full md:w-auto">
+                            {categories.map((cat) => {
+                                const isActive = activeCategory === cat.id;
+                                return (
+                                    <button
+                                        key={cat.id}
+                                        onClick={() => setActiveCategory(cat.id)}
+                                        className={`relative px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                                            isActive 
+                                            ? 'text-black bg-white shadow-[0_0_20px_rgba(255,255,255,0.25)]' 
+                                            : 'text-gray-400 hover:text-white bg-white/5 border border-white/5 hover:bg-white/10'
+                                        }`}
+                                    >
+                                        {cat.name}
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {/* Search Input */}
+                        <div className="relative w-full md:max-w-md">
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <Search className="h-5 w-5 text-gray-500" />
+                            </div>
+                            <input
+                                type="text"
+                                className="block w-full pl-10 pr-4 py-2.5 border border-white/10 rounded-xl bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:bg-white/10 focus:ring-1 focus:ring-blue-500/50 transition-all backdrop-blur-sm"
+                                placeholder="Operatsion tizimni qidirish..."
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Operating System Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
+                    <AnimatePresence mode="popLayout">
+                        {filteredOS.length > 0 ? (
+                            filteredOS.map((os) => {
+                                const LogoComponent = os.logo;
+                                const isHovered = hoveredCard === os.id;
+
+                                return (
+                                    <motion.div
+                                        layout
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ opacity: 0, scale: 0.9 }}
+                                        transition={{ duration: 0.3 }}
+                                        key={os.id}
+                                        onMouseEnter={() => setHoveredCard(os.id)}
+                                        onMouseLeave={() => setHoveredCard(null)}
+                                        className="relative"
+                                    >
+                                        <Card 
+                                            className="h-full p-6 flex flex-col justify-between transition-all duration-500"
+                                            hoverEffect={false}
+                                            style={{
+                                                borderColor: isHovered ? `${os.accentColor}40` : '#1f1f1f',
+                                                boxShadow: isHovered 
+                                                    ? `0 10px 40px -10px ${os.accentColor}15, 0 0 25px -5px ${os.accentColor}10` 
+                                                    : 'none',
+                                            }}
+                                        >
+                                            <div className="space-y-5">
+                                                {/* Header Icon + Sizes */}
+                                                <div className="flex items-center justify-between">
+                                                    <div 
+                                                        className="w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300"
+                                                        style={{ 
+                                                            backgroundColor: `${os.accentColor}12`,
+                                                            border: `1px solid ${os.accentColor}25`
+                                                        }}
+                                                    >
+                                                        <LogoComponent />
+                                                    </div>
+                                                    <div className="flex items-center gap-1.5 text-xs text-gray-500 bg-white/5 border border-white/5 px-2.5 py-1 rounded-full">
+                                                        <HardDrive className="w-3.5 h-3.5" />
+                                                        <span>{os.downloadSize}</span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Title & Tags */}
+                                                <div>
+                                                    <div className="flex items-center gap-2">
+                                                        <h3 className="text-xl font-bold tracking-tight text-white">
+                                                            {os.name}
+                                                        </h3>
+                                                    </div>
+                                                    
+                                                    {/* Custom tags */}
+                                                    <div className="flex flex-wrap gap-1.5 mt-2">
+                                                        {os.tags.map(tag => (
+                                                            <span 
+                                                                key={tag} 
+                                                                className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-white/5 border border-white/5 text-gray-400"
+                                                            >
+                                                                {tag}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                {/* Description */}
+                                                <p className="text-gray-400 text-sm leading-relaxed">
+                                                    {os.description}
+                                                </p>
+
+                                                {/* Divider */}
+                                                <div className="h-px bg-white/5" />
+
+                                                {/* Target Audience */}
+                                                <div className="space-y-2">
+                                                    <div className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                                        <Users className="w-4 h-4" style={{ color: os.accentColor }} />
+                                                        <span>Kimlar uchun:</span>
+                                                    </div>
+                                                    <p className="text-gray-300 text-sm italic pl-6 border-l border-white/10">
+                                                        {os.targetAudience}
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            {/* Download Action */}
+                                            <div className="mt-8 pt-4 border-t border-white/5">
+                                                <a href={os.downloadUrl} target="_blank" rel="noopener noreferrer" className="block w-full">
+                                                    <Button 
+                                                        className="w-full relative overflow-hidden group/btn" 
+                                                        variant="secondary"
+                                                        style={{
+                                                            background: isHovered ? `${os.accentColor}18` : 'rgba(255,255,255,0.05)',
+                                                            border: `1px solid ${isHovered ? `${os.accentColor}30` : 'rgba(255,255,255,0.05)'}`,
+                                                            color: isHovered ? '#ffffff' : '#e2e8f0',
+                                                        }}
+                                                    >
+                                                        <Download className="w-4 h-4 mr-2 group-hover/btn:translate-y-0.5 transition-transform" /> 
+                                                        <span>Yuklab Olish</span>
+                                                    </Button>
+                                                </a>
+                                            </div>
+                                        </Card>
+                                    </motion.div>
+                                );
+                            })
+                        ) : (
+                            <div className="col-span-full py-20 text-center text-gray-500">
+                                <Info className="w-12 h-12 mx-auto mb-4 stroke-1 opacity-60" />
+                                Sizning so&apos;rovingiz bo&apos;yicha hech qanday operatsion tizim topilmadi.
+                            </div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            </Section>
+        </div>
+    );
+}

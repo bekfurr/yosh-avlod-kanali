@@ -20,3 +20,15 @@ export interface ChannelStats {
     viewCount: string;
     videoCount: string;
 }
+
+export interface OperatingSystem {
+    id: string;
+    name: string;
+    description: string;
+    downloadUrl: string;
+    targetAudience: string;
+    category: 'Cybersecurity' | 'Windows' | 'General';
+    tags: string[];
+    accentColor: string; // Hex or tailwind-friendly color for glow
+}
+
