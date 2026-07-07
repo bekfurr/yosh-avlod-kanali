@@ -5,17 +5,17 @@ import Section from '@/components/ui/Section';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
-import { 
-    Download, 
-    Package, 
-    Search, 
-    Cpu, 
-    Sparkles, 
-    Terminal, 
-    BookOpen, 
-    Copy, 
-    Check, 
-    ExternalLink, 
+import {
+    Download,
+    Package,
+    Search,
+    Cpu,
+    Sparkles,
+    Terminal,
+    BookOpen,
+    Copy,
+    Check,
+    ExternalLink,
     AlertTriangle,
     CheckCircle,
     Info,
@@ -179,9 +179,8 @@ export default function ProgramsPage() {
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveMainTab(tab.id as any)}
-                                className={`flex items-center gap-2 pb-4 text-sm font-semibold transition-all duration-300 relative whitespace-nowrap ${
-                                    isActive ? 'text-white' : 'text-gray-500 hover:text-gray-300'
-                                }`}
+                                className={`flex items-center gap-2 pb-4 text-sm font-semibold transition-all duration-300 relative whitespace-nowrap ${isActive ? 'text-white' : 'text-gray-500 hover:text-gray-300'
+                                    }`}
                             >
                                 <Icon className="w-4 h-4" />
                                 <span>{tab.name}</span>
@@ -279,8 +278,8 @@ export default function ProgramsPage() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {LOCAL_AI_TOOLS.map((tool) => (
-                                    <Card 
-                                        key={tool.id} 
+                                    <Card
+                                        key={tool.id}
                                         className="p-6 flex flex-col justify-between transition-all duration-300"
                                         hoverEffect={false}
                                         style={{
@@ -288,7 +287,7 @@ export default function ProgramsPage() {
                                         }}
                                     >
                                         <div className="space-y-4">
-                                            <div 
+                                            <div
                                                 className="w-12 h-12 rounded-lg flex items-center justify-center text-white"
                                                 style={{ backgroundColor: `${tool.accentColor}15`, border: `1px solid ${tool.accentColor}30` }}
                                             >
@@ -307,7 +306,7 @@ export default function ProgramsPage() {
 
                                         <div className="mt-8 pt-4 border-t border-white/5">
                                             <a href={tool.url} target="_blank" rel="noopener noreferrer" className="block">
-                                                <Button 
+                                                <Button
                                                     className="w-full"
                                                     variant="secondary"
                                                     style={{
@@ -372,21 +371,19 @@ export default function ProgramsPage() {
                             <div className="flex gap-4 items-center justify-center bg-white/5 p-1.5 rounded-xl max-w-xs mx-auto border border-white/5">
                                 <button
                                     onClick={() => setOsTab('windows')}
-                                    className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
-                                        osTab === 'windows' 
-                                        ? 'bg-white text-black shadow-lg' 
-                                        : 'text-gray-400 hover:text-white'
-                                    }`}
+                                    className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all ${osTab === 'windows'
+                                            ? 'bg-white text-black shadow-lg'
+                                            : 'text-gray-400 hover:text-white'
+                                        }`}
                                 >
                                     <Laptop className="w-4 h-4" /> Windows
                                 </button>
                                 <button
                                     onClick={() => setOsTab('linux_mac')}
-                                    className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all ${
-                                        osTab === 'linux_mac' 
-                                        ? 'bg-white text-black shadow-lg' 
-                                        : 'text-gray-400 hover:text-white'
-                                    }`}
+                                    className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all ${osTab === 'linux_mac'
+                                            ? 'bg-white text-black shadow-lg'
+                                            : 'text-gray-400 hover:text-white'
+                                        }`}
                                 >
                                     <Terminal className="w-4 h-4" /> Linux / macOS
                                 </button>
@@ -430,7 +427,7 @@ export default function ProgramsPage() {
                                                     </a>
                                                 </Card>
                                             </div>
-                                            
+
                                             {/* Admin warning */}
                                             <div className="flex gap-3 p-4 pl-5 border-l-4 border-red-500/50 bg-red-500/5 rounded-r-xl pl-9 ml-9">
                                                 <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
@@ -457,7 +454,7 @@ export default function ProgramsPage() {
                                                     <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
                                                         Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
                                                     </pre>
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleCopy('Set-ExecutionPolicy RemoteSigned -Scope CurrentUser')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                         title="Nusxa olish"
@@ -482,7 +479,7 @@ export default function ProgramsPage() {
                                                     <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
                                                         irm &quot;https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1&quot; | iex
                                                     </pre>
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleCopy('irm "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1" | iex')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                         title="Nusxa olish"
@@ -507,7 +504,7 @@ export default function ProgramsPage() {
                                                     <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
                                                         fcc-server
                                                     </pre>
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleCopy('fcc-server')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                         title="Nusxa olish"
@@ -562,7 +559,7 @@ export default function ProgramsPage() {
                                                 <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">5</span>
                                                 Claude Code va Codex-ni ishga tushirish
                                             </h3>
-                                            
+
                                             {/* Crucial Note */}
                                             <div className="flex gap-3 p-4 border-l-4 border-yellow-500/50 bg-yellow-500/5 rounded-r-xl pl-9 ml-9">
                                                 <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
@@ -584,7 +581,7 @@ export default function ProgramsPage() {
                                                         <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-blue-400 pr-10">
                                                             fcc-claude
                                                         </pre>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleCopy('fcc-claude')}
                                                             className="absolute right-2 top-2 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded transition-all"
                                                         >
@@ -602,7 +599,7 @@ export default function ProgramsPage() {
                                                         <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-blue-400 pr-10">
                                                             fcc-codex
                                                         </pre>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleCopy('fcc-codex')}
                                                             className="absolute right-2 top-2 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded transition-all"
                                                         >
@@ -626,7 +623,7 @@ export default function ProgramsPage() {
                                             <p className="text-gray-400 text-sm pl-9">
                                                 Terminal orqali Git va Node.js dasturlarini (NVM yordamida LTS versiyasini) o&apos;rnating:
                                             </p>
-                                            
+
                                             <div className="pl-9 space-y-3">
                                                 {/* Git */}
                                                 <div className="space-y-2">
@@ -635,7 +632,7 @@ export default function ProgramsPage() {
                                                         <pre className="bg-black/40 border border-white/10 p-3 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
                                                             sudo apt install git  # Linux (Ubuntu/Debian) uchun
                                                         </pre>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleCopy('sudo apt install git')}
                                                             className="absolute right-3 top-2.5 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                         >
@@ -650,10 +647,10 @@ export default function ProgramsPage() {
                                                     <div className="relative">
                                                         <pre className="bg-black/40 border border-white/10 p-3.5 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
                                                             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash && \
-source ~/.bashrc && \
-nvm install --lts
+                                                            source ~/.bashrc && \
+                                                            nvm install --lts
                                                         </pre>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleCopy('curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash && source ~/.bashrc && nvm install --lts')}
                                                             className="absolute right-3 top-3 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                         >
@@ -678,7 +675,7 @@ nvm install --lts
                                                     <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
                                                         curl -fsSL &quot;https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1&quot; | sh
                                                     </pre>
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleCopy('curl -fsSL "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1" | sh')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                     >
@@ -695,14 +692,14 @@ nvm install --lts
                                                 Serverni boshlash va modellar
                                             </h3>
                                             <p className="text-gray-400 text-sm pl-9">
-                                                Codex ulanish serverini boshlash uchun:
+                                                Claude Code va Codex uchun modellarni ulash uchun maxsus serverni ishga tushirish uchun:
                                             </p>
                                             <div className="pl-9">
                                                 <div className="relative">
                                                     <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs text-blue-400 pr-16">
                                                         fcc-server
                                                     </pre>
-                                                    <button 
+                                                    <button
                                                         onClick={() => handleCopy('fcc-server')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                     >
@@ -718,7 +715,7 @@ nvm install --lts
                                                 <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">4</span>
                                                 Mijoz dasturlarni yangi oynada ishga tushirish
                                             </h3>
-                                            
+
                                             {/* Note */}
                                             <div className="flex gap-3 p-4 border-l-4 border-yellow-500/50 bg-yellow-500/5 rounded-r-xl pl-9 ml-9">
                                                 <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
@@ -740,7 +737,7 @@ nvm install --lts
                                                         <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-blue-400 pr-10">
                                                             fcc-claude
                                                         </pre>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleCopy('fcc-claude')}
                                                             className="absolute right-2 top-2 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded transition-all"
                                                         >
@@ -757,7 +754,7 @@ nvm install --lts
                                                         <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-blue-400 pr-10">
                                                             fcc-codex
                                                         </pre>
-                                                        <button 
+                                                        <button
                                                             onClick={() => handleCopy('fcc-codex')}
                                                             className="absolute right-2 top-2 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded transition-all"
                                                         >
