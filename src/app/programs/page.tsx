@@ -409,7 +409,7 @@ export default function ProgramsPage() {
                                                         <h4 className="font-semibold text-white">Git for Windows</h4>
                                                         <p className="text-xs text-gray-500 mt-1">Versiya v2.55.0.2</p>
                                                     </div>
-                                                    <a href="https://github.com/git-for-windows/git/releases/download/v2.55.0.windows.2/Git-2.55.0.2-64-bit.exe" target="_blank" rel="noopener noreferrer">
+                                                    <a href="https://t.me/Yosh_avlod_kanali/4060" target="_blank" rel="noopener noreferrer">
                                                         <Button size="sm" variant="secondary" className="gap-1.5 text-xs">
                                                             <Download className="w-3.5 h-3.5" /> Yuklash
                                                         </Button>
