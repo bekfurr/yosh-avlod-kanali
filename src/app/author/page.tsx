@@ -138,7 +138,7 @@ export default function AuthorPage() {
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none z-0" />
       <div className="absolute bottom-1/3 left-1/4 w-[300px] h-[300px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none z-0" />
 
-      <div className="max-w-6xl mx-auto relative z-10 space-y-16">
+      <div className="max-w-7xl mx-auto relative z-10 space-y-16">
         {/* Header Section */}
         <div className="text-center space-y-4">
           <motion.div
@@ -158,11 +158,17 @@ export default function AuthorPage() {
           </p>
         </div>
 
-        {/* 3D Overlapping/Layered Intro Section */}
-        <Section className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch pt-6">
+        {/* Split Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Left Column: Author Main Content */}
+          <div className="lg:col-span-8 space-y-16">
+            
+            {/* 3D Overlapping/Layered Intro Section */}
+            <Section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch pt-6">
 
           {/* Left: Blurred, Semi-Transparent Image Box (Back/Middle Layer) */}
-          <div className="lg:col-span-5 relative flex items-center justify-center min-h-[350px] lg:min-h-[500px] group">
+          <div className="md:col-span-5 relative flex items-center justify-center min-h-[350px] md:min-h-[500px] group">
             {/* Glowing background behind image */}
             <div className="absolute inset-4 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-85 transition-opacity duration-700" />
 
@@ -198,7 +204,7 @@ export default function AuthorPage() {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-7 flex flex-col justify-center relative lg:-ml-12 z-20"
+            className="md:col-span-7 flex flex-col justify-center relative md:-ml-8 z-20"
           >
             {/* Front Overlapping Glass Card */}
             <div className="glass-panel p-8 md:p-10 rounded-2xl border border-white/10 bg-black/75 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] space-y-6 transform hover:-translate-y-1 hover:border-white/20 transition-all duration-500">
@@ -255,7 +261,7 @@ export default function AuthorPage() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6"
         >
           {/* Card 1: Mutaxassisliklar */}
           <motion.div variants={itemVariants}>
@@ -334,7 +340,7 @@ export default function AuthorPage() {
           </motion.div>
 
           {/* Card 4: Ilmiy maqolalar */}
-          <motion.div variants={itemVariants} className="md:col-span-2 lg:col-span-3">
+          <motion.div variants={itemVariants} className="md:col-span-2">
             <Card className="p-6 space-y-4 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-blue-500/20 transition-colors">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
@@ -395,23 +401,25 @@ export default function AuthorPage() {
             </Card>
           </motion.div>
         </motion.div>
+        
+        </div>
 
-        {/* Loyiha yordamchilari va hamkorlar Section */}
-        <Section className="pt-6">
-          <div className="text-center space-y-4 mb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold tracking-wider text-purple-400 uppercase">
+        {/* Right Column: Sticky Sidebar for Partners */}
+        <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 pt-6">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-semibold tracking-wider text-purple-400 uppercase">
               <Users className="w-3.5 h-3.5" />
               Loyiha Hamjamiyati
             </div>
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
-              <GradientText animate>Loyiha Yordamchilari va Hamkorlar</GradientText>
+            <h2 className="text-2xl font-extrabold tracking-tight">
+              <GradientText animate>Yordamchilar</GradientText>
             </h2>
-            <p className="text-gray-400 text-sm max-w-xl mx-auto">
+            <p className="text-gray-400 text-sm">
               Kanalimiz rivojiga o&apos;z hissasini qo&apos;shib kelayotgan bosh administratorlarimiz va hamkorlarimiz.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="flex flex-col gap-4">
             {partners.map((partner, idx) => (
               <motion.div
                 key={idx}
@@ -435,8 +443,8 @@ export default function AuthorPage() {
                       </span>
                     )}
                   </div>
-                  <div className="flex-grow space-y-1">
-                    <h3 className="font-bold text-white text-base md:text-lg tracking-tight">
+                  <div className="flex-grow space-y-1 min-w-0">
+                    <h3 className="font-bold text-white text-base tracking-tight truncate">
                       {partner.name}
                     </h3>
                     <p className="text-xs text-purple-400 font-medium">
@@ -450,7 +458,7 @@ export default function AuthorPage() {
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#229ED9]/10 hover:bg-[#229ED9] text-[#229ED9] hover:text-white border border-[#229ED9]/20 text-xs font-semibold transition-all duration-300"
                       >
                         <Send className="w-3.5 h-3.5" />
-                        <span>Telegram Profil</span>
+                        <span>Telegram</span>
                       </a>
                     </div>
                   </div>
@@ -458,8 +466,9 @@ export default function AuthorPage() {
               </motion.div>
             ))}
           </div>
-        </Section>
+        </div>
 
+        </div>
       </div>
     </div>
   );
