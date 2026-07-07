@@ -372,8 +372,8 @@ export default function ProgramsPage() {
                                 <button
                                     onClick={() => setOsTab('windows')}
                                     className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all ${osTab === 'windows'
-                                            ? 'bg-white text-black shadow-lg'
-                                            : 'text-gray-400 hover:text-white'
+                                        ? 'bg-white text-black shadow-lg'
+                                        : 'text-gray-400 hover:text-white'
                                         }`}
                                 >
                                     <Laptop className="w-4 h-4" /> Windows
@@ -381,8 +381,8 @@ export default function ProgramsPage() {
                                 <button
                                     onClick={() => setOsTab('linux_mac')}
                                     className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all ${osTab === 'linux_mac'
-                                            ? 'bg-white text-black shadow-lg'
-                                            : 'text-gray-400 hover:text-white'
+                                        ? 'bg-white text-black shadow-lg'
+                                        : 'text-gray-400 hover:text-white'
                                         }`}
                                 >
                                     <Terminal className="w-4 h-4" /> Linux / macOS
@@ -497,7 +497,7 @@ export default function ProgramsPage() {
                                                 Serverni ishga tushirish va API-larni ulash
                                             </h3>
                                             <p className="text-gray-400 text-sm pl-9">
-                                                O&apos;rnatish muvaffaqiyatli tugagach, bepul Codex serverini ishga tushirish uchun quyidagi buyruqni bering:
+                                                O&apos;rnatish muvaffaqiyatli tugagach, bepul Claude Code va Codex serverini ishga tushirish uchun quyidagi buyruqni bering:
                                             </p>
                                             <div className="pl-9">
                                                 <div className="relative group">
