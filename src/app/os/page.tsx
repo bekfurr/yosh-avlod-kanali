@@ -299,10 +299,11 @@ export default function OSPage() {
     const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
     const categories = [
-        { id: 'All', name: 'Barchasi' },
-        { id: 'Cybersecurity', name: 'Kiberxavfsizlik' },
-        { id: 'Windows', name: 'Windows' },
-        { id: 'General', name: 'Kundalik & Dasturlash' }
+        { id: 'All', name: 'Barchasi', special: false },
+        { id: 'Cybersecurity', name: 'Kiberxavfsizlik', special: false },
+        { id: 'Windows', name: 'Windows', special: false },
+        { id: 'General', name: 'Kundalik & Dasturlash', special: false },
+        { id: 'Activation', name: '⚡ Win & Office Aktivatsiya', special: true },
     ];
 
     // Filter systems
@@ -341,6 +342,21 @@ export default function OSPage() {
                         <div className="flex flex-wrap gap-2 w-full md:w-auto">
                             {categories.map((cat) => {
                                 const isActive = activeCategory === cat.id;
+                                if (cat.special) {
+                                    return (
+                                        <button
+                                            key={cat.id}
+                                            onClick={() => setActiveCategory(cat.id)}
+                                            className={`relative px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                                                isActive
+                                                ? 'text-black bg-orange-400 shadow-[0_0_20px_rgba(251,146,60,0.5)]'
+                                                : 'text-orange-400 bg-orange-500/10 border border-orange-500/30 hover:bg-orange-500/20'
+                                            }`}
+                                        >
+                                            {cat.name}
+                                        </button>
+                                    );
+                                }
                                 return (
                                     <button
                                         key={cat.id}
@@ -373,7 +389,8 @@ export default function OSPage() {
                     </div>
                 </div>
 
-                {/* Operating System Grid */}
+                {/* Operating System Grid - hidden when Activation tab is active */}
+                {activeCategory !== 'Activation' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
                     <AnimatePresence mode="popLayout">
                         {filteredOS.length > 0 ? (
@@ -491,9 +508,11 @@ export default function OSPage() {
                         )}
                     </AnimatePresence>
                 </div>
+                )}
 
                 {/* ===== ACTIVATION GUIDE SECTION ===== */}
-                <div className="mt-20 pt-16 border-t border-white/5" id="activation">
+                {activeCategory === 'Activation' && (
+                <div className="pb-20" id="activation">
                     <div className="mb-10 flex items-center gap-4">
                         <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
                             <ShieldCheck className="w-6 h-6 text-orange-400" />
@@ -596,6 +615,7 @@ export default function OSPage() {
                         </div>
                     </div>
                 </div>
+                )}
             </Section>
         </div>
     );
