@@ -350,6 +350,24 @@ export default function ProgramsPage() {
                                 </div>
                             </div>
 
+                            {/* Video Guide Section */}
+                            <div className="space-y-4 max-w-4xl mx-auto">
+                                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                                    <Play className="w-5 h-5 text-red-500 fill-red-500" />
+                                    <span>Video Qo&apos;llanma</span>
+                                </h3>
+                                <div className="aspect-video w-full max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(255,0,0,0.05)] bg-black/50 backdrop-blur-sm">
+                                    <iframe
+                                        src="https://www.youtube.com/embed/_L3cHupdU2g"
+                                        title="Claude Code + Codex Bepul O'rnatish Qo'llanmasi"
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        allowFullScreen
+                                        className="w-full h-full"
+                                    />
+                                </div>
+                            </div>
+
                             {/* OS Selection Toggle */}
                             <div className="flex gap-4 items-center justify-center bg-white/5 p-1.5 rounded-xl max-w-xs mx-auto border border-white/5">
                                 <button
