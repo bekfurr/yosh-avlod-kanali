@@ -68,3 +68,31 @@ export async function getLatestVideos(limit = 9): Promise<YouTubeVideo[]> {
         return [];
     }
 }
+
+export const CYBERSECURITY_PLAYLIST_ID = 'PL8vEET2w5jdC_AvemlYFVhuWVNIunHHlt';
+
+export async function getPlaylistVideos(playlistId: string, limit = 9): Promise<YouTubeVideo[]> {
+    if (!API_KEY) return [];
+
+    try {
+        const videosRes = await fetch(
+            `${BASE_URL}/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=${limit}&key=${API_KEY}`,
+            { next: { revalidate: 3600 } }
+        );
+        const videosData = await videosRes.json();
+
+        if (!videosData.items) return [];
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return videosData.items.map((item: any) => ({
+            id: item.snippet.resourceId.videoId,
+            title: item.snippet.title,
+            thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.medium?.url || item.snippet.thumbnails.default?.url,
+            publishedAt: item.snippet.publishedAt,
+        }));
+    } catch (error) {
+        console.error('Error fetching playlist videos:', error);
+        return [];
+    }
+}
+
