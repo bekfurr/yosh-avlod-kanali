@@ -17,7 +17,8 @@ import {
   Globe,
   Sparkles,
   Layers,
-  ChevronRight
+  ChevronRight,
+  Users
 } from 'lucide-react';
 import Section from '@/components/ui/Section';
 import Card from '@/components/ui/Card';
@@ -114,6 +115,21 @@ export default function AuthorPage() {
     'Kiberxavfsizlik',
     'CTF',
     'CVE Research',
+  ];
+
+  const partners = [
+    {
+      name: 'Memento mori',
+      role: 'Bosh Administrator',
+      telegram: 'https://t.me/Mementomori_2255',
+      avatar: null
+    },
+    {
+      name: 'ELBEK DESIGN VA WEB DASTURCHI',
+      role: 'Bosh Administrator / Dizayner',
+      telegram: 'https://t.me/elbekdesign_va_webdasturchi',
+      avatar: '/elbek.png'
+    }
   ];
 
   return (
@@ -379,6 +395,70 @@ export default function AuthorPage() {
             </Card>
           </motion.div>
         </motion.div>
+
+        {/* Loyiha yordamchilari va hamkorlar Section */}
+        <Section className="pt-6">
+          <div className="text-center space-y-4 mb-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold tracking-wider text-purple-400 uppercase">
+              <Users className="w-3.5 h-3.5" />
+              Loyiha Hamjamiyati
+            </div>
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+              <GradientText animate>Loyiha Yordamchilari va Hamkorlar</GradientText>
+            </h2>
+            <p className="text-gray-400 text-sm max-w-xl mx-auto">
+              Kanalimiz rivojiga o&apos;z hissasini qo&apos;shib kelayotgan bosh administratorlarimiz va hamkorlarimiz.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {partners.map((partner, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+              >
+                <Card className="p-6 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-purple-500/20 transition-all duration-300 flex items-center gap-5">
+                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-white/5 border border-white/10 flex-shrink-0 flex items-center justify-center">
+                    {partner.avatar ? (
+                      <Image
+                        src={partner.avatar}
+                        alt={partner.name}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <span className="text-2xl font-black text-purple-400 font-mono">
+                        {partner.name.charAt(0)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex-grow space-y-1">
+                    <h3 className="font-bold text-white text-base md:text-lg tracking-tight">
+                      {partner.name}
+                    </h3>
+                    <p className="text-xs text-purple-400 font-medium">
+                      {partner.role}
+                    </p>
+                    <div className="pt-2">
+                      <a
+                        href={partner.telegram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#229ED9]/10 hover:bg-[#229ED9] text-[#229ED9] hover:text-white border border-[#229ED9]/20 text-xs font-semibold transition-all duration-300"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Telegram Profil</span>
+                      </a>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </Section>
 
       </div>
     </div>
