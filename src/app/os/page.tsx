@@ -6,15 +6,19 @@ import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { 
     Search, 
     Download, 
     Users, 
-    Cpu, 
-    Shield, 
     Info, 
     HardDrive,
-    Sparkles
+    Sparkles,
+    ShieldCheck,
+    AlertTriangle,
+    Copy,
+    Check,
+    Terminal
 } from 'lucide-react';
 
 // --- Custom SVG Logos for OS ---
@@ -487,7 +491,155 @@ export default function OSPage() {
                         )}
                     </AnimatePresence>
                 </div>
+
+                {/* ===== ACTIVATION GUIDE SECTION ===== */}
+                <div className="mt-20 pt-16 border-t border-white/5" id="activation">
+                    <div className="mb-10 flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                            <ShieldCheck className="w-6 h-6 text-orange-400" />
+                        </div>
+                        <div>
+                            <h2 className="text-3xl font-black tracking-tight">
+                                <GradientText>Windows & Office Aktivatsiyasi</GradientText>
+                            </h2>
+                            <p className="text-gray-400 text-sm mt-1">Rasmiy Microsoft Activation Scripts (MAS) orqali bepul doimiy aktivatsiya</p>
+                        </div>
+                    </div>
+
+                    {/* Warning banner */}
+                    <div className="flex gap-4 p-5 mb-8 rounded-2xl bg-red-500/8 border border-red-500/20">
+                        <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
+                        <div className="space-y-1">
+                            <h4 className="font-bold text-red-400">MUHIM: Oldin amalga oshiring</h4>
+                            <ul className="text-sm text-gray-300 space-y-1 list-disc pl-4">
+                                <li>PowerShell-ni <strong>Administrator</strong> huquqida ishga tushiring</li>
+                                <li>Skript ishlashi uchun <strong>Windows Firewall va Antivirusni vaqtincha o&apos;chiring</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    {/* Step 1: Run Script */}
+                    <div className="space-y-10">
+                        <ActivationStep number={1} title="Aktivatsiya skriptini ishga tushiring">
+                            <p className="text-gray-400 text-sm mb-4">
+                                PowerShell (Admin) da quyidagi buyruqni bering. Skript avtomatik yuklanib ishga tushadi:
+                            </p>
+                            <CopyBlock text="irm get.activated.win | iex" />
+                            <div className="mt-6 rounded-xl overflow-hidden border border-white/10">
+                                <Image src="/activate-1-command.png" alt="Buyruq PowerShell da" width={900} height={300} className="w-full object-cover" />
+                            </div>
+                        </ActivationStep>
+
+                        {/* Windows Activation */}
+                        <div className="pt-8 border-t border-white/5">
+                            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                                <span className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-sm font-bold">W</span>
+                                Windows Aktivatsiyasi
+                            </h3>
+                            <div className="space-y-8">
+                                <ActivationStep number={2} title="Menyudan [1] HWID – Windows ni tanlang">
+                                    <p className="text-gray-400 text-sm mb-4">
+                                        Skript ishga tushgandan so&apos;ng menyu ko&apos;rsatiladi. Klaviaturadan <kbd className="px-2 py-0.5 bg-white/10 border border-white/10 rounded text-xs font-mono">1</kbd> tugmasini bosib Windows aktivatsiyasini tanlang:
+                                    </p>
+                                    <div className="rounded-xl overflow-hidden border border-white/10">
+                                        <Image src="/activate-win-select.png" alt="Windows 1 tanlangan" width={900} height={460} className="w-full object-cover" />
+                                    </div>
+                                </ActivationStep>
+
+                                <ActivationStep number={3} title="Aktivatsiya yakunlanishini kuting">
+                                    <p className="text-gray-400 text-sm mb-4">
+                                        Bir necha soniya ichida aktivatsiya jarayoni tugaydi va quyidagi natija ko&apos;rsatiladi:
+                                    </p>
+                                    <div className="rounded-xl overflow-hidden border border-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.05)]">
+                                        <Image src="/activate-win-done.png" alt="Windows aktivatsiya yakunlandi" width={900} height={280} className="w-full object-cover" />
+                                    </div>
+                                    <div className="mt-3 flex items-center gap-2 text-green-400 text-sm">
+                                        <Check className="w-4 h-4" />
+                                        <span>Windows muvaffaqiyatli va doimiy ravishda aktivatsiya qilinadi!</span>
+                                    </div>
+                                </ActivationStep>
+                            </div>
+                        </div>
+
+                        {/* Office Activation */}
+                        <div className="pt-8 border-t border-white/5">
+                            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                                <span className="w-7 h-7 rounded-lg bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400 text-sm font-bold">O</span>
+                                Microsoft Office Aktivatsiyasi
+                            </h3>
+                            <p className="text-gray-400 text-sm mb-6">
+                                Office aktivatsiyasi uchun xuddi shu skriptdan foydalaniladi. Qayta ishlating yoki menyu ochiq bo&apos;lsa davom eting:
+                            </p>
+                            <div className="space-y-8">
+                                <ActivationStep number={4} title="Menyudan [2] Ohook – Office ni tanlang">
+                                    <p className="text-gray-400 text-sm mb-4">
+                                        Aktivatsiya menyusida <kbd className="px-2 py-0.5 bg-white/10 border border-white/10 rounded text-xs font-mono">2</kbd> tugmasini bosib Office bo&apos;limiga o&apos;ting:
+                                    </p>
+                                    <div className="rounded-xl overflow-hidden border border-white/10">
+                                        <Image src="/activate-office-select.png" alt="Office 2 tanlangan" width={900} height={460} className="w-full object-cover" />
+                                    </div>
+                                </ActivationStep>
+
+                                <ActivationStep number={5} title="[1] Install Ohook Office Activation ni tanlang">
+                                    <p className="text-gray-400 text-sm mb-4">
+                                        Office submenyusida <kbd className="px-2 py-0.5 bg-white/10 border border-white/10 rounded text-xs font-mono">1</kbd> tugmasini bosib aktivatsiyani o&apos;rnating:
+                                    </p>
+                                    <div className="rounded-xl overflow-hidden border border-white/10">
+                                        <Image src="/activate-office-done.png" alt="Office aktivatsiya 1 tanlangan" width={900} height={360} className="w-full object-cover" />
+                                    </div>
+                                    <div className="mt-3 flex items-center gap-2 text-green-400 text-sm">
+                                        <Check className="w-4 h-4" />
+                                        <span>Microsoft Office doimiy ravishda aktivatsiya qilinadi!</span>
+                                    </div>
+                                </ActivationStep>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </Section>
+        </div>
+    );
+}
+
+// ===== Helper Components =====
+
+function ActivationStep({ number, title, children }: { number: number; title: string; children: React.ReactNode }) {
+    return (
+        <div className="space-y-4">
+            <h4 className="text-base font-bold text-white flex items-center gap-3">
+                <span className="w-7 h-7 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-xs font-bold text-gray-300 flex-shrink-0">
+                    {number}
+                </span>
+                {title}
+            </h4>
+            <div className="pl-10">
+                {children}
+            </div>
+        </div>
+    );
+}
+
+function CopyBlock({ text }: { text: string }) {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(text);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+    };
+
+    return (
+        <div className="relative group">
+            <pre className="bg-black/50 border border-white/10 p-4 rounded-xl font-mono text-sm overflow-x-auto text-orange-400 pr-16 select-all">
+                {text}
+            </pre>
+            <button
+                onClick={handleCopy}
+                className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
+                title="Nusxa olish"
+            >
+                {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+            </button>
         </div>
     );
 }
