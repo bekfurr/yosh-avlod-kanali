@@ -18,6 +18,7 @@ import {
     AlertTriangle,
     Copy,
     Check,
+    Key,
     Terminal
 } from 'lucide-react';
 
@@ -173,6 +174,7 @@ interface OperatingSystem {
         downloadUrl: string;
         downloadSize?: string;
     }[];
+    productKeys?: { edition: string; key: string }[];
 }
 
 // --- Data ---
@@ -275,6 +277,65 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         downloadSize: '~4.3 GB',
         variants: [
             { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/5eerq83cpgwi', downloadSize: '' }
+        ]
+    },
+    {
+        id: 'win11-arm',
+        name: 'Windows 11 ARM',
+        category: 'Windows',
+        description: 'ARM arxitekturali qurilmalar (Surface Pro X, Snapdragon PC, Apple Silicon VM) uchun optimallashtirilgan Windows 11 rasmiy ISO fayli.',
+        downloadUrl: 'https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26200.6584.250915-1905.25h2_ge_release_svc_refresh_CLIENT_CONSUMER_A64FRE_en-us.iso',
+        targetAudience: 'Snapdragon qurilma egalari, Surface Pro X / Surface Pro 9 (ARM) va ARM arxitekturali virtualizatsiya muhitlari.',
+        tags: ['ARM64', 'Microsoft', 'Surface'],
+        accentColor: '#6E40C9',
+        logo: WindowsLogo,
+        downloadSize: '~5.6 GB',
+        variants: [
+            { language: 'English', architecture: 'ARM64', downloadUrl: 'https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26200.6584.250915-1905.25h2_ge_release_svc_refresh_CLIENT_CONSUMER_A64FRE_en-us.iso', downloadSize: '~5.6 GB' },
+            { language: 'Russian', architecture: 'ARM64', downloadUrl: 'https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26200.6584.250915-1905.25h2_ge_release_svc_refresh_CLIENT_CONSUMER_A64FRE_ru-ru.iso', downloadSize: '~5.6 GB' }
+        ]
+    },
+    {
+        id: 'win81',
+        name: 'Windows 8.1',
+        category: 'Windows',
+        description: 'Windows 7 va 10 o\'rtasidagi klassik versiya. Eski dasturlar bilan mukammal mos keladi. ISO yuklab olgandan so\'ng mahsulot kalitini qo\'llang.',
+        downloadUrl: 'https://buzzheavier.com/2i65axai8pao',
+        targetAudience: 'Eski dasturiy ta\'minot bilan ishlash zarur bo\'lganlar va klassik Windows interfeysi tarafdorlari.',
+        tags: ['Classic', 'Legacy', '32/64-bit'],
+        accentColor: '#0277BD',
+        logo: WindowsLTSCLogo,
+        downloadSize: '~4.0 GB',
+        variants: [
+            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/2i65axai8pao', downloadSize: '~4.0 GB' },
+            { language: 'English', architecture: '32-bit', downloadUrl: 'https://buzzheavier.com/ddhrb4eax1x1', downloadSize: '~2.8 GB' },
+            { language: 'Russian', architecture: '64-bit', downloadUrl: 'https://zerofs.link/f/bOi9D_hBQaUfaZVn4FKLdsAa8co_6bVsmtFj1LckoO1MPyBNpKnSxqIS0opPzI6wynA/', downloadSize: '~4.0 GB' },
+            { language: 'Russian', architecture: '32-bit', downloadUrl: 'https://zerofs.link/f/M6BI4XXfRVeI6IPzEIkgDXPVApSq0FANyAK8bEozNAE5QN0CivxO1Hm5nbYO7Ls1OLY/', downloadSize: '~2.8 GB' }
+        ],
+        productKeys: [
+            { edition: 'Core', key: '334NH-RXG76-64THK-C7CKG-D3VPT' },
+            { edition: 'Core N', key: '6NPQ8-PK64X-W4WMM-MF84V-RGB89' },
+            { edition: 'Core Single Language', key: 'Y9NXP-XT8MV-PT9TG-97CT3-9D6TC' },
+            { edition: 'Pro', key: 'XHQ8N-C3MCJ-RQXB6-WCHYG-C9WKB' },
+            { edition: 'Pro N', key: 'JRBBN-4Q997-H4RM2-H3B7W-Q68KC' }
+        ]
+    },
+    {
+        id: 'win7',
+        name: 'Windows 7 SP1',
+        category: 'Windows',
+        description: 'Barcha zamonlarning eng mashhur Windows versiyasi. Qadimiy kompyuterlar va eski dasturiy ta\'minot uchun hamon eng ishonchli tanlov.',
+        downloadUrl: 'https://buzzheavier.com/lllag2h2ucql',
+        targetAudience: 'Juda eski kompyuter egalari, retro dasturlar va o\'yinlar ishqibozlari.',
+        tags: ['Legacy', 'Classic', 'SP1'],
+        accentColor: '#1565C0',
+        logo: WindowsLogo,
+        downloadSize: '~3.1 GB',
+        variants: [
+            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/lllag2h2ucql', downloadSize: '~3.1 GB' },
+            { language: 'English', architecture: '32-bit', downloadUrl: 'https://buzzheavier.com/wru8ac6nwk2x', downloadSize: '~2.4 GB' },
+            { language: 'Russian', architecture: '64-bit', downloadUrl: 'https://zerofs.link/f/XsmotsH_4CNUIl8k1-p2VN10LreJHgQhGCKoo7KY80Qbz2Ltn_9xegsiIC_IfjQsMro/', downloadSize: '~3.1 GB' },
+            { language: 'Russian', architecture: '32-bit', downloadUrl: 'https://zerofs.link/f/DS3eFKYXF1ZsRZHyi3PmPp89qxAx-jajMOIICgvCcK9kO3X_JChfD1q1RLTUEZdR0Rg/', downloadSize: '~2.4 GB' }
         ]
     },
     {
@@ -610,6 +671,33 @@ export default function OSPage() {
                                                             {os.targetAudience}
                                                         </p>
                                                     </div>
+
+                                                    {/* Product Keys */}
+                                                    {os.productKeys && os.productKeys.length > 0 && (
+                                                        <div className="space-y-2 pt-2 border-t border-white/5">
+                                                            <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">
+                                                                <Key className="w-3.5 h-3.5" />
+                                                                <span>Mahsulot Kalitlari</span>
+                                                            </div>
+                                                            <div className="space-y-1.5">
+                                                                {os.productKeys.map((pk) => (
+                                                                    <div key={pk.edition} className="flex items-center justify-between gap-2 bg-black/40 border border-amber-500/10 rounded-lg px-3 py-1.5">
+                                                                        <div>
+                                                                            <span className="text-[10px] text-amber-400/70 font-bold uppercase tracking-wider block">{pk.edition}</span>
+                                                                            <span className="text-[11px] font-mono text-gray-300 select-all">{pk.key}</span>
+                                                                        </div>
+                                                                        <button
+                                                                            onClick={() => navigator.clipboard.writeText(pk.key)}
+                                                                            className="flex-shrink-0 p-1 text-gray-500 hover:text-amber-400 transition-colors"
+                                                                            title="Nusxa olish"
+                                                                        >
+                                                                            <Copy className="w-3.5 h-3.5" />
+                                                                        </button>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 {/* Download Action */}

@@ -21,8 +21,8 @@ import {
     Info,
     Laptop,
     Server,
-    Database,
-    Play
+    Play,
+    HardDrive
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Program } from '@/lib/types';
@@ -107,8 +107,80 @@ const LOCAL_AI_TOOLS: LocalAITool[] = [
     }
 ];
 
+// Office Logo SVG Component
+const OfficeLogo = ({ className = "w-4 h-4" }: { className?: string }) => (
+    <svg viewBox="0 0 24 24" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <linearGradient id="office-tab-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#E04F5F" />
+                <stop offset="100%" stopColor="#D83B01" />
+            </linearGradient>
+        </defs>
+        <path d="M12 2L2 5v14l10 3 10-3V5L12 2z" fill="url(#office-tab-grad)" />
+        <path d="M12 5.5l7 2.1v8.8l-7 2.1V5.5z" fill="#ffffff" opacity="0.8" />
+    </svg>
+);
+
+interface OfficeProduct {
+    id: string;
+    title: string;
+    description: string;
+    downloadUrl: string;
+    version: string;
+    size: string;
+    accentColor: string;
+}
+
+const OFFICE_PRODUCTS: OfficeProduct[] = [
+    {
+        id: 'office-365',
+        title: 'Microsoft Office 365 ProPlus',
+        description: 'Bulutga asoslangan, eng so\'nggi funksiyalar va doimiy yangilanishlarga ega Microsoft Office-ning to\'liq paketi (Word, Excel, PowerPoint, Outlook va boshqalar).',
+        downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/O365ProPlusRetail.img',
+        version: 'Subscription / Full Retail',
+        size: '~4.8 GB',
+        accentColor: '#D83B01'
+    },
+    {
+        id: 'office-2024',
+        title: 'Microsoft Office 2024 Professional Plus',
+        description: 'Yaqinda taqdim etilgan, so\'nggi dizayn va AI optimallashtirishlariga ega, bir martalik litsenziyali eng yangi Office to\'plami.',
+        downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2024Retail.img',
+        version: 'LTSC / Retail v2024',
+        size: '~4.7 GB',
+        accentColor: '#E04F5F'
+    },
+    {
+        id: 'office-2021',
+        title: 'Microsoft Office 2021 Professional Plus',
+        description: 'Barqaror va ishonchli, eng ommabop ofis ishlari va taqdimotlar tayyorlash uchun optimal tanlov bo\'lgan versiya.',
+        downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2021Retail.img',
+        version: 'Retail v2021',
+        size: '~4.6 GB',
+        accentColor: '#EA4335'
+    },
+    {
+        id: 'office-2019',
+        title: 'Microsoft Office 2019 Professional Plus',
+        description: 'Klassik interfeysga ega, o\'rta toifadagi noutbuk va kompyuterlar uchun eng yaxshi ish samaradorligini ta\'minlovchi barqaror versiya.',
+        downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2019Retail.img',
+        version: 'Retail v2019',
+        size: '~3.5 GB',
+        accentColor: '#FBBC05'
+    },
+    {
+        id: 'office-2016',
+        title: 'Microsoft Office 2016 Professional Plus',
+        description: 'Eski va resurslari cheklangan past ko\'rsatkichli kompyuterlarda ham juda tez ishlovchi, eng barqaror klassik ofis to\'plami.',
+        downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlusRetail.img',
+        version: 'Retail v2016',
+        size: '~3.2 GB',
+        accentColor: '#34A853'
+    }
+];
+
 export default function ProgramsPage() {
-    const [activeMainTab, setActiveMainTab] = useState<'channel' | 'local_ai' | 'free_claude'>('channel');
+    const [activeMainTab, setActiveMainTab] = useState<'channel' | 'local_ai' | 'free_claude' | 'office'>('channel');
     const [osTab, setOsTab] = useState<'windows' | 'linux_mac'>('windows');
     const [copiedText, setCopiedText] = useState<string | null>(null);
 
@@ -171,6 +243,7 @@ export default function ProgramsPage() {
                     {[
                         { id: 'channel', name: 'Kanal Dasturlari', icon: Package },
                         { id: 'local_ai', name: 'Local AI Dasturlari', icon: Cpu },
+                        { id: 'office', name: 'Microsoft Office', icon: OfficeLogo as any },
                         { id: 'free_claude', name: 'Free Claude + Codex', icon: BookOpen }
                     ].map((tab) => {
                         const Icon = tab.icon;
@@ -766,6 +839,81 @@ export default function ProgramsPage() {
                                         </div>
                                     </div>
                                 )}
+                            </div>
+                        </motion.div>
+                    )}
+
+                    {activeMainTab === 'office' && (
+                        <motion.div
+                            key="office-tab"
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -15 }}
+                            transition={{ duration: 0.3 }}
+                            className="space-y-6"
+                        >
+                            <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div>
+                                    <h2 className="text-2xl font-bold mb-2">Microsoft Office Dasturlari</h2>
+                                    <p className="text-gray-400 max-w-3xl text-sm">
+                                        Rasmiy Microsoft CDN tarmoqlaridan to&apos;g&apos;ri va tezkor yuklab olinuvchi original Microsoft Office o&apos;rnatish paketlari. Aktivatsiya qilish uchun Operatsion Tizimlar bo&apos;limidagi qo&apos;llanmaga murojaat qilishingiz mumkin.
+                                    </p>
+                                </div>
+                                <a href="/os#activation" className="flex-shrink-0">
+                                    <Button size="sm" variant="secondary" className="border-orange-500/30 text-orange-400 hover:bg-orange-500/10">
+                                        ⚡ Aktivatsiya qilish qo&apos;llanmasi
+                                    </Button>
+                                </a>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {OFFICE_PRODUCTS.map((prod) => (
+                                    <Card
+                                        key={prod.id}
+                                        className="p-6 flex flex-col justify-between transition-all duration-300 hover:border-orange-500/20"
+                                        hoverEffect={false}
+                                    >
+                                        <div className="space-y-4">
+                                            <div
+                                                className="w-12 h-12 rounded-xl flex items-center justify-center text-white"
+                                                style={{ backgroundColor: `${prod.accentColor}15`, border: `1px solid ${prod.accentColor}30` }}
+                                            >
+                                                <OfficeLogo className="w-6 h-6" />
+                                            </div>
+                                            <div>
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <h3 className="text-xl font-bold truncate" title={prod.title}>{prod.title}</h3>
+                                                </div>
+                                                <div className="flex flex-wrap gap-1.5 mt-2">
+                                                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/5 text-gray-400">
+                                                        {prod.version}
+                                                    </span>
+                                                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/5 text-gray-400 flex items-center gap-1">
+                                                        <HardDrive className="w-3 h-3" /> {prod.size}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <p className="text-gray-400 text-sm leading-relaxed">{prod.description}</p>
+                                        </div>
+
+                                        <div className="mt-8 pt-6 border-t border-white/5">
+                                            <a href={prod.downloadUrl} target="_blank" rel="noopener noreferrer" className="block">
+                                                <Button
+                                                    className="w-full"
+                                                    glow
+                                                    variant="secondary"
+                                                    style={{
+                                                        backgroundColor: `${prod.accentColor}10`,
+                                                        borderColor: `${prod.accentColor}20`,
+                                                        color: '#ffffff'
+                                                    }}
+                                                >
+                                                    <Download className="w-4 h-4 mr-2" /> Yuklab Olish
+                                                </Button>
+                                            </a>
+                                        </div>
+                                    </Card>
+                                ))}
                             </div>
                         </motion.div>
                     )}
