@@ -7,11 +7,11 @@ import Button from '@/components/ui/Button';
 import GradientText from '@/components/ui/GradientText';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { 
-    Search, 
-    Download, 
-    Users, 
-    Info, 
+import {
+    Search,
+    Download,
+    Users,
+    Info,
     HardDrive,
     Sparkles,
     ShieldCheck,
@@ -241,7 +241,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         logo: WindowsLTSCLogo,
         downloadSize: '~4.8 GB',
         variants: [
-            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/2gtemvaqgfm3', downloadSize: '~4.8 GB' }
+            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/2gtemvaqgfm3', downloadSize: '' }
         ]
     },
     {
@@ -274,7 +274,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         logo: WindowsLTSCLogo,
         downloadSize: '~4.3 GB',
         variants: [
-            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/5eerq83cpgwi', downloadSize: '~4.3 GB' }
+            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/5eerq83cpgwi', downloadSize: '' }
         ]
     },
     {
@@ -357,12 +357,12 @@ export default function OSPage() {
     // Filter systems
     const filteredOS = useMemo(() => {
         return OPERATING_SYSTEMS.filter(os => {
-            const matchesSearch = 
+            const matchesSearch =
                 os.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 os.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 os.targetAudience.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 os.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-            
+
             const matchesCategory = activeCategory === 'All' || os.category === activeCategory;
 
             return matchesSearch && matchesCategory;
@@ -395,11 +395,10 @@ export default function OSPage() {
                                         <button
                                             key={cat.id}
                                             onClick={() => setActiveCategory(cat.id)}
-                                            className={`relative px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                                                isActive
-                                                ? 'text-black bg-orange-400 shadow-[0_0_20px_rgba(251,146,60,0.5)]'
-                                                : 'text-orange-400 bg-orange-500/10 border border-orange-500/30 hover:bg-orange-500/20'
-                                            }`}
+                                            className={`relative px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive
+                                                    ? 'text-black bg-orange-400 shadow-[0_0_20px_rgba(251,146,60,0.5)]'
+                                                    : 'text-orange-400 bg-orange-500/10 border border-orange-500/30 hover:bg-orange-500/20'
+                                                }`}
                                         >
                                             {cat.name}
                                         </button>
@@ -409,11 +408,10 @@ export default function OSPage() {
                                     <button
                                         key={cat.id}
                                         onClick={() => setActiveCategory(cat.id)}
-                                        className={`relative px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                                            isActive 
-                                            ? 'text-black bg-white shadow-[0_0_20px_rgba(255,255,255,0.25)]' 
-                                            : 'text-gray-400 hover:text-white bg-white/5 border border-white/5 hover:bg-white/10'
-                                        }`}
+                                        className={`relative px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${isActive
+                                                ? 'text-black bg-white shadow-[0_0_20px_rgba(255,255,255,0.25)]'
+                                                : 'text-gray-400 hover:text-white bg-white/5 border border-white/5 hover:bg-white/10'
+                                            }`}
                                     >
                                         {cat.name}
                                     </button>
@@ -439,319 +437,317 @@ export default function OSPage() {
 
                 {/* Operating System Grid - hidden when Activation tab is active */}
                 {activeCategory !== 'Activation' && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
-                    <AnimatePresence mode="popLayout">
-                        {filteredOS.length > 0 ? (
-                            filteredOS.map((os) => {
-                                const LogoComponent = os.logo;
-                                const isHovered = hoveredCard === os.id;
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-20">
+                        <AnimatePresence mode="popLayout">
+                            {filteredOS.length > 0 ? (
+                                filteredOS.map((os) => {
+                                    const LogoComponent = os.logo;
+                                    const isHovered = hoveredCard === os.id;
 
-                                const hasVariants = !!os.variants && os.variants.length > 0;
-                                let currentDownloadUrl = os.downloadUrl;
-                                let currentDownloadSize = os.downloadSize;
-                                let availableLanguages: string[] = [];
-                                let availableArchs: string[] = [];
-                                let currentLang = '';
-                                let currentAr = '';
+                                    const hasVariants = !!os.variants && os.variants.length > 0;
+                                    let currentDownloadUrl = os.downloadUrl;
+                                    let currentDownloadSize = os.downloadSize;
+                                    let availableLanguages: string[] = [];
+                                    let availableArchs: string[] = [];
+                                    let currentLang = '';
+                                    let currentAr = '';
 
-                                if (hasVariants && os.variants) {
-                                    availableLanguages = Array.from(new Set(os.variants.map(v => v.language)));
-                                    currentLang = selectedLanguage[os.id] || availableLanguages[0];
-                                    const langVariants = os.variants.filter(v => v.language === currentLang);
-                                    availableArchs = Array.from(new Set(langVariants.map(v => v.architecture)));
-                                    currentAr = selectedArch[os.id] || availableArchs[0];
-                                    if (!availableArchs.includes(currentAr)) {
-                                        currentAr = availableArchs[0];
+                                    if (hasVariants && os.variants) {
+                                        availableLanguages = Array.from(new Set(os.variants.map(v => v.language)));
+                                        currentLang = selectedLanguage[os.id] || availableLanguages[0];
+                                        const langVariants = os.variants.filter(v => v.language === currentLang);
+                                        availableArchs = Array.from(new Set(langVariants.map(v => v.architecture)));
+                                        currentAr = selectedArch[os.id] || availableArchs[0];
+                                        if (!availableArchs.includes(currentAr)) {
+                                            currentAr = availableArchs[0];
+                                        }
+                                        const matchedVariant = os.variants.find(v => v.language === currentLang && v.architecture === currentAr);
+                                        if (matchedVariant) {
+                                            currentDownloadUrl = matchedVariant.downloadUrl;
+                                            currentDownloadSize = matchedVariant.downloadSize || os.downloadSize;
+                                        }
                                     }
-                                    const matchedVariant = os.variants.find(v => v.language === currentLang && v.architecture === currentAr);
-                                    if (matchedVariant) {
-                                        currentDownloadUrl = matchedVariant.downloadUrl;
-                                        currentDownloadSize = matchedVariant.downloadSize || os.downloadSize;
-                                    }
-                                }
 
-                                return (
-                                    <motion.div
-                                        layout
-                                        initial={{ opacity: 0, scale: 0.95 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.9 }}
-                                        transition={{ duration: 0.3 }}
-                                        key={os.id}
-                                        onMouseEnter={() => setHoveredCard(os.id)}
-                                        onMouseLeave={() => setHoveredCard(null)}
-                                        className="relative"
-                                    >
-                                        <Card 
-                                            className="h-full p-6 flex flex-col justify-between transition-all duration-500"
-                                            hoverEffect={false}
-                                            style={{
-                                                borderColor: isHovered ? `${os.accentColor}40` : '#1f1f1f',
-                                                boxShadow: isHovered 
-                                                    ? `0 10px 40px -10px ${os.accentColor}15, 0 0 25px -5px ${os.accentColor}10` 
-                                                    : 'none',
-                                            }}
+                                    return (
+                                        <motion.div
+                                            layout
+                                            initial={{ opacity: 0, scale: 0.95 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            exit={{ opacity: 0, scale: 0.9 }}
+                                            transition={{ duration: 0.3 }}
+                                            key={os.id}
+                                            onMouseEnter={() => setHoveredCard(os.id)}
+                                            onMouseLeave={() => setHoveredCard(null)}
+                                            className="relative"
                                         >
-                                            <div className="space-y-5">
-                                                {/* Header Icon + Sizes */}
-                                                <div className="flex items-center justify-between">
-                                                    <div 
-                                                        className="w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300"
-                                                        style={{ 
-                                                            backgroundColor: `${os.accentColor}12`,
-                                                            border: `1px solid ${os.accentColor}25`
-                                                        }}
-                                                    >
-                                                        <LogoComponent />
-                                                    </div>
-                                                    <div className="flex items-center gap-1.5 text-xs text-gray-500 bg-white/5 border border-white/5 px-2.5 py-1 rounded-full">
-                                                        <HardDrive className="w-3.5 h-3.5" />
-                                                        <span>{currentDownloadSize}</span>
-                                                    </div>
-                                                </div>
-
-                                                {/* Title & Tags */}
-                                                <div>
-                                                    <div className="flex items-center gap-2">
-                                                        <h3 className="text-xl font-bold tracking-tight text-white">
-                                                            {os.name}
-                                                        </h3>
-                                                    </div>
-                                                    
-                                                    {/* Custom tags */}
-                                                    <div className="flex flex-wrap gap-1.5 mt-2">
-                                                        {os.tags.map(tag => (
-                                                            <span 
-                                                                key={tag} 
-                                                                className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-white/5 border border-white/5 text-gray-400"
-                                                            >
-                                                                {tag}
-                                                            </span>
-                                                        ))}
-                                                    </div>
-                                                </div>
-
-                                                {/* Description */}
-                                                <p className="text-gray-400 text-sm leading-relaxed">
-                                                    {os.description}
-                                                </p>
-
-                                                {/* Dynamic Variant Selector */}
-                                                {hasVariants && (
-                                                    <div className="space-y-3 pt-3 border-t border-white/5">
-                                                        <div className="flex flex-wrap items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5">
-                                                            {/* Language */}
-                                                            <div className="flex items-center gap-1.5">
-                                                                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Til:</span>
-                                                                {availableLanguages.length > 1 ? (
-                                                                    <div className="flex gap-1 bg-black/40 p-0.5 rounded border border-white/5">
-                                                                        {availableLanguages.map(lang => {
-                                                                            const isSelected = currentLang === lang;
-                                                                            return (
-                                                                                <button
-                                                                                    key={lang}
-                                                                                    onClick={() => setSelectedLanguage(prev => ({ ...prev, [os.id]: lang }))}
-                                                                                    className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all duration-200 ${
-                                                                                        isSelected
-                                                                                        ? 'bg-blue-500 text-white shadow-[0_0_8px_rgba(59,130,246,0.3)]'
-                                                                                        : 'text-gray-400 hover:text-white'
-                                                                                    }`}
-                                                                                >
-                                                                                    {lang === 'English' ? 'EN' : 'RU'}
-                                                                                </button>
-                                                                            );
-                                                                        })}
-                                                                    </div>
-                                                                ) : (
-                                                                    <span className="text-[11px] font-semibold text-gray-300">
-                                                                        {currentLang === 'English' ? '🇬🇧 EN' : '🇷🇺 RU'}
-                                                                    </span>
-                                                                )}
-                                                            </div>
-
-                                                            {/* Architecture */}
-                                                            <div className="flex items-center gap-1.5 ml-auto">
-                                                                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Tizim:</span>
-                                                                {availableArchs.length > 1 ? (
-                                                                    <div className="flex gap-1 bg-black/40 p-0.5 rounded border border-white/5">
-                                                                        {availableArchs.map(arch => {
-                                                                            const isSelected = currentAr === arch;
-                                                                            return (
-                                                                                <button
-                                                                                    key={arch}
-                                                                                    onClick={() => setSelectedArch(prev => ({ ...prev, [os.id]: arch }))}
-                                                                                    className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all duration-200 ${
-                                                                                        isSelected
-                                                                                        ? 'bg-blue-500 text-white shadow-[0_0_8px_rgba(59,130,246,0.3)]'
-                                                                                        : 'text-gray-400 hover:text-white'
-                                                                                    }`}
-                                                                                >
-                                                                                    {arch}
-                                                                                </button>
-                                                                            );
-                                                                        })}
-                                                                    </div>
-                                                                ) : (
-                                                                    <span className="text-[11px] font-semibold text-gray-300">
-                                                                        {currentAr}
-                                                                    </span>
-                                                                )}
-                                                            </div>
+                                            <Card
+                                                className="h-full p-6 flex flex-col justify-between transition-all duration-500"
+                                                hoverEffect={false}
+                                                style={{
+                                                    borderColor: isHovered ? `${os.accentColor}40` : '#1f1f1f',
+                                                    boxShadow: isHovered
+                                                        ? `0 10px 40px -10px ${os.accentColor}15, 0 0 25px -5px ${os.accentColor}10`
+                                                        : 'none',
+                                                }}
+                                            >
+                                                <div className="space-y-5">
+                                                    {/* Header Icon + Sizes */}
+                                                    <div className="flex items-center justify-between">
+                                                        <div
+                                                            className="w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300"
+                                                            style={{
+                                                                backgroundColor: `${os.accentColor}12`,
+                                                                border: `1px solid ${os.accentColor}25`
+                                                            }}
+                                                        >
+                                                            <LogoComponent />
+                                                        </div>
+                                                        <div className="flex items-center gap-1.5 text-xs text-gray-500 bg-white/5 border border-white/5 px-2.5 py-1 rounded-full">
+                                                            <HardDrive className="w-3.5 h-3.5" />
+                                                            <span>{currentDownloadSize}</span>
                                                         </div>
                                                     </div>
-                                                )}
 
-                                                {/* Divider */}
-                                                <div className="h-px bg-white/5" />
+                                                    {/* Title & Tags */}
+                                                    <div>
+                                                        <div className="flex items-center gap-2">
+                                                            <h3 className="text-xl font-bold tracking-tight text-white">
+                                                                {os.name}
+                                                            </h3>
+                                                        </div>
 
-                                                {/* Target Audience */}
-                                                <div className="space-y-2">
-                                                    <div className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                                        <Users className="w-4 h-4" style={{ color: os.accentColor }} />
-                                                        <span>Kimlar uchun:</span>
+                                                        {/* Custom tags */}
+                                                        <div className="flex flex-wrap gap-1.5 mt-2">
+                                                            {os.tags.map(tag => (
+                                                                <span
+                                                                    key={tag}
+                                                                    className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-white/5 border border-white/5 text-gray-400"
+                                                                >
+                                                                    {tag}
+                                                                </span>
+                                                            ))}
+                                                        </div>
                                                     </div>
-                                                    <p className="text-gray-300 text-sm italic pl-6 border-l border-white/10">
-                                                        {os.targetAudience}
-                                                    </p>
-                                                </div>
-                                            </div>
 
-                                            {/* Download Action */}
-                                            <div className="mt-8 pt-4 border-t border-white/5">
-                                                <a href={currentDownloadUrl} target="_blank" rel="noopener noreferrer" className="block w-full">
-                                                    <Button 
-                                                        className="w-full relative overflow-hidden group/btn" 
-                                                        variant="secondary"
-                                                        style={{
-                                                            background: isHovered ? `${os.accentColor}18` : 'rgba(255,255,255,0.05)',
-                                                            border: `1px solid ${isHovered ? `${os.accentColor}30` : 'rgba(255,255,255,0.05)'}`,
-                                                            color: isHovered ? '#ffffff' : '#e2e8f0',
-                                                        }}
-                                                    >
-                                                        <Download className="w-4 h-4 mr-2 group-hover/btn:translate-y-0.5 transition-transform" /> 
-                                                        <span>Yuklab Olish</span>
-                                                    </Button>
-                                                </a>
-                                            </div>
-                                        </Card>
-                                    </motion.div>
-                                );
-                            })
-                        ) : (
-                            <div className="col-span-full py-20 text-center text-gray-500">
-                                <Info className="w-12 h-12 mx-auto mb-4 stroke-1 opacity-60" />
-                                Sizning so&apos;rovingiz bo&apos;yicha hech qanday operatsion tizim topilmadi.
-                            </div>
-                        )}
-                    </AnimatePresence>
-                </div>
+                                                    {/* Description */}
+                                                    <p className="text-gray-400 text-sm leading-relaxed">
+                                                        {os.description}
+                                                    </p>
+
+                                                    {/* Dynamic Variant Selector */}
+                                                    {hasVariants && (
+                                                        <div className="space-y-3 pt-3 border-t border-white/5">
+                                                            <div className="flex flex-wrap items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5">
+                                                                {/* Language */}
+                                                                <div className="flex items-center gap-1.5">
+                                                                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Til:</span>
+                                                                    {availableLanguages.length > 1 ? (
+                                                                        <div className="flex gap-1 bg-black/40 p-0.5 rounded border border-white/5">
+                                                                            {availableLanguages.map(lang => {
+                                                                                const isSelected = currentLang === lang;
+                                                                                return (
+                                                                                    <button
+                                                                                        key={lang}
+                                                                                        onClick={() => setSelectedLanguage(prev => ({ ...prev, [os.id]: lang }))}
+                                                                                        className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all duration-200 ${isSelected
+                                                                                                ? 'bg-blue-500 text-white shadow-[0_0_8px_rgba(59,130,246,0.3)]'
+                                                                                                : 'text-gray-400 hover:text-white'
+                                                                                            }`}
+                                                                                    >
+                                                                                        {lang === 'English' ? 'EN' : 'RU'}
+                                                                                    </button>
+                                                                                );
+                                                                            })}
+                                                                        </div>
+                                                                    ) : (
+                                                                        <span className="text-[11px] font-semibold text-gray-300">
+                                                                            {currentLang === 'English' ? '🇬🇧 EN' : '🇷🇺 RU'}
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+
+                                                                {/* Architecture */}
+                                                                <div className="flex items-center gap-1.5 ml-auto">
+                                                                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Tizim:</span>
+                                                                    {availableArchs.length > 1 ? (
+                                                                        <div className="flex gap-1 bg-black/40 p-0.5 rounded border border-white/5">
+                                                                            {availableArchs.map(arch => {
+                                                                                const isSelected = currentAr === arch;
+                                                                                return (
+                                                                                    <button
+                                                                                        key={arch}
+                                                                                        onClick={() => setSelectedArch(prev => ({ ...prev, [os.id]: arch }))}
+                                                                                        className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all duration-200 ${isSelected
+                                                                                                ? 'bg-blue-500 text-white shadow-[0_0_8px_rgba(59,130,246,0.3)]'
+                                                                                                : 'text-gray-400 hover:text-white'
+                                                                                            }`}
+                                                                                    >
+                                                                                        {arch}
+                                                                                    </button>
+                                                                                );
+                                                                            })}
+                                                                        </div>
+                                                                    ) : (
+                                                                        <span className="text-[11px] font-semibold text-gray-300">
+                                                                            {currentAr}
+                                                                        </span>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Divider */}
+                                                    <div className="h-px bg-white/5" />
+
+                                                    {/* Target Audience */}
+                                                    <div className="space-y-2">
+                                                        <div className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                                            <Users className="w-4 h-4" style={{ color: os.accentColor }} />
+                                                            <span>Kimlar uchun:</span>
+                                                        </div>
+                                                        <p className="text-gray-300 text-sm italic pl-6 border-l border-white/10">
+                                                            {os.targetAudience}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                                {/* Download Action */}
+                                                <div className="mt-8 pt-4 border-t border-white/5">
+                                                    <a href={currentDownloadUrl} target="_blank" rel="noopener noreferrer" className="block w-full">
+                                                        <Button
+                                                            className="w-full relative overflow-hidden group/btn"
+                                                            variant="secondary"
+                                                            style={{
+                                                                background: isHovered ? `${os.accentColor}18` : 'rgba(255,255,255,0.05)',
+                                                                border: `1px solid ${isHovered ? `${os.accentColor}30` : 'rgba(255,255,255,0.05)'}`,
+                                                                color: isHovered ? '#ffffff' : '#e2e8f0',
+                                                            }}
+                                                        >
+                                                            <Download className="w-4 h-4 mr-2 group-hover/btn:translate-y-0.5 transition-transform" />
+                                                            <span>Yuklab Olish</span>
+                                                        </Button>
+                                                    </a>
+                                                </div>
+                                            </Card>
+                                        </motion.div>
+                                    );
+                                })
+                            ) : (
+                                <div className="col-span-full py-20 text-center text-gray-500">
+                                    <Info className="w-12 h-12 mx-auto mb-4 stroke-1 opacity-60" />
+                                    Sizning so&apos;rovingiz bo&apos;yicha hech qanday operatsion tizim topilmadi.
+                                </div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 )}
 
                 {/* ===== ACTIVATION GUIDE SECTION ===== */}
                 {activeCategory === 'Activation' && (
-                <div className="pb-20" id="activation">
-                    <div className="mb-10 flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
-                            <ShieldCheck className="w-6 h-6 text-orange-400" />
-                        </div>
-                        <div>
-                            <h2 className="text-3xl font-black tracking-tight">
-                                <GradientText>Windows & Office Aktivatsiyasi</GradientText>
-                            </h2>
-                            <p className="text-gray-400 text-sm mt-1">Rasmiy Microsoft Activation Scripts (MAS) orqali bepul doimiy aktivatsiya</p>
-                        </div>
-                    </div>
-
-                    {/* Warning banner */}
-                    <div className="flex gap-4 p-5 mb-8 rounded-2xl bg-red-500/8 border border-red-500/20">
-                        <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
-                        <div className="space-y-1">
-                            <h4 className="font-bold text-red-400">MUHIM: Oldin amalga oshiring</h4>
-                            <ul className="text-sm text-gray-300 space-y-1 list-disc pl-4">
-                                <li>PowerShell-ni <strong>Administrator</strong> huquqida ishga tushiring</li>
-                                <li>Skript ishlashi uchun <strong>Windows Firewall va Antivirusni vaqtincha o&apos;chiring</strong></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    {/* Step 1: Run Script */}
-                    <div className="space-y-10">
-                        <ActivationStep number={1} title="Aktivatsiya skriptini ishga tushiring">
-                            <p className="text-gray-400 text-sm mb-4">
-                                PowerShell (Admin) da quyidagi buyruqni bering. Skript avtomatik yuklanib ishga tushadi:
-                            </p>
-                            <CopyBlock text="irm get.activated.win | iex" />
-                            <div className="mt-6 rounded-xl overflow-hidden border border-white/10">
-                                <Image src="/activate-1-command.png" alt="Buyruq PowerShell da" width={900} height={300} className="w-full object-cover" />
+                    <div className="pb-20" id="activation">
+                        <div className="mb-10 flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
+                                <ShieldCheck className="w-6 h-6 text-orange-400" />
                             </div>
-                        </ActivationStep>
-
-                        {/* Windows Activation */}
-                        <div className="pt-8 border-t border-white/5">
-                            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                                <span className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-sm font-bold">W</span>
-                                Windows Aktivatsiyasi
-                            </h3>
-                            <div className="space-y-8">
-                                <ActivationStep number={2} title="Menyudan [1] HWID – Windows ni tanlang">
-                                    <p className="text-gray-400 text-sm mb-4">
-                                        Skript ishga tushgandan so&apos;ng menyu ko&apos;rsatiladi. Klaviaturadan <kbd className="px-2 py-0.5 bg-white/10 border border-white/10 rounded text-xs font-mono">1</kbd> tugmasini bosib Windows aktivatsiyasini tanlang:
-                                    </p>
-                                    <div className="rounded-xl overflow-hidden border border-white/10">
-                                        <Image src="/activate-win-select.png" alt="Windows 1 tanlangan" width={900} height={460} className="w-full object-cover" />
-                                    </div>
-                                </ActivationStep>
-
-                                <ActivationStep number={3} title="Aktivatsiya yakunlanishini kuting">
-                                    <p className="text-gray-400 text-sm mb-4">
-                                        Bir necha soniya ichida aktivatsiya jarayoni tugaydi va quyidagi natija ko&apos;rsatiladi:
-                                    </p>
-                                    <div className="rounded-xl overflow-hidden border border-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.05)]">
-                                        <Image src="/activate-win-done.png" alt="Windows aktivatsiya yakunlandi" width={900} height={280} className="w-full object-cover" />
-                                    </div>
-                                    <div className="mt-3 flex items-center gap-2 text-green-400 text-sm">
-                                        <Check className="w-4 h-4" />
-                                        <span>Windows muvaffaqiyatli va doimiy ravishda aktivatsiya qilinadi!</span>
-                                    </div>
-                                </ActivationStep>
+                            <div>
+                                <h2 className="text-3xl font-black tracking-tight">
+                                    <GradientText>Windows & Office Aktivatsiyasi</GradientText>
+                                </h2>
+                                <p className="text-gray-400 text-sm mt-1">Rasmiy Microsoft Activation Scripts (MAS) orqali bepul doimiy aktivatsiya</p>
                             </div>
                         </div>
 
-                        {/* Office Activation */}
-                        <div className="pt-8 border-t border-white/5">
-                            <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                                <span className="w-7 h-7 rounded-lg bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400 text-sm font-bold">O</span>
-                                Microsoft Office Aktivatsiyasi
-                            </h3>
-                            <p className="text-gray-400 text-sm mb-6">
-                                Office aktivatsiyasi uchun xuddi shu skriptdan foydalaniladi. Qayta ishlating yoki menyu ochiq bo&apos;lsa davom eting:
-                            </p>
-                            <div className="space-y-8">
-                                <ActivationStep number={4} title="Menyudan [2] Ohook – Office ni tanlang">
-                                    <p className="text-gray-400 text-sm mb-4">
-                                        Aktivatsiya menyusida <kbd className="px-2 py-0.5 bg-white/10 border border-white/10 rounded text-xs font-mono">2</kbd> tugmasini bosib Office bo&apos;limiga o&apos;ting:
-                                    </p>
-                                    <div className="rounded-xl overflow-hidden border border-white/10">
-                                        <Image src="/activate-office-select.png" alt="Office 2 tanlangan" width={900} height={460} className="w-full object-cover" />
-                                    </div>
-                                </ActivationStep>
+                        {/* Warning banner */}
+                        <div className="flex gap-4 p-5 mb-8 rounded-2xl bg-red-500/8 border border-red-500/20">
+                            <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
+                            <div className="space-y-1">
+                                <h4 className="font-bold text-red-400">MUHIM: Oldin amalga oshiring</h4>
+                                <ul className="text-sm text-gray-300 space-y-1 list-disc pl-4">
+                                    <li>PowerShell-ni <strong>Administrator</strong> huquqida ishga tushiring</li>
+                                    <li>Skript ishlashi uchun <strong>Windows Firewall va Antivirusni vaqtincha o&apos;chiring</strong></li>
+                                </ul>
+                            </div>
+                        </div>
 
-                                <ActivationStep number={5} title="[1] Install Ohook Office Activation ni tanlang">
-                                    <p className="text-gray-400 text-sm mb-4">
-                                        Office submenyusida <kbd className="px-2 py-0.5 bg-white/10 border border-white/10 rounded text-xs font-mono">1</kbd> tugmasini bosib aktivatsiyani o&apos;rnating:
-                                    </p>
-                                    <div className="rounded-xl overflow-hidden border border-white/10">
-                                        <Image src="/activate-office-done.png" alt="Office aktivatsiya 1 tanlangan" width={900} height={360} className="w-full object-cover" />
-                                    </div>
-                                    <div className="mt-3 flex items-center gap-2 text-green-400 text-sm">
-                                        <Check className="w-4 h-4" />
-                                        <span>Microsoft Office doimiy ravishda aktivatsiya qilinadi!</span>
-                                    </div>
-                                </ActivationStep>
+                        {/* Step 1: Run Script */}
+                        <div className="space-y-10">
+                            <ActivationStep number={1} title="Aktivatsiya skriptini ishga tushiring">
+                                <p className="text-gray-400 text-sm mb-4">
+                                    PowerShell (Admin) da quyidagi buyruqni bering. Skript avtomatik yuklanib ishga tushadi:
+                                </p>
+                                <CopyBlock text="irm get.activated.win | iex" />
+                                <div className="mt-6 rounded-xl overflow-hidden border border-white/10">
+                                    <Image src="/activate-1-command.png" alt="Buyruq PowerShell da" width={900} height={300} className="w-full object-cover" />
+                                </div>
+                            </ActivationStep>
+
+                            {/* Windows Activation */}
+                            <div className="pt-8 border-t border-white/5">
+                                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                                    <span className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 text-sm font-bold">W</span>
+                                    Windows Aktivatsiyasi
+                                </h3>
+                                <div className="space-y-8">
+                                    <ActivationStep number={2} title="Menyudan [1] HWID – Windows ni tanlang">
+                                        <p className="text-gray-400 text-sm mb-4">
+                                            Skript ishga tushgandan so&apos;ng menyu ko&apos;rsatiladi. Klaviaturadan <kbd className="px-2 py-0.5 bg-white/10 border border-white/10 rounded text-xs font-mono">1</kbd> tugmasini bosib Windows aktivatsiyasini tanlang:
+                                        </p>
+                                        <div className="rounded-xl overflow-hidden border border-white/10">
+                                            <Image src="/activate-win-select.png" alt="Windows 1 tanlangan" width={900} height={460} className="w-full object-cover" />
+                                        </div>
+                                    </ActivationStep>
+
+                                    <ActivationStep number={3} title="Aktivatsiya yakunlanishini kuting">
+                                        <p className="text-gray-400 text-sm mb-4">
+                                            Bir necha soniya ichida aktivatsiya jarayoni tugaydi va quyidagi natija ko&apos;rsatiladi:
+                                        </p>
+                                        <div className="rounded-xl overflow-hidden border border-green-500/20 shadow-[0_0_20px_rgba(34,197,94,0.05)]">
+                                            <Image src="/activate-win-done.png" alt="Windows aktivatsiya yakunlandi" width={900} height={280} className="w-full object-cover" />
+                                        </div>
+                                        <div className="mt-3 flex items-center gap-2 text-green-400 text-sm">
+                                            <Check className="w-4 h-4" />
+                                            <span>Windows muvaffaqiyatli va doimiy ravishda aktivatsiya qilinadi!</span>
+                                        </div>
+                                    </ActivationStep>
+                                </div>
+                            </div>
+
+                            {/* Office Activation */}
+                            <div className="pt-8 border-t border-white/5">
+                                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                                    <span className="w-7 h-7 rounded-lg bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400 text-sm font-bold">O</span>
+                                    Microsoft Office Aktivatsiyasi
+                                </h3>
+                                <p className="text-gray-400 text-sm mb-6">
+                                    Office aktivatsiyasi uchun xuddi shu skriptdan foydalaniladi. Qayta ishlating yoki menyu ochiq bo&apos;lsa davom eting:
+                                </p>
+                                <div className="space-y-8">
+                                    <ActivationStep number={4} title="Menyudan [2] Ohook – Office ni tanlang">
+                                        <p className="text-gray-400 text-sm mb-4">
+                                            Aktivatsiya menyusida <kbd className="px-2 py-0.5 bg-white/10 border border-white/10 rounded text-xs font-mono">2</kbd> tugmasini bosib Office bo&apos;limiga o&apos;ting:
+                                        </p>
+                                        <div className="rounded-xl overflow-hidden border border-white/10">
+                                            <Image src="/activate-office-select.png" alt="Office 2 tanlangan" width={900} height={460} className="w-full object-cover" />
+                                        </div>
+                                    </ActivationStep>
+
+                                    <ActivationStep number={5} title="[1] Install Ohook Office Activation ni tanlang">
+                                        <p className="text-gray-400 text-sm mb-4">
+                                            Office submenyusida <kbd className="px-2 py-0.5 bg-white/10 border border-white/10 rounded text-xs font-mono">1</kbd> tugmasini bosib aktivatsiyani o&apos;rnating:
+                                        </p>
+                                        <div className="rounded-xl overflow-hidden border border-white/10">
+                                            <Image src="/activate-office-done.png" alt="Office aktivatsiya 1 tanlangan" width={900} height={360} className="w-full object-cover" />
+                                        </div>
+                                        <div className="mt-3 flex items-center gap-2 text-green-400 text-sm">
+                                            <Check className="w-4 h-4" />
+                                            <span>Microsoft Office doimiy ravishda aktivatsiya qilinadi!</span>
+                                        </div>
+                                    </ActivationStep>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 )}
             </Section>
         </div>
