@@ -406,6 +406,7 @@ export default function OSPage() {
     const [hoveredCard, setHoveredCard] = useState<string | null>(null);
     const [selectedLanguage, setSelectedLanguage] = useState<Record<string, string>>({});
     const [selectedArch, setSelectedArch] = useState<Record<string, string>>({});
+    const [showProductKeys, setShowProductKeys] = useState<Record<string, boolean>>({});
 
     const categories = [
         { id: 'All', name: 'Barchasi', special: false },
@@ -672,30 +673,40 @@ export default function OSPage() {
                                                         </p>
                                                     </div>
 
-                                                    {/* Product Keys */}
+                                                    {/* Product Keys (collapsible) */}
                                                     {os.productKeys && os.productKeys.length > 0 && (
-                                                        <div className="space-y-2 pt-2 border-t border-white/5">
-                                                            <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">
-                                                                <Key className="w-3.5 h-3.5" />
-                                                                <span>Mahsulot Kalitlari</span>
-                                                            </div>
-                                                            <div className="space-y-1.5">
-                                                                {os.productKeys.map((pk) => (
-                                                                    <div key={pk.edition} className="flex items-center justify-between gap-2 bg-black/40 border border-amber-500/10 rounded-lg px-3 py-1.5">
-                                                                        <div>
-                                                                            <span className="text-[10px] text-amber-400/70 font-bold uppercase tracking-wider block">{pk.edition}</span>
-                                                                            <span className="text-[11px] font-mono text-gray-300 select-all">{pk.key}</span>
+                                                        <div className="pt-2 border-t border-white/5">
+                                                            <button
+                                                                onClick={() => setShowProductKeys(prev => ({ ...prev, [os.id]: !prev[os.id] }))}
+                                                                className="flex items-center justify-between w-full gap-2 text-xs font-semibold text-amber-400/80 hover:text-amber-400 uppercase tracking-wider transition-colors duration-200 py-1"
+                                                            >
+                                                                <div className="flex items-center gap-2">
+                                                                    <Key className="w-3.5 h-3.5" />
+                                                                    <span>Mahsulot Kalitlari</span>
+                                                                </div>
+                                                                <span className={`text-[10px] border border-amber-500/30 rounded px-1.5 py-0.5 transition-transform duration-200 ${showProductKeys[os.id] ? 'rotate-180' : ''}`}>
+                                                                    ▼
+                                                                </span>
+                                                            </button>
+                                                            {showProductKeys[os.id] && (
+                                                                <div className="mt-2 space-y-1.5">
+                                                                    {os.productKeys.map((pk) => (
+                                                                        <div key={pk.edition} className="flex items-center justify-between gap-2 bg-black/40 border border-amber-500/10 rounded-lg px-3 py-1.5">
+                                                                            <div>
+                                                                                <span className="text-[10px] text-amber-400/70 font-bold uppercase tracking-wider block">{pk.edition}</span>
+                                                                                <span className="text-[11px] font-mono text-gray-300 select-all">{pk.key}</span>
+                                                                            </div>
+                                                                            <button
+                                                                                onClick={() => navigator.clipboard.writeText(pk.key)}
+                                                                                className="flex-shrink-0 p-1 text-gray-500 hover:text-amber-400 transition-colors"
+                                                                                title="Nusxa olish"
+                                                                            >
+                                                                                <Copy className="w-3.5 h-3.5" />
+                                                                            </button>
                                                                         </div>
-                                                                        <button
-                                                                            onClick={() => navigator.clipboard.writeText(pk.key)}
-                                                                            className="flex-shrink-0 p-1 text-gray-500 hover:text-amber-400 transition-colors"
-                                                                            title="Nusxa olish"
-                                                                        >
-                                                                            <Copy className="w-3.5 h-3.5" />
-                                                                        </button>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
+                                                                    ))}
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     )}
                                                 </div>
