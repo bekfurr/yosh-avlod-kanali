@@ -167,6 +167,12 @@ interface OperatingSystem {
     accentColor: string;
     logo: React.ComponentType;
     downloadSize: string;
+    variants?: {
+        language: string;
+        architecture: string;
+        downloadUrl: string;
+        downloadSize?: string;
+    }[];
 }
 
 // --- Data ---
@@ -217,7 +223,11 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         tags: ['Microsoft', 'Gaming', 'User-Friendly'],
         accentColor: '#0078D4',
         logo: WindowsLogo,
-        downloadSize: '~5.4 GB'
+        downloadSize: '~5.4 GB',
+        variants: [
+            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/piy2m79cwp6f', downloadSize: '~5.4 GB' },
+            { language: 'Russian', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/mu03gk7psfff', downloadSize: '~5.4 GB' }
+        ]
     },
     {
         id: 'win11-ltsc',
@@ -229,7 +239,43 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         tags: ['LTSC 2024', 'Bloat-Free', 'Stability'],
         accentColor: '#0086F0',
         logo: WindowsLTSCLogo,
-        downloadSize: '~4.8 GB'
+        downloadSize: '~4.8 GB',
+        variants: [
+            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/2gtemvaqgfm3', downloadSize: '~4.8 GB' }
+        ]
+    },
+    {
+        id: 'win10',
+        name: 'Windows 10 Pro / Home',
+        category: 'Windows',
+        description: 'Ko\'plab foydalanuvchilar tomonidan eng qulay va sinovdan o\'tgan, o\'yinlar va eski dasturlar bilan mukammal mos keluvchi operatsion tizim.',
+        downloadUrl: 'https://buzzheavier.com/fuxscqu93mnn',
+        targetAudience: 'Barqarorlikni xohlovchilar, eski kompyuter egalari va geymerlar.',
+        tags: ['Microsoft', 'Popular', 'Classic'],
+        accentColor: '#00A4EF',
+        logo: WindowsLogo,
+        downloadSize: '~5.7 GB',
+        variants: [
+            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/fuxscqu93mnn', downloadSize: '~5.7 GB' },
+            { language: 'English', architecture: '32-bit', downloadUrl: 'https://buzzheavier.com/4wlxz1qpf5vm', downloadSize: '~3.9 GB' },
+            { language: 'Russian', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/nltq3kxobqyy', downloadSize: '~5.7 GB' },
+            { language: 'Russian', architecture: '32-bit', downloadUrl: 'https://buzzheavier.com/kkonwh2ajbyb', downloadSize: '~3.9 GB' }
+        ]
+    },
+    {
+        id: 'win10-ltsc',
+        name: 'Windows 10 Enterprise LTSC',
+        category: 'Windows',
+        description: 'Minimal tizim resurslari talab qiladigan, keraksiz Microsoft bloatware dasturlarisiz va uzoq yillik rasmiy xavfsizlik yangilanishlariga ega bo\'lgan Windows 10 versiyasi.',
+        downloadUrl: 'https://buzzheavier.com/5eerq83cpgwi',
+        targetAudience: 'Eski yoki past ko\'rsatkichli noutbuk va kompyuter egalari, shuningdek barqarorlikni birinchi o\'ringa qo\'yuvchilar.',
+        tags: ['LTSC 2021', 'Lightweight', 'Enterprise'],
+        accentColor: '#00B7C3',
+        logo: WindowsLTSCLogo,
+        downloadSize: '~4.3 GB',
+        variants: [
+            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/5eerq83cpgwi', downloadSize: '~4.3 GB' }
+        ]
     },
     {
         id: 'cachyos',
@@ -297,6 +343,8 @@ export default function OSPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('All');
     const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+    const [selectedLanguage, setSelectedLanguage] = useState<Record<string, string>>({});
+    const [selectedArch, setSelectedArch] = useState<Record<string, string>>({});
 
     const categories = [
         { id: 'All', name: 'Barchasi', special: false },
@@ -398,6 +446,30 @@ export default function OSPage() {
                                 const LogoComponent = os.logo;
                                 const isHovered = hoveredCard === os.id;
 
+                                const hasVariants = !!os.variants && os.variants.length > 0;
+                                let currentDownloadUrl = os.downloadUrl;
+                                let currentDownloadSize = os.downloadSize;
+                                let availableLanguages: string[] = [];
+                                let availableArchs: string[] = [];
+                                let currentLang = '';
+                                let currentAr = '';
+
+                                if (hasVariants && os.variants) {
+                                    availableLanguages = Array.from(new Set(os.variants.map(v => v.language)));
+                                    currentLang = selectedLanguage[os.id] || availableLanguages[0];
+                                    const langVariants = os.variants.filter(v => v.language === currentLang);
+                                    availableArchs = Array.from(new Set(langVariants.map(v => v.architecture)));
+                                    currentAr = selectedArch[os.id] || availableArchs[0];
+                                    if (!availableArchs.includes(currentAr)) {
+                                        currentAr = availableArchs[0];
+                                    }
+                                    const matchedVariant = os.variants.find(v => v.language === currentLang && v.architecture === currentAr);
+                                    if (matchedVariant) {
+                                        currentDownloadUrl = matchedVariant.downloadUrl;
+                                        currentDownloadSize = matchedVariant.downloadSize || os.downloadSize;
+                                    }
+                                }
+
                                 return (
                                     <motion.div
                                         layout
@@ -434,7 +506,7 @@ export default function OSPage() {
                                                     </div>
                                                     <div className="flex items-center gap-1.5 text-xs text-gray-500 bg-white/5 border border-white/5 px-2.5 py-1 rounded-full">
                                                         <HardDrive className="w-3.5 h-3.5" />
-                                                        <span>{os.downloadSize}</span>
+                                                        <span>{currentDownloadSize}</span>
                                                     </div>
                                                 </div>
 
@@ -464,6 +536,71 @@ export default function OSPage() {
                                                     {os.description}
                                                 </p>
 
+                                                {/* Dynamic Variant Selector */}
+                                                {hasVariants && (
+                                                    <div className="space-y-3 pt-3 border-t border-white/5">
+                                                        <div className="flex flex-wrap items-center gap-3 bg-white/5 p-2 rounded-lg border border-white/5">
+                                                            {/* Language */}
+                                                            <div className="flex items-center gap-1.5">
+                                                                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Til:</span>
+                                                                {availableLanguages.length > 1 ? (
+                                                                    <div className="flex gap-1 bg-black/40 p-0.5 rounded border border-white/5">
+                                                                        {availableLanguages.map(lang => {
+                                                                            const isSelected = currentLang === lang;
+                                                                            return (
+                                                                                <button
+                                                                                    key={lang}
+                                                                                    onClick={() => setSelectedLanguage(prev => ({ ...prev, [os.id]: lang }))}
+                                                                                    className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all duration-200 ${
+                                                                                        isSelected
+                                                                                        ? 'bg-blue-500 text-white shadow-[0_0_8px_rgba(59,130,246,0.3)]'
+                                                                                        : 'text-gray-400 hover:text-white'
+                                                                                    }`}
+                                                                                >
+                                                                                    {lang === 'English' ? 'EN' : 'RU'}
+                                                                                </button>
+                                                                            );
+                                                                        })}
+                                                                    </div>
+                                                                ) : (
+                                                                    <span className="text-[11px] font-semibold text-gray-300">
+                                                                        {currentLang === 'English' ? '🇬🇧 EN' : '🇷🇺 RU'}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+
+                                                            {/* Architecture */}
+                                                            <div className="flex items-center gap-1.5 ml-auto">
+                                                                <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Tizim:</span>
+                                                                {availableArchs.length > 1 ? (
+                                                                    <div className="flex gap-1 bg-black/40 p-0.5 rounded border border-white/5">
+                                                                        {availableArchs.map(arch => {
+                                                                            const isSelected = currentAr === arch;
+                                                                            return (
+                                                                                <button
+                                                                                    key={arch}
+                                                                                    onClick={() => setSelectedArch(prev => ({ ...prev, [os.id]: arch }))}
+                                                                                    className={`px-1.5 py-0.5 rounded text-[10px] font-bold transition-all duration-200 ${
+                                                                                        isSelected
+                                                                                        ? 'bg-blue-500 text-white shadow-[0_0_8px_rgba(59,130,246,0.3)]'
+                                                                                        : 'text-gray-400 hover:text-white'
+                                                                                    }`}
+                                                                                >
+                                                                                    {arch}
+                                                                                </button>
+                                                                            );
+                                                                        })}
+                                                                    </div>
+                                                                ) : (
+                                                                    <span className="text-[11px] font-semibold text-gray-300">
+                                                                        {currentAr}
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )}
+
                                                 {/* Divider */}
                                                 <div className="h-px bg-white/5" />
 
@@ -481,7 +618,7 @@ export default function OSPage() {
 
                                             {/* Download Action */}
                                             <div className="mt-8 pt-4 border-t border-white/5">
-                                                <a href={os.downloadUrl} target="_blank" rel="noopener noreferrer" className="block w-full">
+                                                <a href={currentDownloadUrl} target="_blank" rel="noopener noreferrer" className="block w-full">
                                                     <Button 
                                                         className="w-full relative overflow-hidden group/btn" 
                                                         variant="secondary"
