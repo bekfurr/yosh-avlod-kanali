@@ -64,29 +64,28 @@ const BlackArchLogo = () => (
     </svg>
 );
 
-const WindowsLogo = () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <linearGradient id="win-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#0078D4" />
-                <stop offset="100%" stopColor="#00bcf2" />
-            </linearGradient>
-        </defs>
-        <path d="M2 2h9.5v9.5H2V2zm10.5 0H22v9.5h-9.5V2zM2 12.5h9.5V22H2v-9.5zm10.5 0H22V22h-9.5v-9.5z" fill="url(#win-grad)" />
-    </svg>
+const Windows11Logo = () => (
+    <div className="relative w-8 h-8 flex-shrink-0">
+        <Image src="/win11.png" alt="Windows 11 Logo" fill className="object-contain" />
+    </div>
 );
 
-const WindowsLTSCLogo = () => (
-    <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-            <linearGradient id="win-ltsc-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#005A9E" />
-                <stop offset="100%" stopColor="#0086F0" />
-            </linearGradient>
-        </defs>
-        <path d="M2 2h9.5v9.5H2V2zm10.5 0H22v9.5h-9.5V2zM2 12.5h9.5V22H2v-9.5zm10.5 0H22V22h-9.5v-9.5z" fill="url(#win-ltsc-grad)" />
-        <circle cx="12" cy="12" r="2" fill="#ffffff" />
-    </svg>
+const Windows10Logo = () => (
+    <div className="relative w-8 h-8 flex-shrink-0">
+        <Image src="/win10.png" alt="Windows 10 Logo" fill className="object-contain" />
+    </div>
+);
+
+const Windows8Logo = () => (
+    <div className="relative w-8 h-8 flex-shrink-0">
+        <Image src="/win8.png" alt="Windows 8 Logo" fill className="object-contain" />
+    </div>
+);
+
+const Windows7Logo = () => (
+    <div className="relative w-8 h-8 flex-shrink-0">
+        <Image src="/win7.png" alt="Windows 7 Logo" fill className="object-contain" />
+    </div>
 );
 
 const CachyOSLogo = () => (
@@ -224,7 +223,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         targetAudience: 'Kundalik foydalanuvchilar, geymerlar, ofis xodimlari va Windows ilovalari dasturchilari.',
         tags: ['Microsoft', 'Gaming', 'User-Friendly'],
         accentColor: '#0078D4',
-        logo: WindowsLogo,
+        logo: Windows11Logo,
         downloadSize: '~5.4 GB',
         variants: [
             { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/piy2m79cwp6f', downloadSize: '~5.4 GB' },
@@ -240,7 +239,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         targetAudience: 'Tizim administratorlari, optimal tezlikni istovchi geymerlar va barqaror ish muhitini qadrlovchilar.',
         tags: ['LTSC 2024', 'Bloat-Free', 'Stability'],
         accentColor: '#0086F0',
-        logo: WindowsLTSCLogo,
+        logo: Windows11Logo,
         downloadSize: '~4.8 GB',
         variants: [
             { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/2gtemvaqgfm3', downloadSize: '' }
@@ -255,7 +254,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         targetAudience: 'Barqarorlikni xohlovchilar, eski kompyuter egalari va geymerlar.',
         tags: ['Microsoft', 'Popular', 'Classic'],
         accentColor: '#00A4EF',
-        logo: WindowsLogo,
+        logo: Windows10Logo,
         downloadSize: '~5.7 GB',
         variants: [
             { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/fuxscqu93mnn', downloadSize: '~5.7 GB' },
@@ -273,7 +272,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         targetAudience: 'Eski yoki past ko\'rsatkichli noutbuk va kompyuter egalari, shuningdek barqarorlikni birinchi o\'ringa qo\'yuvchilar.',
         tags: ['LTSC 2021', 'Lightweight', 'Enterprise'],
         accentColor: '#00B7C3',
-        logo: WindowsLTSCLogo,
+        logo: Windows10Logo,
         downloadSize: '~4.3 GB',
         variants: [
             { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/5eerq83cpgwi', downloadSize: '' }
@@ -288,7 +287,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         targetAudience: 'Snapdragon qurilma egalari, Surface Pro X / Surface Pro 9 (ARM) va ARM arxitekturali virtualizatsiya muhitlari.',
         tags: ['ARM64', 'Microsoft', 'Surface'],
         accentColor: '#6E40C9',
-        logo: WindowsLogo,
+        logo: Windows11Logo,
         downloadSize: '~5.6 GB',
         variants: [
             { language: 'English', architecture: 'ARM64', downloadUrl: 'https://software-static.download.prss.microsoft.com/dbazure/888969d5-f34g-4e03-ac9d-1f9786c66749/26200.6584.250915-1905.25h2_ge_release_svc_refresh_CLIENT_CONSUMER_A64FRE_en-us.iso', downloadSize: '~5.6 GB' },
@@ -304,7 +303,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         targetAudience: 'Eski dasturiy ta\'minot bilan ishlash zarur bo\'lganlar va klassik Windows interfeysi tarafdorlari.',
         tags: ['Classic', 'Legacy', '32/64-bit'],
         accentColor: '#0277BD',
-        logo: WindowsLTSCLogo,
+        logo: Windows8Logo,
         downloadSize: '~4.0 GB',
         variants: [
             { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/2i65axai8pao', downloadSize: '~4.0 GB' },
@@ -329,7 +328,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         targetAudience: 'Juda eski kompyuter egalari, retro dasturlar va o\'yinlar ishqibozlari.',
         tags: ['Legacy', 'Classic', 'SP1'],
         accentColor: '#1565C0',
-        logo: WindowsLogo,
+        logo: Windows7Logo,
         downloadSize: '~3.1 GB',
         variants: [
             { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/lllag2h2ucql', downloadSize: '~3.1 GB' },
