@@ -226,8 +226,8 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
         logo: Windows11Logo,
         downloadSize: '~5.4 GB',
         variants: [
-            { language: 'English', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/piy2m79cwp6f', downloadSize: '~5.4 GB' },
-            { language: 'Russian', architecture: '64-bit', downloadUrl: 'https://buzzheavier.com/mu03gk7psfff', downloadSize: '~5.4 GB' }
+            { language: 'English', architecture: '64-bit', downloadUrl: 'https://zerofs.link/f/g8zr3R8/', downloadSize: '~5.4 GB' },
+            { language: 'Russian', architecture: '64-bit', downloadUrl: 'https://zerofs.link/f/bvW3TDk/', downloadSize: '~5.4 GB' }
         ]
     },
     {
