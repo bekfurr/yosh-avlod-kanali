@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/ui/Navbar";
+import Footer from "@/components/ui/Footer";
+import { LanguageProvider } from "@/context/LanguageContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,24 +20,23 @@ export const metadata: Metadata = {
   description: "Official website of Yosh Avlod Kanali - Inspiring the Next Generation.",
 };
 
-import Navbar from "@/components/ui/Navbar";
-import Footer from "@/components/ui/Footer";
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="uz">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#000000] text-[#ededed] min-h-screen flex flex-col`}
       >
-        <Navbar />
-        <main className="flex-grow pt-16">
-          {children}
-        </main>
-        <Footer />
+        <LanguageProvider>
+          <Navbar />
+          <main className="flex-grow pt-16">
+            {children}
+          </main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -23,8 +23,11 @@ import {
 import Section from '@/components/ui/Section';
 import Card from '@/components/ui/Card';
 import GradientText from '@/components/ui/GradientText';
+import { useLanguage } from '@/context/LanguageContext';
 
 export default function AuthorPage() {
+  const { locale } = useLanguage();
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -82,7 +85,7 @@ export default function AuthorPage() {
       url: 'https://github.com/bekfurr',
       icon: <Github className="w-5 h-5" />,
       color: 'bg-white/10 text-white border-white/20 hover:bg-white hover:text-black',
-      shadow: 'hover:shadow-[0_0_15px_rgba(255,255,255,0.4)]',
+      shadow: 'hover:shadow-[0_0_15px_rgba(255,255,205,0.4)]',
     },
     {
       name: 'Facebook',
@@ -93,40 +96,117 @@ export default function AuthorPage() {
     },
   ];
 
-  const specialties = [
-    { title: 'AI/ML Muhandisi', desc: 'Sun\'iy intellekt va Machine Learning modellarini ishlab chiqish' },
-    { title: 'Kiberxavfsizlik Mutaxassisi', desc: 'Tizim xavfsizligi, testlash va himoya strategiyalari' },
-    { title: 'Linux Administratori', desc: 'Server tizimlarini boshqarish va xavfsiz sozlash' },
-  ];
+  const content = {
+    uz: {
+      badge: 'Loyiha Muallifi',
+      name: 'Shamsiddin Kamoliddinov',
+      tagline: 'Yosh Avlod Kanali youtube, telegram, veb-sayt va barcha turdagi IT loyihalarining asoschisi va muallifi.',
+      birth: "Tug'ilgan yili: 2005",
+      specialtyLabel: 'Mutaxassisligi',
+      specialtyRole: 'AI / ML muhandisi',
+      bioP1: "Men Shamsiddin Kamoliddinov Aqliddin o'g'li 2005-yil 15-fevral Farg'ona viloyati Toshloq tumanida tavallud topganman. Hozirda Farg'ona Davlat Texnika Universiteti Axborot texnologiyalari va telekommunikatsiyalar fakulteti Sun'iy intellekt yo'nalishi 4-bosqich talabasiman.",
+      bioP2: "Dasturlash bo'yicha 7 yillik tajribaga egaman. Kiberxavfsizlik, AI menejmenti va Computer Science sohalarida ish olib boraman. Sun'iy intellekt bo'yicha ko'plab loyihalar va tadqiqotlar muallifiman. Kiberxavfsizlik va IT bo'yicha YouTube va Telegram tarmoqlarida shaxsiy blog yuritib, yosh avlodni zamonaviy texnologiyalar bilan tanishtirib kelaman.",
+      socialsHeader: 'Ijtimoiy tarmoqlar va aloqa',
+      specsHeader: 'Mutaxassisliklar',
+      expEduHeader: "Tajriba va Ta'lim",
+      skillsHeader: "Ko'nikmalar",
+      researchHeader: 'Ilmiy tadqiqotlar va loyihalar',
+      articleTitle: "PNEUMONIA KASALLIGINI KO'KRAK QAFASI RENTGEN SURATLARI ASOSIDA BASHORAT QILUVCHI MODEL",
+      articleAuthor: "Muallif: Shamsiddin Kamoliddinov Aqliddin o'g'li",
+      articleDesc: "Ushbu model ko'krak qafasi rentgen rasmlari asosida pnevmoniya kasalligini avtomatik tahlil qiluvchi va yuqori aniqlik bilan aniqlovchi Sun'iy Intellekt yechimidir. Bir qancha ilmiy jurnallarda chop etilgan.",
+      readArticle: "Maqolani o'qish",
+      certsHeader: 'Sertifikatlar',
+      interestsHeader: 'Qiziqishlar',
+      communityBadge: 'Loyiha Hamjamiyati',
+      helpersTitle: 'Yordamchilar',
+      helpersDesc: "Kanalimiz rivojiga o'z hissasini qo'shib kelayotgan bosh administratorlarimiz va hamkorlarimiz.",
+      specialties: [
+        { title: 'AI/ML Muhandisi', desc: "Sun'iy intellekt va Machine Learning modellarini ishlab chiqish" },
+        { title: 'Kiberxavfsizlik Mutaxassisi', desc: 'Tizim xavfsizligi, testlash va himoya strategiyalari' },
+        { title: 'Linux Administratori', desc: 'Server tizimlarini boshqarish va xavfsiz sozlash' },
+      ],
+      skills: ['Ma\'lumot tozalash', 'Secure SDLC', 'Monitoring', 'Data Science', 'Testing & QA', 'Incident response'],
+      interests: ['Machine Learning', 'AI / LLM', 'IT Design', 'Kiberxavfsizlik', 'CTF', 'CVE Research'],
+      roles: { admin: 'Bosh Administrator', designer: 'Bosh Administrator / Dizayner' }
+    },
+    en: {
+      badge: 'Project Founder',
+      name: 'Shamsiddin Kamoliddinov',
+      tagline: 'Founder and lead creator of Yosh Avlod Kanali YouTube, Telegram, website, and technological learning platform.',
+      birth: 'Birth Year: 2005',
+      specialtyLabel: 'Specialty',
+      specialtyRole: 'AI / ML Engineer',
+      bioP1: 'I am Shamsiddin Kamoliddinov, born on February 15, 2005, in Fergana region, Toshloq district. Currently, I am a 4th-year Artificial Intelligence student at Fergana State Technical University, Faculty of Information Technologies and Telecommunications.',
+      bioP2: 'With over 7 years of software development experience, I focus on cybersecurity, AI engineering, and Computer Science. I conduct applied research in neural networks and maintain an educational blog on YouTube and Telegram to empower the youth with modern technological skills.',
+      socialsHeader: 'Social Media & Contact',
+      specsHeader: 'Core Specialties',
+      expEduHeader: 'Experience & Education',
+      skillsHeader: 'Skills & Tech Stack',
+      researchHeader: 'Research & Publications',
+      articleTitle: 'PREDICTIVE AI MODEL FOR PNEUMONIA DETECTION BASED ON CHEST X-RAY IMAGES',
+      articleAuthor: 'Author: Shamsiddin Kamoliddinov',
+      articleDesc: 'A deep-learning diagnostic solution designed to automatically screen chest X-rays for pneumonia with clinical-grade accuracy. Published in international scientific journals.',
+      readArticle: 'Read Publication',
+      certsHeader: 'Certifications',
+      interestsHeader: 'Interests',
+      communityBadge: 'Community & Team',
+      helpersTitle: 'Contributors',
+      helpersDesc: 'Key administrators and designers contributing to the growth and content of our channel.',
+      specialties: [
+        { title: 'AI/ML Engineer', desc: 'Developing and optimizing neural networks and LLM pipelines' },
+        { title: 'Cybersecurity Specialist', desc: 'Ethical hacking, penetration testing, and security defense' },
+        { title: 'Linux Administrator', desc: 'Enterprise server deployment and security hardening' },
+      ],
+      skills: ['Data Cleansing', 'Secure SDLC', 'Infrastructure Monitoring', 'Data Science', 'Testing & QA', 'Incident Response'],
+      interests: ['Machine Learning', 'AI / LLM', 'IT Architecture', 'Cybersecurity', 'CTF Competitions', 'CVE Research'],
+      roles: { admin: 'Head Administrator', designer: 'Lead Administrator / UI Designer' }
+    },
+    ru: {
+      badge: 'Автор проекта',
+      name: 'Шамсиддин Камолиддинов',
+      tagline: 'Основатель и автор канала Yosh Avlod на YouTube, в Telegram, веб-платформы и образовательных IT-проектов.',
+      birth: 'Год рождения: 2005',
+      specialtyLabel: 'Специализация',
+      specialtyRole: 'Инженер ИИ / МО',
+      bioP1: 'Я, Шамсиддин Камолиддинов, родился 15 февраля 2005 года в Ферганской области. В настоящее время обучаюсь на 4 курсе факультета информационных технологий и телекоммуникаций Ферганского государственного технического университета по направлению «Искусственный интеллект».',
+      bioP2: 'Имею 7-летний практический опыт программирования. Работаю в области информационной безопасности, системного менеджмента ИИ и Computer Science. Автор научно-практических разработок, веду образовательные блоги на YouTube и в Telegram для подготовки нового поколения IT-специалистов.',
+      socialsHeader: 'Социальные сети и связь',
+      specsHeader: 'Ключевые специализации',
+      expEduHeader: 'Опыт и образование',
+      skillsHeader: 'Навыки и стек',
+      researchHeader: 'Научные публикации и проекты',
+      articleTitle: 'ПРОГНОСТИЧЕСКАЯ МОДЕЛЬ ВЫЯВЛЕНИЯ ПНЕВМОНИИ НА ОСНОВЕ РЕНТГЕНОВСКИХ СНИМКОВ',
+      articleAuthor: 'Автор: Шамсиддин Камолиддинов',
+      articleDesc: 'Интеллектуальное диагностическое решение для автоматического анализа рентгенограмм легких и выявления пневмонии с высокой точностью. Опубликовано в научных изданиях.',
+      readArticle: 'Читать публикацию',
+      certsHeader: 'Сертификаты',
+      interestsHeader: 'Интересы',
+      communityBadge: 'Сообщество проекта',
+      helpersTitle: 'Помощники и партнеры',
+      helpersDesc: 'Администраторы и дизайнеры, вносящие регулярный вклад в развитие и поддержку нашего канала.',
+      specialties: [
+        { title: 'Инженер ИИ/МО', desc: 'Разработка и внедрение нейросетевых архитектур и LLM моделей' },
+        { title: 'Специалист по кибербезопасности', desc: 'Тестирование на проникновение, защита периметра и аудит' },
+        { title: 'Администратор Linux', desc: 'Управление серверами, безопасность и системная оптимизация' },
+      ],
+      skills: ['Обработка данных', 'Secure SDLC', 'Мониторинг', 'Data Science', 'Тестирование и QA', 'Реагирование на инциденты'],
+      interests: ['Machine Learning', 'AI / LLM', 'IT Дизайн', 'Кибербезопасность', 'CTF', 'Исследования CVE'],
+      roles: { admin: 'Главный администратор', designer: 'Главный администратор / Дизайнер' }
+    }
+  };
 
-  const skills = [
-    'Ma\'lumot tozalash',
-    'Secure SDLC',
-    'Monitoring',
-    'Data Science',
-    'Testing & QA',
-    'Incident response',
-  ];
-
-  const interests = [
-    'Machine Learning',
-    'AI / LLM',
-    'IT Design',
-    'Kiberxavfsizlik',
-    'CTF',
-    'CVE Research',
-  ];
+  const curr = content[locale] || content.uz;
 
   const partners = [
     {
       name: 'Memento mori',
-      role: 'Bosh Administrator',
+      role: curr.roles.admin,
       telegram: 'https://t.me/Mementomori_2255',
       avatar: null
     },
     {
       name: 'ELBEK DESIGN VA WEB DASTURCHI',
-      role: 'Bosh Administrator / Dizayner',
+      role: curr.roles.designer,
       telegram: 'https://t.me/elbekdesign_va_webdasturchi',
       avatar: '/elbek.png'
     }
@@ -148,13 +228,13 @@ export default function AuthorPage() {
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-semibold tracking-wider text-blue-400 uppercase"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            Loyiha Muallifi
+            {curr.badge}
           </motion.div>
           <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-none">
-            <GradientText animate>Shamsiddin Kamoliddinov</GradientText>
+            <GradientText animate>{curr.name}</GradientText>
           </h1>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto font-medium">
-            Yosh Avlod Kanali youtube, telegram, veb-sayt va barcha turdagi IT loyihalarining asoschisi va muallifi.
+            {curr.tagline}
           </p>
         </div>
 
@@ -167,306 +247,303 @@ export default function AuthorPage() {
             {/* 3D Overlapping/Layered Intro Section */}
             <Section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch pt-6">
 
-          {/* Left: Blurred, Semi-Transparent Image Box (Back/Middle Layer) */}
-          <div className="md:col-span-5 relative flex items-center justify-center min-h-[350px] md:min-h-[500px] group">
-            {/* Glowing background behind image */}
-            <div className="absolute inset-4 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-85 transition-opacity duration-700" />
+              {/* Left: Image Box */}
+              <div className="md:col-span-5 relative flex items-center justify-center min-h-[350px] md:min-h-[500px] group">
+                <div className="absolute inset-4 bg-gradient-to-tr from-blue-600/20 to-purple-600/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-85 transition-opacity duration-700" />
 
-            {/* Image Wrapper with blur & transparency */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-2xl overflow-hidden glass-panel p-2 border border-white/10 shadow-2xl"
-            >
-              <div className="relative w-full h-full rounded-xl overflow-hidden">
-                <Image
-                  src="/profile_icon.jpg"
-                  alt="Shamsiddin Kamoliddinov"
-                  fill
-                  priority
-                  className="object-cover filter blur-[1.2px] opacity-75 contrast-110 saturate-75 group-hover:blur-0 group-hover:opacity-100 group-hover:scale-105 group-hover:saturate-100 transition-all duration-700 ease-out"
-                />
-
-                {/* Overlay filter */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
-
-                {/* Age Badge */}
-                <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg text-xs font-mono text-gray-300">
-                  Tug&apos;ilgan yili: 2005
-                </div>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right: Overlapping/Foreground info (Z-Indexed Front Layer) */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="md:col-span-7 flex flex-col justify-center relative md:-ml-8 z-20"
-          >
-            {/* Front Overlapping Glass Card */}
-            <div className="glass-panel p-8 md:p-10 rounded-2xl border border-white/10 bg-black/75 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] space-y-6 transform hover:-translate-y-1 hover:border-white/20 transition-all duration-500">
-
-              <div className="space-y-2">
-                <span className="text-blue-400 font-mono text-sm tracking-widest uppercase font-semibold">Mutaxassisligi</span>
-                <h2 className="text-2xl md:text-3xl font-extrabold text-white">AI / ML muhandisi</h2>
-              </div>
-
-              <p className="text-gray-300 leading-relaxed text-base font-normal">
-                Men Shamsiddin Kamoliddinov Aqliddin o&apos;g&apos;li 2005-yil 15-fevral Farg&apos;ona viloyati Toshloq tumanida tavallud topganman.
-                Hozirda Farg&apos;ona Davlat Texnika Universiteti Axborot texnologiyalari va telekommunikatsiyalar fakulteti
-                Sun&apos;iy intellekt yo&apos;nalishi 4-bosqich talabasiman.
-              </p>
-
-              <p className="text-gray-300 leading-relaxed text-base font-normal">
-                Dasturlash bo&apos;yicha 7 yillik tajribaga egaman. Kiberxavfsizlik, AI menejmenti va Computer Science sohalarida ish olib boraman.
-                Sun&apos;iy intellekt bo&apos;yicha ko&apos;plab loyihalar va tadqiqotlar muallifiman. Kiberxavfsizlik va IT bo&apos;yicha YouTube va Telegram tarmoqlarida shaxsiy blog yuritib, yosh avlodni zamonaviy texnologiyalar bilan tanishtirib kelaman.
-              </p>
-
-              {/* Social Media Grid */}
-              <div className="space-y-3 pt-4">
-                <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-blue-400" /> Ijtimoiy tarmoqlar va aloqa
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                  {socialLinks.map((social) => (
-                    <a
-                      key={social.name}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="block"
-                    >
-                      <motion.div
-                        whileHover={{ y: -2 }}
-                        className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all duration-300 ${social.color} ${social.shadow}`}
-                      >
-                        {social.icon}
-                        <span>{social.name}</span>
-                      </motion.div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </motion.div>
-        </Section>
-
-        {/* Detailed Grid Info */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          {/* Card 1: Mutaxassisliklar */}
-          <motion.div variants={itemVariants}>
-            <Card className="h-full p-6 space-y-4 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-blue-500/20 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                  <Code className="w-5 h-5" />
-                </div>
-                <h3 className="text-lg font-bold text-white">Mutaxassisliklar</h3>
-              </div>
-              <div className="space-y-4">
-                {specialties.map((spec, idx) => (
-                  <div key={idx} className="space-y-1">
-                    <h4 className="text-sm font-semibold text-gray-200 flex items-center gap-1.5">
-                      <ChevronRight className="w-3.5 h-3.5 text-blue-500" />
-                      {spec.title}
-                    </h4>
-                    <p className="text-xs text-gray-400 pl-5">{spec.desc}</p>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8 }}
+                  className="relative w-72 h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-2xl overflow-hidden glass-panel p-2 border border-white/10 shadow-2xl"
+                >
+                  <div className="relative w-full h-full rounded-xl overflow-hidden">
+                    <Image
+                      src="/profile_icon.jpg"
+                      alt={curr.name}
+                      fill
+                      priority
+                      className="object-cover filter blur-[1.2px] opacity-75 contrast-110 saturate-75 group-hover:blur-0 group-hover:opacity-100 group-hover:scale-105 group-hover:saturate-100 transition-all duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent pointer-events-none" />
+                    <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-lg text-xs font-mono text-gray-300">
+                      {curr.birth}
+                    </div>
                   </div>
-                ))}
-              </div>
-            </Card>
-          </motion.div>
-
-          {/* Card 2: Tajriba va Ta'lim */}
-          <motion.div variants={itemVariants}>
-            <Card className="h-full p-6 space-y-4 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-purple-500/20 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
-                  <Briefcase className="w-5 h-5" />
-                </div>
-                <h3 className="text-lg font-bold text-white">Tajriba va Ta&apos;lim</h3>
-              </div>
-              <div className="space-y-4 text-sm">
-                <div className="border-l-2 border-purple-500/30 pl-4 space-y-1">
-                  <span className="text-xs font-mono text-purple-400">2024 - 2026</span>
-                  <h4 className="font-semibold text-gray-200">Director / Asoschisi</h4>
-                  <p className="text-xs text-gray-400">BEKFURR INC</p>
-                </div>
-                <div className="border-l-2 border-purple-500/30 pl-4 space-y-1">
-                  <span className="text-xs font-mono text-purple-400">Hozirda</span>
-                  <h4 className="font-semibold text-gray-200">Bakalavr - Sun&apos;iy intellekt</h4>
-                  <p className="text-xs text-gray-400">Farg&apos;ona Davlat Texnika Universiteti (3-kurs, GPA 4.6)</p>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-
-          {/* Card 3: Ko'nikmalar */}
-          <motion.div variants={itemVariants}>
-            <Card className="h-full p-6 space-y-4 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-emerald-500/20 transition-colors">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
-                  <Layers className="w-5 h-5" />
-                </div>
-                <h3 className="text-lg font-bold text-white">Ko&apos;nikmalar</h3>
-              </div>
-              <div className="flex flex-wrap gap-2 pt-2">
-                {skills.map((skill, idx) => (
-                  <span
-                    key={idx}
-                    className="px-2.5 py-1 text-xs rounded-md bg-emerald-500/5 border border-emerald-500/10 text-emerald-300 font-medium hover:border-emerald-500/30 transition-colors"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-              <div className="pt-2 border-t border-white/5">
-                <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Tillar</h4>
-                <div className="flex gap-4 text-xs font-medium text-gray-300">
-                  <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5 text-emerald-400" /> Ingliz tili: B2</span>
-                  <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5 text-emerald-400" /> Rus tili: B2</span>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-
-          {/* Card 4: Ilmiy maqolalar */}
-          <motion.div variants={itemVariants} className="md:col-span-2">
-            <Card className="p-6 space-y-4 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-blue-500/20 transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                    <BookOpen className="w-5 h-5" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white">Ilmiy tadqiqotlar va loyihalar</h3>
-                </div>
-                <Award className="w-5 h-5 text-amber-400" />
-              </div>
-              <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-3">
-                <h4 className="font-bold text-white text-base md:text-lg leading-snug">
-                  PNEUMONIA KASALLIGINI KO&apos;KRAK QAFASI RENTGEN SURATLARI ASOSIDA BASHORAT QILUVCHI MODEL
-                </h4>
-                <p className="text-sm text-gray-400">
-                  Muallif: Shamsiddin Kamoliddinov Aqliddin o&apos;g&apos;li
-                </p>
-                <p className="text-xs text-gray-500 leading-relaxed">
-                  Ushbu model ko&apos;krak qafasi rentgen rasmlari asosida pnevmoniya kasalligini avtomatik tahlil qiluvchi va yuqori aniqlik bilan aniqlovchi Sun&apos;iy Intellekt yechimidir. Bir qancha ilmiy jurnallarda chop etilgan.
-                </p>
-                <div className="pt-2 border-t border-white/5 flex flex-wrap justify-between items-center gap-2">
-                  <span className="text-xs font-mono text-blue-400">Zenodo DOI: doi.org/10.5281/zenodo.17579515</span>
-                  <a
-                    href="https://doi.org/10.5281/zenodo.17579515"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-white hover:text-blue-400 font-bold transition-colors"
-                  >
-                    Maqolani o&apos;qish <ChevronRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
+                </motion.div>
               </div>
 
-              {/* Certificates Section */}
-              <div className="pt-2">
-                <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <Award className="w-4 h-4 text-amber-400" /> Sertifikatlar
-                </h4>
-                <div className="text-sm text-gray-300 font-medium pl-1.5 border-l-2 border-amber-500/30">
-                  Certificate of Completion of Fullstack Development Track (20.08.2020)
-                </div>
-              </div>
-
-              {/* Interests tag list */}
-              <div className="pt-2">
-                <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Qiziqishlar</h4>
-                <div className="flex flex-wrap gap-2">
-                  {interests.map((interest, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2 py-0.5 text-xs rounded bg-white/5 border border-white/10 text-gray-400"
-                    >
-                      {interest}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-        </motion.div>
-        
-        </div>
-
-        {/* Right Column: Sticky Sidebar for Partners */}
-        <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 pt-6">
-          <div className="space-y-3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-semibold tracking-wider text-purple-400 uppercase">
-              <Users className="w-3.5 h-3.5" />
-              Loyiha Hamjamiyati
-            </div>
-            <h2 className="text-2xl font-extrabold tracking-tight">
-              <GradientText animate>Yordamchilar</GradientText>
-            </h2>
-            <p className="text-gray-400 text-sm">
-              Kanalimiz rivojiga o&apos;z hissasini qo&apos;shib kelayotgan bosh administratorlarimiz va hamkorlarimiz.
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-4">
-            {partners.map((partner, idx) => (
+              {/* Right: Overlapping Foreground info */}
               <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="md:col-span-7 flex flex-col justify-center relative md:-ml-8 z-20"
               >
-                <Card className="p-6 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-purple-500/20 transition-all duration-300 flex items-center gap-5">
-                  <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-white/5 border border-white/10 flex-shrink-0 flex items-center justify-center">
-                    {partner.avatar ? (
-                      <Image
-                        src={partner.avatar}
-                        alt={partner.name}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <span className="text-2xl font-black text-purple-400 font-mono">
-                        {partner.name.charAt(0)}
-                      </span>
-                    )}
+                <div className="glass-panel p-8 md:p-10 rounded-2xl border border-white/10 bg-black/75 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] space-y-6 transform hover:-translate-y-1 hover:border-white/20 transition-all duration-500">
+                  <div className="space-y-2">
+                    <span className="text-blue-400 font-mono text-sm tracking-widest uppercase font-semibold">
+                      {curr.specialtyLabel}
+                    </span>
+                    <h2 className="text-2xl md:text-3xl font-extrabold text-white">
+                      {curr.specialtyRole}
+                    </h2>
                   </div>
-                  <div className="flex-grow space-y-1 min-w-0">
-                    <h3 className="font-bold text-white text-base tracking-tight truncate">
-                      {partner.name}
+
+                  <p className="text-gray-300 leading-relaxed text-base font-normal">
+                    {curr.bioP1}
+                  </p>
+
+                  <p className="text-gray-300 leading-relaxed text-base font-normal">
+                    {curr.bioP2}
+                  </p>
+
+                  {/* Social Media Grid */}
+                  <div className="space-y-3 pt-4">
+                    <h3 className="text-sm font-semibold tracking-wider text-gray-400 uppercase flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-blue-400" /> {curr.socialsHeader}
                     </h3>
-                    <p className="text-xs text-purple-400 font-medium">
-                      {partner.role}
-                    </p>
-                    <div className="pt-2">
-                      <a
-                        href={partner.telegram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#229ED9]/10 hover:bg-[#229ED9] text-[#229ED9] hover:text-white border border-[#229ED9]/20 text-xs font-semibold transition-all duration-300"
-                      >
-                        <Send className="w-3.5 h-3.5" />
-                        <span>Telegram</span>
-                      </a>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      {socialLinks.map((social) => (
+                        <a
+                          key={social.name}
+                          href={social.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block"
+                        >
+                          <motion.div
+                            whileHover={{ y: -2 }}
+                            className={`flex items-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-medium transition-all duration-300 ${social.color} ${social.shadow}`}
+                          >
+                            {social.icon}
+                            <span>{social.name}</span>
+                          </motion.div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </Section>
+
+            {/* Detailed Grid Info */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+              className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            >
+              {/* Card 1: Specialties */}
+              <motion.div variants={itemVariants}>
+                <Card className="h-full p-6 space-y-4 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-blue-500/20 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                      <Code className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white">{curr.specsHeader}</h3>
+                  </div>
+                  <div className="space-y-4">
+                    {curr.specialties.map((spec, idx) => (
+                      <div key={idx} className="space-y-1">
+                        <h4 className="text-sm font-semibold text-gray-200 flex items-center gap-1.5">
+                          <ChevronRight className="w-3.5 h-3.5 text-blue-500" />
+                          {spec.title}
+                        </h4>
+                        <p className="text-xs text-gray-400 pl-5">{spec.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </Card>
+              </motion.div>
+
+              {/* Card 2: Experience & Education */}
+              <motion.div variants={itemVariants}>
+                <Card className="h-full p-6 space-y-4 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-purple-500/20 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                      <Briefcase className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white">{curr.expEduHeader}</h3>
+                  </div>
+                  <div className="space-y-4 text-sm">
+                    <div className="border-l-2 border-purple-500/30 pl-4 space-y-1">
+                      <span className="text-xs font-mono text-purple-400">2024 - 2026</span>
+                      <h4 className="font-semibold text-gray-200">Director / Asoschisi</h4>
+                      <p className="text-xs text-gray-400">BEKFURR INC</p>
+                    </div>
+                    <div className="border-l-2 border-purple-500/30 pl-4 space-y-1">
+                      <span className="text-xs font-mono text-purple-400">
+                        {locale === 'en' ? 'Current' : locale === 'ru' ? 'В настоящее время' : 'Hozirda'}
+                      </span>
+                      <h4 className="font-semibold text-gray-200">Bakalavr - Sun&apos;iy intellekt</h4>
+                      <p className="text-xs text-gray-400">Farg&apos;ona Davlat Texnika Universiteti (GPA 4.6)</p>
                     </div>
                   </div>
                 </Card>
               </motion.div>
-            ))}
+
+              {/* Card 3: Skills */}
+              <motion.div variants={itemVariants}>
+                <Card className="h-full p-6 space-y-4 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-emerald-500/20 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                      <Layers className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white">{curr.skillsHeader}</h3>
+                  </div>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {curr.skills.map((skill, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2.5 py-1 text-xs rounded-md bg-emerald-500/5 border border-emerald-500/10 text-emerald-300 font-medium hover:border-emerald-500/30 transition-colors"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="pt-2 border-t border-white/5">
+                    <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                      {locale === 'en' ? 'Languages' : locale === 'ru' ? 'Языки' : 'Tillar'}
+                    </h4>
+                    <div className="flex gap-4 text-xs font-medium text-gray-300">
+                      <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5 text-emerald-400" /> English: B2</span>
+                      <span className="flex items-center gap-1"><Globe className="w-3.5 h-3.5 text-emerald-400" /> Russian: B2</span>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+
+              {/* Card 4: Research Publications */}
+              <motion.div variants={itemVariants} className="md:col-span-2">
+                <Card className="p-6 space-y-4 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-blue-500/20 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                        <BookOpen className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-lg font-bold text-white">{curr.researchHeader}</h3>
+                    </div>
+                    <Award className="w-5 h-5 text-amber-400" />
+                  </div>
+                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-3">
+                    <h4 className="font-bold text-white text-base md:text-lg leading-snug">
+                      {curr.articleTitle}
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      {curr.articleAuthor}
+                    </p>
+                    <p className="text-xs text-gray-500 leading-relaxed">
+                      {curr.articleDesc}
+                    </p>
+                    <div className="pt-2 border-t border-white/5 flex flex-wrap justify-between items-center gap-2">
+                      <span className="text-xs font-mono text-blue-400">Zenodo DOI: doi.org/10.5281/zenodo.17579515</span>
+                      <a
+                        href="https://doi.org/10.5281/zenodo.17579515"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-white hover:text-blue-400 font-bold transition-colors"
+                      >
+                        {curr.readArticle} <ChevronRight className="w-3.5 h-3.5" />
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Certificates Section */}
+                  <div className="pt-2">
+                    <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <Award className="w-4 h-4 text-amber-400" /> {curr.certsHeader}
+                    </h4>
+                    <div className="text-sm text-gray-300 font-medium pl-1.5 border-l-2 border-amber-500/30">
+                      Certificate of Completion of Fullstack Development Track (20.08.2020)
+                    </div>
+                  </div>
+
+                  {/* Interests tag list */}
+                  <div className="pt-2">
+                    <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                      {curr.interestsHeader}
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {curr.interests.map((interest, idx) => (
+                        <span
+                          key={idx}
+                          className="px-2 py-0.5 text-xs rounded bg-white/5 border border-white/10 text-gray-400"
+                        >
+                          {interest}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            </motion.div>
           </div>
-        </div>
+
+          {/* Right Column: Sticky Sidebar for Partners */}
+          <div className="lg:col-span-4 lg:sticky lg:top-24 space-y-6 pt-6">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-xs font-semibold tracking-wider text-purple-400 uppercase">
+                <Users className="w-3.5 h-3.5" />
+                {curr.communityBadge}
+              </div>
+              <h2 className="text-2xl font-extrabold tracking-tight">
+                <GradientText animate>{curr.helpersTitle}</GradientText>
+              </h2>
+              <p className="text-gray-400 text-sm">
+                {curr.helpersDesc}
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              {partners.map((partner, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.1 }}
+                >
+                  <Card className="p-6 border-white/5 bg-gradient-to-b from-[#0a0a0a] to-[#040404] hover:border-purple-500/20 transition-all duration-300 flex items-center gap-5">
+                    <div className="relative w-16 h-16 rounded-2xl overflow-hidden bg-white/5 border border-white/10 flex-shrink-0 flex items-center justify-center">
+                      {partner.avatar ? (
+                        <Image
+                          src={partner.avatar}
+                          alt={partner.name}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <span className="text-2xl font-black text-purple-400 font-mono">
+                          {partner.name.charAt(0)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex-grow space-y-1 min-w-0">
+                      <h3 className="font-bold text-white text-base tracking-tight truncate">
+                        {partner.name}
+                      </h3>
+                      <p className="text-xs text-purple-400 font-medium">
+                        {partner.role}
+                      </p>
+                      <div className="pt-2">
+                        <a
+                          href={partner.telegram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#229ED9]/10 hover:bg-[#229ED9] text-[#229ED9] hover:text-white border border-[#229ED9]/20 text-xs font-semibold transition-all duration-300"
+                        >
+                          <Send className="w-3.5 h-3.5" />
+                          <span>Telegram</span>
+                        </a>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </div>
 
         </div>
       </div>

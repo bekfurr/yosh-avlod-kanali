@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import Section from '@/components/ui/Section';
 import Card from '@/components/ui/Card';
 import Button from '@/components/ui/Button';
@@ -17,16 +17,15 @@ import {
     Check,
     ExternalLink,
     AlertTriangle,
-    CheckCircle,
     Info,
     Laptop,
-    Server,
     Play,
     HardDrive
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Program } from '@/lib/types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 
 // Fallback data if Supabase is not connected
 const MOCK_PROGRAMS: Program[] = [
@@ -40,8 +39,8 @@ const MOCK_PROGRAMS: Program[] = [
     },
     {
         id: 2,
-        title: 'O\'quv To\'plami 2024',
-        description: 'Bizning eng yangi video darslarimiz uchun to\'liq manbalar to\'plami.',
+        title: "O'quv To'plami 2024",
+        description: "Bizning eng yangi video darslarimiz uchun to'liq manbalar to'plami.",
         download_url: '#',
         version: 'v2.0.1',
         created_at: new Date().toISOString(),
@@ -52,7 +51,7 @@ const MOCK_PROGRAMS: Program[] = [
 interface LocalAITool {
     id: string;
     title: string;
-    description: string;
+    description: Record<string, string>;
     url: string;
     tag: string;
     category: 'Engine' | 'GUI' | 'Hub' | 'Suite';
@@ -63,7 +62,11 @@ const LOCAL_AI_TOOLS: LocalAITool[] = [
     {
         id: 'ollama',
         title: 'Ollama',
-        description: 'Llama 3, Mistral, Qwen2.5 va boshqa eng ilg\'or ochiq kodli model turlarini shaxsiy kompyuteringizda (CPU/GPU) osongina ishga tushirish uchun eng mashhur terminal vositasi.',
+        description: {
+            uz: "Llama 3, Mistral, Qwen2.5 va boshqa eng ilg'or ochiq kodli model turlarini shaxsiy kompyuteringizda (CPU/GPU) osongina ishga tushirish uchun eng mashhur terminal vositasi.",
+            en: 'The most popular CLI tool to run Llama 3, Mistral, Qwen 2.5 and open-source LLMs locally on CPU and GPU.',
+            ru: 'Популярный терминальный инструмент для удобного локального запуска Llama 3, Mistral, Qwen и других моделей на CPU/GPU.'
+        },
         url: 'https://ollama.com/',
         tag: 'Local Engine',
         category: 'Engine',
@@ -72,7 +75,11 @@ const LOCAL_AI_TOOLS: LocalAITool[] = [
     {
         id: 'lmstudio',
         title: 'LM Studio',
-        description: 'Hugging Face-dagi har qanday modelni osongina yuklab olish, sozlash va chiroyli grafik interfeys (GUI) orqali chat shaklida ishlatish uchun qulay va kuchli desktop ilova.',
+        description: {
+            uz: "Hugging Face-dagi har qanday modelni osongina yuklab olish, sozlash va chiroyli grafik interfeys (GUI) orqali chat shaklida ishlatish uchun qulay va kuchli desktop ilova.",
+            en: 'Discover, download, and run local LLMs offline with a beautiful desktop GUI interface.',
+            ru: 'Удобное десктопное приложение для загрузки и использования любых моделей с Hugging Face через графический интерфейс.'
+        },
         url: 'https://lmstudio.ai/',
         tag: 'Desktop GUI',
         category: 'GUI',
@@ -81,7 +88,11 @@ const LOCAL_AI_TOOLS: LocalAITool[] = [
     {
         id: 'anythingllm',
         title: 'AnythingLLM',
-        description: 'Fayllaringiz va hujjatlaringiz bilan local RAG (tahlil) tizimini o\'rnatish uchun ideal all-in-one yordamchi. Istalgan local yoki tashqi modelga ulanadi.',
+        description: {
+            uz: "Fayllaringiz va hujjatlaringiz bilan local RAG (tahlil) tizimini o'rnatish uchun ideal all-in-one yordamchi. Istalgan local yoki tashqi modelga ulanadi.",
+            en: 'All-in-one desktop & enterprise AI tool for local document RAG, AI agents, and private workspace chat.',
+            ru: 'Универсальный инструмент для локального RAG анализа документов и персональных AI агентов без утечки данных.'
+        },
         url: 'https://anythingllm.com/',
         tag: 'AI Agent & RAG',
         category: 'Suite',
@@ -90,7 +101,11 @@ const LOCAL_AI_TOOLS: LocalAITool[] = [
     {
         id: 'openwebui',
         title: 'Open WebUI',
-        description: 'Ollama, LM Studio va OpenAI formatidagi barcha API ulanishlar uchun yaratilgan, ChatGPT interfeysiga juda o\'xshash bo\'lgan eng boy funksiyali ochiq kodli veb-interfeys.',
+        description: {
+            uz: "Ollama, LM Studio va OpenAI formatidagi barcha API ulanishlar uchun yaratilgan, ChatGPT interfeysiga juda o'xshash bo'lgan eng boy funksiyali ochiq kodli veb-interfeys.",
+            en: 'User-friendly, ChatGPT-like self-hosted web UI designed for Ollama and OpenAI-compatible backends.',
+            ru: 'Полнофункциональный веб-интерфейс в стиле ChatGPT для работы с Ollama, LM Studio и локальными серверами.'
+        },
         url: 'https://github.com/open-webui/open-webui',
         tag: 'Web GUI',
         category: 'GUI',
@@ -99,7 +114,11 @@ const LOCAL_AI_TOOLS: LocalAITool[] = [
     {
         id: 'huggingface',
         title: 'Hugging Face',
-        description: 'Dunyodagi eng yirik ochiq kodli AI hamjamiyati platformasi. Millionlab modellar (GGUF, Safetensors), datasetlar va AI dasturlar manbayi.',
+        description: {
+            uz: "Dunyodagi eng yirik ochiq kodli AI hamjamiyati platformasi. Millionlab modellar (GGUF, Safetensors), datasetlar va AI dasturlar manbayi.",
+            en: 'The leading open-source platform hosting millions of pre-trained models (GGUF), datasets, and AI applications.',
+            ru: 'Крупнейшая платформа открытого ИИ сообщества с миллионами моделей (GGUF), датасетов и приложений.'
+        },
         url: 'https://huggingface.co/',
         tag: 'Model Platform',
         category: 'Hub',
@@ -124,7 +143,7 @@ const OfficeLogo = ({ className = "w-4 h-4" }: { className?: string }) => (
 interface OfficeProduct {
     id: string;
     title: string;
-    description: string;
+    description: Record<string, string>;
     downloadUrl: string;
     version: string;
     size: string;
@@ -135,7 +154,11 @@ const OFFICE_PRODUCTS: OfficeProduct[] = [
     {
         id: 'office-365',
         title: 'Microsoft Office 365 ProPlus',
-        description: 'Bulutga asoslangan, eng so\'nggi funksiyalar va doimiy yangilanishlarga ega Microsoft Office-ning to\'liq paketi (Word, Excel, PowerPoint, Outlook va boshqalar).',
+        description: {
+            uz: "Bulutga asoslangan, eng so'nggi funksiyalar va doimiy yangilanishlarga ega Microsoft Office-ning to'liq paketi (Word, Excel, PowerPoint, Outlook va boshqalar).",
+            en: 'Complete Microsoft Office suite featuring cloud capabilities, regular feature updates, Word, Excel, and PowerPoint.',
+            ru: 'Полный пакет Microsoft Office с облачными функциями, регулярными обновлениями и поддержкой всех новейших возможностей.'
+        },
         downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/O365ProPlusRetail.img',
         version: 'Subscription / Full Retail',
         size: '~4.8 GB',
@@ -144,7 +167,11 @@ const OFFICE_PRODUCTS: OfficeProduct[] = [
     {
         id: 'office-2024',
         title: 'Microsoft Office 2024 Professional Plus',
-        description: 'Yaqinda taqdim etilgan, so\'nggi dizayn va AI optimallashtirishlariga ega, bir martalik litsenziyali eng yangi Office to\'plami.',
+        description: {
+            uz: "Yaqinda taqdim etilgan, so'nggi dizayn va AI optimallashtirishlariga ega, bir martalik litsenziyali eng yangi Office to'plami.",
+            en: 'The newest perpetual Office release with redesigned modern UI and enhanced performance improvements.',
+            ru: 'Новейший бессрочный выпуск Office с современным интерфейсом и повышенной производительностью.'
+        },
         downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2024Retail.img',
         version: 'LTSC / Retail v2024',
         size: '~4.7 GB',
@@ -153,7 +180,11 @@ const OFFICE_PRODUCTS: OfficeProduct[] = [
     {
         id: 'office-2021',
         title: 'Microsoft Office 2021 Professional Plus',
-        description: 'Barqaror va ishonchli, eng ommabop ofis ishlari va taqdimotlar tayyorlash uchun optimal tanlov bo\'lgan versiya.',
+        description: {
+            uz: "Barqaror va ishonchli, eng ommabop ofis ishlari va taqdimotlar tayyorlash uchun optimal tanlov bo'lgan versiya.",
+            en: 'Highly stable and widely adopted release, optimal for daily productivity and presentations.',
+            ru: 'Стабильная и надежная версия, идеальный выбор для офисной работы, аналитики и создания презентаций.'
+        },
         downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2021Retail.img',
         version: 'Retail v2021',
         size: '~4.6 GB',
@@ -162,7 +193,11 @@ const OFFICE_PRODUCTS: OfficeProduct[] = [
     {
         id: 'office-2019',
         title: 'Microsoft Office 2019 Professional Plus',
-        description: 'Klassik interfeysga ega, o\'rta toifadagi noutbuk va kompyuterlar uchun eng yaxshi ish samaradorligini ta\'minlovchi barqaror versiya.',
+        description: {
+            uz: "Klassik interfeysga ega, o'rta toifadagi noutbuk va kompyuterlar uchun eng yaxshi ish samaradorligini ta'minlovchi barqaror versiya.",
+            en: 'Classic desktop interface with excellent compatibility on mid-range laptops and PCs.',
+            ru: 'Классический интерфейс с превосходной совместимостью для ПК и ноутбуков средней мощности.'
+        },
         downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlus2019Retail.img',
         version: 'Retail v2019',
         size: '~3.5 GB',
@@ -171,7 +206,11 @@ const OFFICE_PRODUCTS: OfficeProduct[] = [
     {
         id: 'office-2016',
         title: 'Microsoft Office 2016 Professional Plus',
-        description: 'Eski va resurslari cheklangan past ko\'rsatkichli kompyuterlarda ham juda tez ishlovchi, eng barqaror klassik ofis to\'plami.',
+        description: {
+            uz: "Eski va resurslari cheklangan past ko'rsatkichli kompyuterlarda ham juda tez ishlovchi, eng barqaror klassik ofis to'plami.",
+            en: 'Ultra-fast and lightweight classic suite, runs smoothly even on older legacy systems.',
+            ru: 'Легкий и быстрый классический офисный пакет, отлично работающий даже на старых и слабых ПК.'
+        },
         downloadUrl: 'https://officecdn.microsoft.com/db/492350f6-3a01-4f97-b9c0-c7c6ddf67d60/media/en-us/ProPlusRetail.img',
         version: 'Retail v2016',
         size: '~3.2 GB',
@@ -180,6 +219,7 @@ const OFFICE_PRODUCTS: OfficeProduct[] = [
 ];
 
 export default function ProgramsPage() {
+    const { t, locale } = useLanguage();
     const [activeMainTab, setActiveMainTab] = useState<'channel' | 'local_ai' | 'free_claude' | 'office'>('channel');
     const [osTab, setOsTab] = useState<'windows' | 'linux_mac'>('windows');
     const [copiedText, setCopiedText] = useState<string | null>(null);
@@ -198,7 +238,6 @@ export default function ProgramsPage() {
                     .order('created_at', { ascending: false });
 
                 if (error || !data || data.length === 0) {
-                    console.log('Using mock data (Supabase empty or error)');
                     setPrograms(MOCK_PROGRAMS);
                 } else {
                     setPrograms(data);
@@ -231,20 +270,20 @@ export default function ProgramsPage() {
                 {/* Heading */}
                 <div className="mb-12 relative">
                     <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">
-                        <GradientText animate>Dasturlar va Resurslar</GradientText>
+                        <GradientText animate>{t.programs.title}</GradientText>
                     </h1>
                     <p className="text-gray-400 max-w-2xl">
-                        Foydali tizim vositalari, mahalliy AI dasturlari hamda mutaxassislar uchun maxsus bepul yo&apos;riqnomalarni toping.
+                        {t.programs.subtitle}
                     </p>
                 </div>
 
                 {/* Main Tabs Navigation */}
                 <div className="flex border-b border-white/5 mb-10 pb-px overflow-x-auto gap-8 scrollbar-hide">
                     {[
-                        { id: 'channel', name: 'Kanal Dasturlari', icon: Package },
-                        { id: 'local_ai', name: 'Local AI Dasturlari', icon: Cpu },
-                        { id: 'office', name: 'Microsoft Office', icon: OfficeLogo as any },
-                        { id: 'free_claude', name: 'Free Claude + Codex', icon: BookOpen }
+                        { id: 'channel', name: t.programs.tabChannel, icon: Package },
+                        { id: 'local_ai', name: t.programs.tabLocalAi, icon: Cpu },
+                        { id: 'office', name: t.programs.tabOffice, icon: OfficeLogo as any },
+                        { id: 'free_claude', name: t.programs.tabFreeClaude, icon: BookOpen }
                     ].map((tab) => {
                         const Icon = tab.icon;
                         const isActive = activeMainTab === tab.id;
@@ -252,15 +291,15 @@ export default function ProgramsPage() {
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveMainTab(tab.id as any)}
-                                className={`flex items-center gap-2 pb-4 text-sm font-semibold transition-all duration-300 relative whitespace-nowrap ${isActive ? 'text-white' : 'text-gray-500 hover:text-gray-300'
+                                className={`pb-4 text-sm font-semibold flex items-center gap-2.5 transition-all relative whitespace-nowrap ${isActive ? 'text-white' : 'text-gray-400 hover:text-gray-200'
                                     }`}
                             >
-                                <Icon className="w-4 h-4" />
+                                <Icon className={`w-4 h-4 ${isActive ? 'text-blue-400' : 'text-gray-400'}`} />
                                 <span>{tab.name}</span>
                                 {isActive && (
                                     <motion.div
-                                        layoutId="active-main-tab-bar"
-                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.6)]"
+                                        layoutId="active-program-tab"
+                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 shadow-[0_0_12px_rgba(59,130,246,0.6)]"
                                     />
                                 )}
                             </button>
@@ -277,59 +316,58 @@ export default function ProgramsPage() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -15 }}
                             transition={{ duration: 0.3 }}
+                            className="space-y-6"
                         >
                             {/* Search bar */}
-                            <div className="relative max-w-md mb-8">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Search className="h-5 w-5 text-gray-400" />
-                                </div>
+                            <div className="relative max-w-md">
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                 <input
                                     type="text"
-                                    className="block w-full pl-10 pr-4 py-2.5 border border-white/10 rounded-xl leading-5 bg-white/5 text-white placeholder-gray-400 focus:outline-none focus:bg-white/10 focus:ring-1 focus:ring-blue-500/50 transition-all backdrop-blur-sm"
-                                    placeholder="Dasturlarni qidirish..."
+                                    placeholder={t.programs.searchPlaceholder}
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500/50 transition-colors"
                                 />
                             </div>
 
-                            {loading ? (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {[1, 2, 3].map((i) => (
-                                        <div key={i} className="h-48 bg-white/5 animate-pulse rounded-xl" />
-                                    ))}
-                                </div>
-                            ) : (
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {filteredPrograms.length > 0 ? (
-                                        filteredPrograms.map((program) => (
-                                            <Card key={program.id} className="p-6 flex flex-col justify-between hover:border-blue-500/30 transition-colors">
-                                                <div className="space-y-4">
-                                                    <div className="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center text-blue-400">
-                                                        <Package className="w-6 h-6" />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="text-xl font-bold">{program.title}</h3>
-                                                        <p className="text-sm text-blue-400 font-mono mt-1">{program.version}</p>
-                                                    </div>
-                                                    <p className="text-gray-400 text-sm leading-relaxed">{program.description}</p>
+                            {/* Programs Grid */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {loading ? (
+                                    Array.from({ length: 3 }).map((_, i) => (
+                                        <Card key={i} className="p-6 animate-pulse" hoverEffect={false}>
+                                            <div className="h-6 bg-white/10 rounded w-2/3 mb-4" />
+                                            <div className="h-4 bg-white/5 rounded w-full mb-2" />
+                                            <div className="h-4 bg-white/5 rounded w-4/5 mb-6" />
+                                            <div className="h-10 bg-white/10 rounded w-full" />
+                                        </Card>
+                                    ))
+                                ) : filteredPrograms.length > 0 ? (
+                                    filteredPrograms.map((prog) => (
+                                        <Card key={prog.id} className="p-6 flex flex-col justify-between" hoverEffect={false}>
+                                            <div className="space-y-3">
+                                                <div className="flex items-center justify-between">
+                                                    <span className="text-xs font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                                                        {prog.version}
+                                                    </span>
                                                 </div>
-
-                                                <div className="mt-8 pt-6 border-t border-white/5">
-                                                    <a href={program.download_url} target="_blank" rel="noopener noreferrer" className="block">
-                                                        <Button className="w-full" glow variant="secondary">
-                                                            <Download className="w-4 h-4 mr-2" /> Yuklab Olish
-                                                        </Button>
-                                                    </a>
-                                                </div>
-                                            </Card>
-                                        ))
-                                    ) : (
-                                        <div className="col-span-full py-12 text-center text-gray-500">
-                                            Sizning so&apos;rovingiz bo&apos;yicha hech narsa topilmadi.
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                                                <h3 className="text-lg font-bold text-white">{prog.title}</h3>
+                                                <p className="text-sm text-gray-400 line-clamp-3">{prog.description}</p>
+                                            </div>
+                                            <div className="pt-6 mt-6 border-t border-white/5">
+                                                <a href={prog.download_url} target="_blank" rel="noopener noreferrer">
+                                                    <Button size="sm" className="w-full gap-2">
+                                                        <Download className="w-4 h-4" /> {t.programs.downloadBtn}
+                                                    </Button>
+                                                </a>
+                                            </div>
+                                        </Card>
+                                    ))
+                                ) : (
+                                    <div className="col-span-full py-12 text-center text-gray-500">
+                                        {t.programs.noPrograms}
+                                    </div>
+                                )}
+                            </div>
                         </motion.div>
                     )}
 
@@ -340,63 +378,56 @@ export default function ProgramsPage() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -15 }}
                             transition={{ duration: 0.3 }}
-                            className="space-y-6"
+                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                         >
-                            <div className="mb-6">
-                                <h2 className="text-2xl font-bold mb-2">Local AI Tizimlari</h2>
-                                <p className="text-gray-400 max-w-3xl text-sm">
-                                    Hech qanday serverlar va internetga ulanishlarsiz shaxsiy kompyuteringizda sun&apos;iy intellekt modellarini ishga tushirish, boshqarish va integratsiya qilish uchun zaruriy ilovalar va manbalar.
-                                </p>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {LOCAL_AI_TOOLS.map((tool) => (
-                                    <Card
-                                        key={tool.id}
-                                        className="p-6 flex flex-col justify-between transition-all duration-300"
-                                        hoverEffect={false}
-                                        style={{
-                                            boxShadow: `hover:0 10px 40px -10px ${tool.accentColor}20`
-                                        }}
-                                    >
-                                        <div className="space-y-4">
-                                            <div
-                                                className="w-12 h-12 rounded-lg flex items-center justify-center text-white"
-                                                style={{ backgroundColor: `${tool.accentColor}15`, border: `1px solid ${tool.accentColor}30` }}
+                            {LOCAL_AI_TOOLS.map((tool) => (
+                                <Card
+                                    key={tool.id}
+                                    className="p-6 flex flex-col justify-between transition-all duration-300 hover:border-blue-500/20"
+                                    hoverEffect={false}
+                                >
+                                    <div className="space-y-4">
+                                        <div className="flex items-center justify-between">
+                                            <span
+                                                className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded"
+                                                style={{
+                                                    backgroundColor: `${tool.accentColor}15`,
+                                                    color: tool.accentColor,
+                                                    border: `1px solid ${tool.accentColor}30`
+                                                }}
                                             >
-                                                <Cpu className="w-6 h-6" style={{ color: tool.accentColor }} />
-                                            </div>
-                                            <div>
-                                                <div className="flex items-center justify-between">
-                                                    <h3 className="text-xl font-bold">{tool.title}</h3>
-                                                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-white/5 text-gray-400">
-                                                        {tool.tag}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <p className="text-gray-400 text-sm leading-relaxed">{tool.description}</p>
+                                                {tool.tag}
+                                            </span>
+                                            <span className="text-xs text-gray-500 font-mono">{tool.category}</span>
                                         </div>
+                                        <h3 className="text-xl font-bold text-white">{tool.title}</h3>
+                                        <p className="text-gray-400 text-sm leading-relaxed">
+                                            {tool.description[locale] || tool.description.uz}
+                                        </p>
+                                    </div>
 
-                                        <div className="mt-8 pt-4 border-t border-white/5">
-                                            <a href={tool.url} target="_blank" rel="noopener noreferrer" className="block">
-                                                <Button
-                                                    className="w-full"
-                                                    variant="secondary"
-                                                    style={{
-                                                        background: 'rgba(255,255,255,0.05)',
-                                                        borderColor: 'rgba(255,255,255,0.05)'
-                                                    }}
-                                                >
-                                                    Tashrif Buyurish <ExternalLink className="w-3.5 h-3.5 ml-2" />
-                                                </Button>
-                                            </a>
-                                        </div>
-                                    </Card>
-                                ))}
-                            </div>
+                                    <div className="mt-8 pt-6 border-t border-white/5">
+                                        <a href={tool.url} target="_blank" rel="noopener noreferrer" className="block">
+                                            <Button
+                                                className="w-full"
+                                                glow
+                                                variant="secondary"
+                                                style={{
+                                                    backgroundColor: `${tool.accentColor}10`,
+                                                    borderColor: `${tool.accentColor}20`,
+                                                    color: '#ffffff'
+                                                }}
+                                            >
+                                                <ExternalLink className="w-4 h-4 mr-2" /> {t.programs.visitBtn}
+                                            </Button>
+                                        </a>
+                                    </div>
+                                </Card>
+                            ))}
                         </motion.div>
                     )}
 
+                    {/* FREE CLAUDE + CODEX (OMNIROUTE) TAB */}
                     {activeMainTab === 'free_claude' && (
                         <motion.div
                             key="free-claude-tab"
@@ -407,31 +438,33 @@ export default function ProgramsPage() {
                             className="space-y-8"
                         >
                             {/* Description Banner */}
-                            <div className="p-6 rounded-2xl bg-gradient-to-r from-blue-500/10 to-indigo-500/10 border border-white/10 relative overflow-hidden">
+                            <div className="p-6 rounded-2xl bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 border border-white/10 relative overflow-hidden">
                                 <div className="absolute top-0 right-0 opacity-5 blur-sm pointer-events-none">
                                     <Sparkles className="w-64 h-64 text-indigo-500" />
                                 </div>
                                 <div className="max-w-3xl space-y-3">
                                     <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30">
-                                        Maxsus Yo&apos;riqnoma
+                                        {t.programs.claudeBadge}
                                     </span>
-                                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Claude Code + Codex: Bepul O&apos;rnatish va Sozlash</h2>
+                                    <h2 className="text-2xl md:text-3xl font-bold tracking-tight">
+                                        {t.programs.claudeTitle}
+                                    </h2>
                                     <p className="text-gray-300 text-sm leading-relaxed">
-                                        Claude Code terminal yordamchisini va Codex-ni bepul AI API provayderlari (Google Gemini, NVIDIA NIM, OpenRouter) yoki mutlaqo shaxsiy local modellar bilan integratsiya qilish yo&apos;riqnomasi.
+                                        {t.programs.claudeDesc}
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Video Guide Section */}
+                            {/* Video Guide Section - UPDATED WITH USER REQUESTED VIDEO fwbqLuJKIz0 */}
                             <div className="space-y-4 max-w-4xl mx-auto">
                                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
                                     <Play className="w-5 h-5 text-red-500 fill-red-500" />
-                                    <span>Video Qo&apos;llanma</span>
+                                    <span>{t.programs.videoGuideTitle}</span>
                                 </h3>
-                                <div className="aspect-video w-full max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(255,0,0,0.05)] bg-black/50 backdrop-blur-sm">
+                                <div className="aspect-video w-full max-w-3xl mx-auto rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_30px_rgba(255,0,0,0.1)] bg-black/50 backdrop-blur-sm">
                                     <iframe
-                                        src="https://www.youtube.com/embed/_L3cHupdU2g"
-                                        title="Claude Code + Codex Bepul O'rnatish Qo'llanmasi"
+                                        src="https://www.youtube.com/embed/fwbqLuJKIz0"
+                                        title={t.programs.videoIframeTitle}
                                         frameBorder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowFullScreen
@@ -445,7 +478,7 @@ export default function ProgramsPage() {
                                 <button
                                     onClick={() => setOsTab('windows')}
                                     className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all ${osTab === 'windows'
-                                        ? 'bg-white text-black shadow-lg'
+                                        ? 'bg-white text-black shadow-lg font-bold'
                                         : 'text-gray-400 hover:text-white'
                                         }`}
                                 >
@@ -454,7 +487,7 @@ export default function ProgramsPage() {
                                 <button
                                     onClick={() => setOsTab('linux_mac')}
                                     className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all ${osTab === 'linux_mac'
-                                        ? 'bg-white text-black shadow-lg'
+                                        ? 'bg-white text-black shadow-lg font-bold'
                                         : 'text-gray-400 hover:text-white'
                                         }`}
                                 >
@@ -467,24 +500,24 @@ export default function ProgramsPage() {
                                 {osTab === 'windows' ? (
                                     // WINDOWS GUIDE
                                     <div className="space-y-8 animate-fadeIn">
-                                        {/* Step 1 */}
+                                        {/* Step 1: Prerequisites */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-bold text-white flex items-center gap-3">
                                                 <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">1</span>
-                                                Zaruriy dasturlarni yuklab oling
+                                                {t.programs.winStep1Title}
                                             </h3>
                                             <p className="text-gray-400 text-sm pl-9">
-                                                O&apos;rnatishni boshlashdan oldin kompyuteringizda Git va Node.js dasturlari mavjud ekanligini tasdiqlang:
+                                                {t.programs.winStep1Desc}
                                             </p>
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pl-9">
                                                 <Card className="p-4 flex items-center justify-between bg-white/5 hover:border-blue-500/30 transition-colors" hoverEffect={false}>
                                                     <div>
                                                         <h4 className="font-semibold text-white">Git for Windows</h4>
-                                                        <p className="text-xs text-gray-500 mt-1">Versiya v2.55.0.2</p>
+                                                        <p className="text-xs text-gray-500 mt-1">Git Runtime</p>
                                                     </div>
                                                     <a href="https://t.me/Yosh_avlod_kanali/4060" target="_blank" rel="noopener noreferrer">
                                                         <Button size="sm" variant="secondary" className="gap-1.5 text-xs">
-                                                            <Download className="w-3.5 h-3.5" /> Yuklash
+                                                            <Download className="w-3.5 h-3.5" /> {t.programs.downloadBtn}
                                                         </Button>
                                                     </a>
                                                 </Card>
@@ -495,32 +528,32 @@ export default function ProgramsPage() {
                                                     </div>
                                                     <a href="https://nodejs.org/en/download" target="_blank" rel="noopener noreferrer">
                                                         <Button size="sm" variant="secondary" className="gap-1.5 text-xs">
-                                                            <Download className="w-3.5 h-3.5" /> Yuklash
+                                                            <Download className="w-3.5 h-3.5" /> {t.programs.downloadBtn}
                                                         </Button>
                                                     </a>
                                                 </Card>
                                             </div>
 
                                             {/* Admin warning */}
-                                            <div className="flex gap-3 p-4 pl-5 border-l-4 border-red-500/50 bg-red-500/5 rounded-r-xl pl-9 ml-9">
+                                            <div className="flex gap-3 p-4 border-l-4 border-red-500/50 bg-red-500/5 rounded-r-xl pl-9 ml-9">
                                                 <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                                                 <div>
-                                                    <h5 className="font-bold text-red-400 text-sm">ADMIN HUQUQI TALAB QILINADI</h5>
+                                                    <h5 className="font-bold text-red-400 text-sm">{t.programs.winAdminWarningTitle}</h5>
                                                     <p className="text-gray-400 text-xs mt-1">
-                                                        Keyingi barcha buyruqlar **PowerShell** dasturida **Administrator** (Run as Administrator) huquqi bilan ishga tushirilishi shart.
+                                                        {t.programs.winAdminWarningDesc}
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Step 2 */}
+                                        {/* Step 2: Set Execution Policy */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-bold text-white flex items-center gap-3">
                                                 <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">2</span>
-                                                Skriptlarga ruxsat berish
+                                                {t.programs.winStep2Title}
                                             </h3>
                                             <p className="text-gray-400 text-sm pl-9">
-                                                Ko&apos;p hollarda tizimda shaxsiy skriptlarni ishga tushirish bloklangan bo&apos;ladi. O&apos;rnatuvchi skript to&apos;g&apos;ri ishlashi uchun PowerShell oynasida quyidagi buyruqni bajaring:
+                                                {t.programs.winStep2Desc}
                                             </p>
                                             <div className="pl-9">
                                                 <div className="relative group">
@@ -530,7 +563,7 @@ export default function ProgramsPage() {
                                                     <button
                                                         onClick={() => handleCopy('Set-ExecutionPolicy RemoteSigned -Scope CurrentUser')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
-                                                        title="Nusxa olish"
+                                                        title="Copy"
                                                     >
                                                         {copiedText === 'Set-ExecutionPolicy RemoteSigned -Scope CurrentUser' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                                                     </button>
@@ -538,51 +571,76 @@ export default function ProgramsPage() {
                                             </div>
                                         </div>
 
-                                        {/* Step 3 */}
+                                        {/* Step 3: Install OmniRoute */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-bold text-white flex items-center gap-3">
                                                 <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">3</span>
-                                                O&apos;rnatish skriptini ishga tushiring
+                                                {t.programs.winStep3Title}
                                             </h3>
                                             <p className="text-gray-400 text-sm pl-9">
-                                                Tizim tayyor bo&apos;lgach, free-claude-code dasturlarini yuklab olish va global tarzda Node.js-ga ulash uchun quyidagi asosiy o&apos;rnatish skriptini ishga tushiring:
+                                                {t.programs.winStep3Desc}
                                             </p>
                                             <div className="pl-9">
                                                 <div className="relative group">
                                                     <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
-                                                        irm &quot;https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1&quot; | iex
+                                                        npm install -g omniroute
                                                     </pre>
                                                     <button
-                                                        onClick={() => handleCopy('irm "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1" | iex')}
+                                                        onClick={() => handleCopy('npm install -g omniroute')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
-                                                        title="Nusxa olish"
+                                                        title="Copy"
                                                     >
-                                                        {copiedText === 'irm "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.ps1?raw=1" | iex' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                                                        {copiedText === 'npm install -g omniroute' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Step 4 */}
+                                        {/* Step 4: Install Claude Code CLI */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-bold text-white flex items-center gap-3">
                                                 <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">4</span>
-                                                Serverni ishga tushirish va API-larni ulash
+                                                {t.programs.winStep4Title}
                                             </h3>
                                             <p className="text-gray-400 text-sm pl-9">
-                                                O&apos;rnatish muvaffaqiyatli tugagach, bepul Claude Code va Codex serverini ishga tushirish uchun quyidagi buyruqni bering:
+                                                {t.programs.winStep4Desc}
                                             </p>
                                             <div className="pl-9">
                                                 <div className="relative group">
                                                     <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
-                                                        fcc-server
+                                                        irm https://claude.ai/install.ps1 | iex
                                                     </pre>
                                                     <button
-                                                        onClick={() => handleCopy('fcc-server')}
+                                                        onClick={() => handleCopy('irm https://claude.ai/install.ps1 | iex')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
-                                                        title="Nusxa olish"
+                                                        title="Copy"
                                                     >
-                                                        {copiedText === 'fcc-server' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                                                        {copiedText === 'irm https://claude.ai/install.ps1 | iex' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 5: Start OmniRoute & Configure Keys */}
+                                        <div className="space-y-4">
+                                            <h3 className="text-lg font-bold text-white flex items-center gap-3">
+                                                <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">5</span>
+                                                {t.programs.winStep5Title}
+                                            </h3>
+                                            <p className="text-gray-400 text-sm pl-9">
+                                                {t.programs.winStep5Desc}
+                                            </p>
+                                            <div className="pl-9">
+                                                <div className="relative group">
+                                                    <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
+                                                        omniroute
+                                                    </pre>
+                                                    <button
+                                                        onClick={() => handleCopy('omniroute')}
+                                                        className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
+                                                        title="Copy"
+                                                    >
+                                                        {copiedText === 'omniroute' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                                                     </button>
                                                 </div>
                                             </div>
@@ -590,9 +648,15 @@ export default function ProgramsPage() {
                                             {/* Key providers sub-block */}
                                             <div className="pl-9 space-y-4">
                                                 <p className="text-gray-300 text-sm">
-                                                    Server birinchi marta ishga tushganda sizdan API kaliti va unga mos keladigan model yo&apos;nalishini so&apos;raydi. Bepul API kalitlarni quyidagi saytlardan olishingiz mumkin:
+                                                    {t.programs.keyProvidersDesc}
                                                 </p>
                                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="block">
+                                                        <Card className="p-3 bg-white/5 hover:border-blue-500/30 text-center text-xs font-semibold text-gray-300" hoverEffect={false}>
+                                                            Google AI Studio API
+                                                            <ExternalLink className="w-3 h-3 inline-block ml-1 opacity-70" />
+                                                        </Card>
+                                                    </a>
                                                     <a href="https://build.nvidia.com/" target="_blank" rel="noopener noreferrer" className="block">
                                                         <Card className="p-3 bg-white/5 hover:border-emerald-500/30 text-center text-xs font-semibold text-gray-300" hoverEffect={false}>
                                                             NVIDIA NIM API
@@ -605,41 +669,35 @@ export default function ProgramsPage() {
                                                             <ExternalLink className="w-3 h-3 inline-block ml-1 opacity-70" />
                                                         </Card>
                                                     </a>
-                                                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" className="block">
-                                                        <Card className="p-3 bg-white/5 hover:border-blue-500/30 text-center text-xs font-semibold text-gray-300" hoverEffect={false}>
-                                                            Google AI Studio API
-                                                            <ExternalLink className="w-3 h-3 inline-block ml-1 opacity-70" />
-                                                        </Card>
-                                                    </a>
                                                 </div>
 
                                                 <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
                                                     <h5 className="font-bold text-sm text-white flex items-center gap-1.5">
-                                                        <Info className="w-4 h-4 text-blue-400" /> Model routing yo&apos;naltirish sintaksisi:
+                                                        <Info className="w-4 h-4 text-blue-400" /> {t.programs.routingSyntaxTitle}
                                                     </h5>
                                                     <ul className="text-xs text-gray-400 space-y-1 list-disc pl-5">
-                                                        <li>OpenRouter: <code className="text-blue-300">open_router/model_nomi</code> (masalan: <code className="text-gray-300">open_router/meta-llama/llama-3.1-8b-instruct</code>)</li>
-                                                        <li>Gemini: <code className="text-blue-300">gemini/models/model_nomi</code> (masalan: <code className="text-gray-300">gemini/models/gemini-2.5-flash</code>)</li>
-                                                        <li>NVIDIA NIM: <code className="text-blue-300">nvidia_nim/model_nomi</code> (masalan: <code className="text-gray-300">nvidia_nim/meta/llama-3.1-8b-instruct</code>)</li>
+                                                        <li>{t.programs.routingSyntax1}</li>
+                                                        <li>{t.programs.routingSyntax2}</li>
+                                                        <li>{t.programs.routingSyntax3}</li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Step 5 */}
+                                        {/* Step 6: Launch Claude Code & Codex */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-bold text-white flex items-center gap-3">
-                                                <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">5</span>
-                                                Claude Code va Codex-ni ishga tushirish
+                                                <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">6</span>
+                                                {t.programs.winStep6Title}
                                             </h3>
 
                                             {/* Crucial Note */}
                                             <div className="flex gap-3 p-4 border-l-4 border-yellow-500/50 bg-yellow-500/5 rounded-r-xl pl-9 ml-9">
                                                 <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
                                                 <div>
-                                                    <h5 className="font-bold text-yellow-400 text-sm">YANGI terminal OYNASI OCHILSIN</h5>
+                                                    <h5 className="font-bold text-yellow-400 text-sm">{t.programs.keepServerWarningTitle}</h5>
                                                     <p className="text-gray-400 text-xs mt-1">
-                                                        **MUHIM:** Server ishga tushgan PowerShell oynasini yopmang. Uni orqada (background) qoldirib, **yangi PowerShell oynasini oching** va quyidagi buyruqlarni bajaring.
+                                                        {t.programs.keepServerWarningDesc}
                                                     </p>
                                                 </div>
                                             </div>
@@ -648,38 +706,38 @@ export default function ProgramsPage() {
                                                 <Card className="p-4 bg-white/5 border border-white/5 space-y-3" hoverEffect={false}>
                                                     <div className="flex items-center gap-2 text-sm font-semibold text-white">
                                                         <Terminal className="w-4 h-4 text-blue-400" />
-                                                        <span>Claude Code client</span>
+                                                        <span>{t.programs.claudeClientLabel}</span>
                                                     </div>
                                                     <div className="relative">
                                                         <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-blue-400 pr-10">
-                                                            fcc-claude
+                                                            omniroute launch
                                                         </pre>
                                                         <button
-                                                            onClick={() => handleCopy('fcc-claude')}
+                                                            onClick={() => handleCopy('omniroute launch')}
                                                             className="absolute right-2 top-2 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded transition-all"
                                                         >
-                                                            {copiedText === 'fcc-claude' ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
+                                                            {copiedText === 'omniroute launch' ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
                                                         </button>
                                                     </div>
-                                                    <p className="text-xs text-gray-500">Claude-ning rasmiy CLI interfeysini bepul API orqali ishga tushirish.</p>
+                                                    <p className="text-xs text-gray-500">{t.programs.claudeClientDesc}</p>
                                                 </Card>
                                                 <Card className="p-4 bg-white/5 border border-white/5 space-y-3" hoverEffect={false}>
                                                     <div className="flex items-center gap-2 text-sm font-semibold text-white">
                                                         <Terminal className="w-4 h-4 text-purple-400" />
-                                                        <span>Codex client</span>
+                                                        <span>{t.programs.codexClientLabel}</span>
                                                     </div>
                                                     <div className="relative">
-                                                        <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-blue-400 pr-10">
-                                                            fcc-codex
+                                                        <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-purple-400 pr-10">
+                                                            omniroute launch-codex
                                                         </pre>
                                                         <button
-                                                            onClick={() => handleCopy('fcc-codex')}
+                                                            onClick={() => handleCopy('omniroute launch-codex')}
                                                             className="absolute right-2 top-2 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded transition-all"
                                                         >
-                                                            {copiedText === 'fcc-codex' ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
+                                                            {copiedText === 'omniroute launch-codex' ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
                                                         </button>
                                                     </div>
-                                                    <p className="text-xs text-gray-500">Local modellar orqali kod yaratuvchi yordamchini ishlatish.</p>
+                                                    <p className="text-xs text-gray-500">{t.programs.codexClientDesc}</p>
                                                 </Card>
                                             </div>
                                         </div>
@@ -687,115 +745,177 @@ export default function ProgramsPage() {
                                 ) : (
                                     // LINUX / MACOS GUIDE
                                     <div className="space-y-8 animate-fadeIn">
-                                        {/* Step 1 */}
+                                        {/* Step 1: Install Node.js & Git */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-bold text-white flex items-center gap-3">
                                                 <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">1</span>
-                                                Prerekvizitlarni o&apos;rnating (Git & Node.js)
+                                                {t.programs.linuxStep1Title}
                                             </h3>
                                             <p className="text-gray-400 text-sm pl-9">
-                                                Terminal orqali Git va Node.js dasturlarini (NVM yordamida LTS versiyasini) o&apos;rnating:
+                                                {t.programs.linuxStep1Desc}
                                             </p>
 
                                             <div className="pl-9 space-y-3">
-                                                {/* Git */}
-                                                <div className="space-y-2">
-                                                    <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Git o&apos;rnatish:</div>
+                                                {/* Ubuntu/Debian/Kali/Mint */}
+                                                <div className="space-y-1.5">
+                                                    <div className="text-xs font-semibold text-gray-400">Ubuntu / Debian / Kali / Mint:</div>
                                                     <div className="relative">
                                                         <pre className="bg-black/40 border border-white/10 p-3 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
-                                                            sudo apt install git  # Linux (Ubuntu/Debian) uchun
+                                                            sudo apt install nodejs npm -y
                                                         </pre>
                                                         <button
-                                                            onClick={() => handleCopy('sudo apt install git')}
+                                                            onClick={() => handleCopy('sudo apt install nodejs npm -y')}
                                                             className="absolute right-3 top-2.5 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                         >
-                                                            {copiedText === 'sudo apt install git' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                                                            {copiedText === 'sudo apt install nodejs npm -y' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
                                                         </button>
                                                     </div>
                                                 </div>
 
-                                                {/* Node.js */}
-                                                <div className="space-y-2">
-                                                    <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Node.js (NVM LTS) o&apos;rnatish:</div>
+                                                {/* Fedora */}
+                                                <div className="space-y-1.5">
+                                                    <div className="text-xs font-semibold text-gray-400">Fedora:</div>
                                                     <div className="relative">
-                                                        <pre className="bg-black/40 border border-white/10 p-3.5 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
-                                                            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash && \
-                                                            source ~/.bashrc && \
-                                                            nvm install --lts
+                                                        <pre className="bg-black/40 border border-white/10 p-3 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
+                                                            sudo dnf install nodejs -y
                                                         </pre>
                                                         <button
-                                                            onClick={() => handleCopy('curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash && source ~/.bashrc && nvm install --lts')}
-                                                            className="absolute right-3 top-3 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
+                                                            onClick={() => handleCopy('sudo dnf install nodejs -y')}
+                                                            className="absolute right-3 top-2.5 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                         >
-                                                            {copiedText === 'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash && source ~/.bashrc && nvm install --lts' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                                                            {copiedText === 'sudo dnf install nodejs -y' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                {/* Arch Linux */}
+                                                <div className="space-y-1.5">
+                                                    <div className="text-xs font-semibold text-gray-400">Arch Linux:</div>
+                                                    <div className="relative">
+                                                        <pre className="bg-black/40 border border-white/10 p-3 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
+                                                            sudo pacman -Syu nodejs npm
+                                                        </pre>
+                                                        <button
+                                                            onClick={() => handleCopy('sudo pacman -Syu nodejs npm')}
+                                                            className="absolute right-3 top-2.5 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
+                                                        >
+                                                            {copiedText === 'sudo pacman -Syu nodejs npm' ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Step 2 */}
+                                        {/* Step 2: Install OmniRoute */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-bold text-white flex items-center gap-3">
                                                 <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">2</span>
-                                                Asosiy o&apos;rnatish skriptini ishga tushiring
+                                                {t.programs.linuxStep2Title}
                                             </h3>
                                             <p className="text-gray-400 text-sm pl-9">
-                                                Barcha paketlar tayyor bo&apos;lgach, terminalda quyidagi skript buyrug&apos;ini ishlating:
+                                                {t.programs.linuxStep2Desc}
                                             </p>
                                             <div className="pl-9">
                                                 <div className="relative">
                                                     <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
-                                                        curl -fsSL &quot;https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1&quot; | sh
+                                                        npm install -g omniroute
                                                     </pre>
                                                     <button
-                                                        onClick={() => handleCopy('curl -fsSL "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1" | sh')}
+                                                        onClick={() => handleCopy('npm install -g omniroute')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                     >
-                                                        {copiedText === 'curl -fsSL "https://github.com/Alishahryar1/free-claude-code/blob/main/scripts/install.sh?raw=1" | sh' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                                                        {copiedText === 'npm install -g omniroute' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Step 3 */}
+                                        {/* Step 3: Allow Scripts */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-bold text-white flex items-center gap-3">
                                                 <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">3</span>
-                                                Serverni boshlash va modellar
+                                                {t.programs.linuxStep3Title}
                                             </h3>
                                             <p className="text-gray-400 text-sm pl-9">
-                                                Claude Code va Codex uchun modellarni ulash uchun maxsus serverni ishga tushirish uchun:
+                                                {t.programs.linuxStep3Desc}
+                                            </p>
+                                            <div className="pl-9">
+                                                <div className="relative">
+                                                    <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs overflow-x-auto text-blue-400 pr-16 select-all">
+                                                        npm config set allow-scripts=omniroute,tls-client-node,core-js,@parcel/watcher,@swc/core,koffi,esbuild --location=user
+                                                    </pre>
+                                                    <button
+                                                        onClick={() => handleCopy('npm config set allow-scripts=omniroute,tls-client-node,core-js,@parcel/watcher,@swc/core,koffi,esbuild --location=user')}
+                                                        className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
+                                                    >
+                                                        {copiedText === 'npm config set allow-scripts=omniroute,tls-client-node,core-js,@parcel/watcher,@swc/core,koffi,esbuild --location=user' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 4: Install Claude Code */}
+                                        <div className="space-y-4">
+                                            <h3 className="text-lg font-bold text-white flex items-center gap-3">
+                                                <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">4</span>
+                                                {t.programs.linuxStep4Title}
+                                            </h3>
+                                            <p className="text-gray-400 text-sm pl-9">
+                                                {t.programs.linuxStep4Desc}
                                             </p>
                                             <div className="pl-9">
                                                 <div className="relative">
                                                     <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs text-blue-400 pr-16">
-                                                        fcc-server
+                                                        curl -fsSL https://claude.ai/install.sh | bash
                                                     </pre>
                                                     <button
-                                                        onClick={() => handleCopy('fcc-server')}
+                                                        onClick={() => handleCopy('curl -fsSL https://claude.ai/install.sh | bash')}
                                                         className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
                                                     >
-                                                        {copiedText === 'fcc-server' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                                                        {copiedText === 'curl -fsSL https://claude.ai/install.sh | bash' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                                                     </button>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        {/* Step 4 */}
+                                        {/* Step 5: Start Server */}
                                         <div className="space-y-4">
                                             <h3 className="text-lg font-bold text-white flex items-center gap-3">
-                                                <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">4</span>
-                                                Mijoz dasturlarni yangi oynada ishga tushirish
+                                                <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">5</span>
+                                                {t.programs.linuxStep5Title}
+                                            </h3>
+                                            <p className="text-gray-400 text-sm pl-9">
+                                                {t.programs.linuxStep5Desc}
+                                            </p>
+                                            <div className="pl-9">
+                                                <div className="relative">
+                                                    <pre className="bg-black/40 border border-white/10 p-4 rounded-xl font-mono text-xs text-blue-400 pr-16">
+                                                        omniroute
+                                                    </pre>
+                                                    <button
+                                                        onClick={() => handleCopy('omniroute')}
+                                                        className="absolute right-3 top-3 p-2 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded-lg transition-all"
+                                                    >
+                                                        {copiedText === 'omniroute' ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Step 6: Launch Clients in New Terminal */}
+                                        <div className="space-y-4">
+                                            <h3 className="text-lg font-bold text-white flex items-center gap-3">
+                                                <span className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-xs">6</span>
+                                                {t.programs.linuxStep6Title}
                                             </h3>
 
                                             {/* Note */}
                                             <div className="flex gap-3 p-4 border-l-4 border-yellow-500/50 bg-yellow-500/5 rounded-r-xl pl-9 ml-9">
                                                 <AlertTriangle className="w-5 h-5 text-yellow-500 flex-shrink-0 mt-0.5" />
                                                 <div>
-                                                    <h5 className="font-bold text-yellow-400 text-sm">TERMINAL OYNASINI YOPMANG</h5>
+                                                    <h5 className="font-bold text-yellow-400 text-sm">{t.programs.linuxServerWarningTitle}</h5>
                                                     <p className="text-gray-400 text-xs mt-1">
-                                                        **MUHIM:** `fcc-server` ishlayotgan oynaga tegmang. Boshqa yangi terminal oynasini oching va unga kerakli buyruqni bering.
+                                                        {t.programs.linuxServerWarningDesc}
                                                     </p>
                                                 </div>
                                             </div>
@@ -804,34 +924,34 @@ export default function ProgramsPage() {
                                                 <Card className="p-4 bg-white/5 border border-white/5 space-y-3" hoverEffect={false}>
                                                     <div className="flex items-center gap-2 text-sm font-semibold text-white">
                                                         <Terminal className="w-4 h-4 text-blue-400" />
-                                                        <span>Claude Code</span>
+                                                        <span>{t.programs.claudeClientLabel}</span>
                                                     </div>
                                                     <div className="relative">
                                                         <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-blue-400 pr-10">
-                                                            fcc-claude
+                                                            omniroute launch
                                                         </pre>
                                                         <button
-                                                            onClick={() => handleCopy('fcc-claude')}
+                                                            onClick={() => handleCopy('omniroute launch')}
                                                             className="absolute right-2 top-2 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded transition-all"
                                                         >
-                                                            {copiedText === 'fcc-claude' ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
+                                                            {copiedText === 'omniroute launch' ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
                                                         </button>
                                                     </div>
                                                 </Card>
                                                 <Card className="p-4 bg-white/5 border border-white/5 space-y-3" hoverEffect={false}>
                                                     <div className="flex items-center gap-2 text-sm font-semibold text-white">
                                                         <Terminal className="w-4 h-4 text-purple-400" />
-                                                        <span>Codex Client</span>
+                                                        <span>{t.programs.codexClientLabel}</span>
                                                     </div>
                                                     <div className="relative">
-                                                        <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-blue-400 pr-10">
-                                                            fcc-codex
+                                                        <pre className="bg-black/30 p-2.5 rounded-lg text-xs font-mono text-purple-400 pr-10">
+                                                            omniroute launch-codex
                                                         </pre>
                                                         <button
-                                                            onClick={() => handleCopy('fcc-codex')}
+                                                            onClick={() => handleCopy('omniroute launch-codex')}
                                                             className="absolute right-2 top-2 p-1.5 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white rounded transition-all"
                                                         >
-                                                            {copiedText === 'fcc-codex' ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
+                                                            {copiedText === 'omniroute launch-codex' ? <Check className="w-3 h-3 text-green-400" /> : <Copy className="w-3 h-3" />}
                                                         </button>
                                                     </div>
                                                 </Card>
@@ -843,6 +963,7 @@ export default function ProgramsPage() {
                         </motion.div>
                     )}
 
+                    {/* MICROSOFT OFFICE TAB */}
                     {activeMainTab === 'office' && (
                         <motion.div
                             key="office-tab"
@@ -854,14 +975,14 @@ export default function ProgramsPage() {
                         >
                             <div className="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
                                 <div>
-                                    <h2 className="text-2xl font-bold mb-2">Microsoft Office Dasturlari</h2>
+                                    <h2 className="text-2xl font-bold mb-2">{t.programs.officeHeading}</h2>
                                     <p className="text-gray-400 max-w-3xl text-sm">
-                                        Rasmiy Microsoft CDN tarmoqlaridan to&apos;g&apos;ri va tezkor yuklab olinuvchi original Microsoft Office o&apos;rnatish paketlari. Aktivatsiya qilish uchun Operatsion Tizimlar bo&apos;limidagi qo&apos;llanmaga murojaat qilishingiz mumkin.
+                                        {t.programs.officeDesc}
                                     </p>
                                 </div>
                                 <a href="/os#activation" className="flex-shrink-0">
                                     <Button size="sm" variant="secondary" className="border-orange-500/30 text-orange-400 hover:bg-orange-500/10">
-                                        ⚡ Aktivatsiya qilish qo&apos;llanmasi
+                                        {t.programs.officeActivationBtn}
                                     </Button>
                                 </a>
                             </div>
@@ -893,7 +1014,9 @@ export default function ProgramsPage() {
                                                     </span>
                                                 </div>
                                             </div>
-                                            <p className="text-gray-400 text-sm leading-relaxed">{prod.description}</p>
+                                            <p className="text-gray-400 text-sm leading-relaxed">
+                                                {prod.description[locale] || prod.description.uz}
+                                            </p>
                                         </div>
 
                                         <div className="mt-8 pt-6 border-t border-white/5">
@@ -908,7 +1031,7 @@ export default function ProgramsPage() {
                                                         color: '#ffffff'
                                                     }}
                                                 >
-                                                    <Download className="w-4 h-4 mr-2" /> Yuklab Olish
+                                                    <Download className="w-4 h-4 mr-2" /> {t.programs.downloadBtn}
                                                 </Button>
                                             </a>
                                         </div>

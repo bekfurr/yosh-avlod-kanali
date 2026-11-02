@@ -1,0 +1,195 @@
+'use client';
+
+import GradientText from '@/components/ui/GradientText';
+import Section from '@/components/ui/Section';
+import Button from '@/components/ui/Button';
+import Card from '@/components/ui/Card';
+import Link from 'next/link';
+import { ArrowRight, Play, Send, ShieldCheck } from 'lucide-react';
+import { YouTubeVideo } from '@/lib/youtube';
+import { formatDistanceToNow } from 'date-fns';
+import { uz, enUS, ru } from 'date-fns/locale';
+import { useLanguage } from '@/context/LanguageContext';
+
+interface HomeClientProps {
+  latestVideos: YouTubeVideo[];
+  cyberVideos: YouTubeVideo[];
+}
+
+export default function HomeClient({ latestVideos, cyberVideos }: HomeClientProps) {
+  const { t, locale } = useLanguage();
+
+  const getDateLocale = () => {
+    switch (locale) {
+      case 'en':
+        return enUS;
+      case 'ru':
+        return ru;
+      case 'uz':
+      default:
+        return uz;
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center">
+      {/* Hero Section */}
+      <section className="relative min-h-[90vh] w-full flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+        {/* Spline 3D Background */}
+        <div className="absolute inset-0 z-0">
+          <iframe
+            src="https://my.spline.design/particlesforwebsite-afe1L6HxdBemti7mcb6YiXvp/"
+            frameBorder="0"
+            width="100%"
+            height="100%"
+            className="w-full h-full pointer-events-none opacity-60"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black pointer-events-none" />
+        </div>
+
+        <div className="relative z-10 space-y-10 max-w-5xl mx-auto mt-20">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tighter leading-[1.1] drop-shadow-2xl">
+            <GradientText animate>{t.home.heroTitle}</GradientText>
+          </h1>
+          <p className="text-2xl md:text-4xl font-light text-white/90 drop-shadow-lg">
+            {t.home.heroSubtitle}
+          </p>
+          <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed drop-shadow-md font-medium">
+            {t.home.heroDesc}
+          </p>
+
+          <div className="flex flex-wrap gap-4 justify-center pt-8">
+            <Link href="/videos">
+              <Button size="lg" glow className="text-lg px-8 py-6 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white">
+                <Play className="w-5 h-5 mr-3 fill-current" /> {t.home.watchVideos}
+              </Button>
+            </Link>
+            <Link href="/programs">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6 bg-black/50 backdrop-blur-md border-white/20 hover:bg-white/10">
+                {t.home.programsBtn}
+              </Button>
+            </Link>
+            <a href="https://t.me/Yosh_avlod_kanali" target="_blank" rel="noopener noreferrer">
+              <Button size="lg" className="text-lg px-8 py-6 bg-[#229ED9] hover:bg-[#1f8ebf] text-white shadow-[0_0_15px_rgba(34,158,217,0.4)] border-none">
+                <Send className="w-5 h-5 mr-3 fill-current" /> {t.home.telegramBtn}
+              </Button>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Videos Preview */}
+      <Section className="w-full pt-20 pb-10 px-6 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-10">
+          <h2 className="text-3xl font-bold">{t.home.latestVideosHeading}</h2>
+          <Link href="/videos">
+            <Button variant="ghost" className="group">
+              {t.home.viewAll} <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {latestVideos.length > 0 ? (
+            latestVideos.map((video) => (
+              <Card key={video.id} className="group cursor-pointer">
+                <a
+                  href={`https://www.youtube.com/watch?v=${video.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <div className="aspect-video bg-gray-900 relative overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">
+                        <Play className="w-5 h-5 fill-white text-white ml-1" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 space-y-2">
+                    <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-blue-400 transition-colors">
+                      {video.title}
+                    </h3>
+                    <p className="text-sm text-gray-500 capitalize">
+                      {formatDistanceToNow(new Date(video.publishedAt), { addSuffix: true, locale: getDateLocale() })}
+                    </p>
+                  </div>
+                </a>
+              </Card>
+            ))
+          ) : (
+            <div className="col-span-3 text-center text-gray-400 py-10">
+              {t.home.noVideos}
+            </div>
+          )}
+        </div>
+      </Section>
+
+      {/* Cybersecurity Playlist Preview Section */}
+      <Section className="w-full pt-10 pb-20 px-6 max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 border border-red-500/20">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+            <h2 className="text-3xl font-bold">{t.home.cyberHeading}</h2>
+          </div>
+          <Link href="/videos?tab=cyber">
+            <Button variant="ghost" className="group">
+              {t.home.viewAll} <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {cyberVideos.length > 0 ? (
+            cyberVideos.map((video) => (
+              <Card key={video.id} className="group cursor-pointer hover:border-red-500/25 transition-colors">
+                <a
+                  href={`https://www.youtube.com/watch?v=${video.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <div className="aspect-video bg-gray-900 relative overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={video.thumbnail}
+                      alt={video.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">
+                        <Play className="w-5 h-5 fill-white text-white ml-1" />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 space-y-2">
+                    <h3 className="font-semibold text-lg line-clamp-2 group-hover:text-red-400 transition-colors">
+                      {video.title}
+                    </h3>
+                    <p className="text-sm text-gray-500 capitalize">
+                      {formatDistanceToNow(new Date(video.publishedAt), { addSuffix: true, locale: getDateLocale() })}
+                    </p>
+                  </div>
+                </a>
+              </Card>
+            ))
+          ) : (
+            <div className="col-span-3 text-center text-gray-400 py-10">
+              {t.home.loadingCyber}
+            </div>
+          )}
+        </div>
+      </Section>
+    </div>
+  );
+}

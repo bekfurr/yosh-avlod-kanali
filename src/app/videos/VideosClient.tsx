@@ -3,11 +3,12 @@
 import { useState } from 'react';
 import Section from '@/components/ui/Section';
 import Card from '@/components/ui/Card';
-import { Play, PlayCircle, ShieldCheck, Film } from 'lucide-react';
+import { Play, ShieldCheck, Film } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
-import { uz } from 'date-fns/locale';
+import { uz, enUS, ru } from 'date-fns/locale';
 import { YouTubeVideo } from '@/lib/youtube';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface VideosClientProps {
     allVideos: YouTubeVideo[];
@@ -16,18 +17,31 @@ interface VideosClientProps {
 }
 
 export default function VideosClient({ allVideos, cyberVideos, defaultTab }: VideosClientProps) {
+    const { t, locale } = useLanguage();
     const [activeTab, setActiveTab] = useState<'all' | 'cyber'>(defaultTab);
 
     const activeVideos = activeTab === 'all' ? allVideos : cyberVideos;
+
+    const getDateLocale = () => {
+        switch (locale) {
+            case 'en':
+                return enUS;
+            case 'ru':
+                return ru;
+            case 'uz':
+            default:
+                return uz;
+        }
+    };
 
     return (
         <div className="pt-8 px-6 max-w-7xl mx-auto min-h-screen">
             <Section>
                 {/* Title */}
                 <div className="mb-10">
-                    <h1 className="text-4xl font-black tracking-tight mb-2">Videolar</h1>
+                    <h1 className="text-4xl font-black tracking-tight mb-2">{t.videos.title}</h1>
                     <p className="text-gray-400 max-w-xl text-sm">
-                        Kanalimizdagi barcha foydali darslar va maxsus kiberxavfsizlik darslari to&apos;plami.
+                        {t.videos.description}
                     </p>
                 </div>
 
@@ -41,7 +55,7 @@ export default function VideosClient({ allVideos, cyberVideos, defaultTab }: Vid
                             : 'text-gray-400 hover:text-white'
                         }`}
                     >
-                        <Film className="w-4 h-4" /> Barchasi
+                        <Film className="w-4 h-4" /> {t.videos.allTab}
                     </button>
                     <button
                         onClick={() => setActiveTab('cyber')}
@@ -51,7 +65,7 @@ export default function VideosClient({ allVideos, cyberVideos, defaultTab }: Vid
                             : 'text-gray-400 hover:text-white'
                         }`}
                     >
-                        <ShieldCheck className="w-4 h-4" /> Kiberxavfsizlik
+                        <ShieldCheck className="w-4 h-4" /> {t.videos.cyberTab}
                     </button>
                 </div>
 
@@ -65,7 +79,7 @@ export default function VideosClient({ allVideos, cyberVideos, defaultTab }: Vid
                             exit={{ opacity: 0 }}
                             className="py-12 text-center text-gray-500"
                         >
-                            Videolar topilmadi yoki yuklanmoqda...
+                            {t.videos.noVideosFound}
                         </motion.div>
                     ) : (
                         <motion.div
@@ -107,7 +121,7 @@ export default function VideosClient({ allVideos, cyberVideos, defaultTab }: Vid
                                                 {video.title}
                                             </h3>
                                             <div className="flex items-center text-xs text-gray-500 gap-2 capitalize">
-                                                <span>{formatDistanceToNow(new Date(video.publishedAt), { addSuffix: true, locale: uz })}</span>
+                                                <span>{formatDistanceToNow(new Date(video.publishedAt), { addSuffix: true, locale: getDateLocale() })}</span>
                                             </div>
                                         </div>
                                     </a>

@@ -21,6 +21,7 @@ import {
     Key,
     Terminal
 } from 'lucide-react';
+import { useLanguage } from '@/context/LanguageContext';
 
 // --- Custom SVG Logos for OS ---
 
@@ -400,6 +401,7 @@ const OPERATING_SYSTEMS: OperatingSystem[] = [
 ];
 
 export default function OSPage() {
+    const { t, locale } = useLanguage();
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState<string>('All');
     const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -408,11 +410,11 @@ export default function OSPage() {
     const [showProductKeys, setShowProductKeys] = useState<Record<string, boolean>>({});
 
     const categories = [
-        { id: 'All', name: 'Barchasi', special: false },
-        { id: 'Cybersecurity', name: 'Kiberxavfsizlik', special: false },
-        { id: 'Windows', name: 'Windows', special: false },
-        { id: 'General', name: 'Kundalik & Dasturlash', special: false },
-        { id: 'Activation', name: '⚡ Win & Office Aktivatsiya', special: true },
+        { id: 'All', name: t.os.catAll, special: false },
+        { id: 'Cybersecurity', name: t.os.catCyber, special: false },
+        { id: 'Windows', name: t.os.catWindows, special: false },
+        { id: 'General', name: t.os.catGeneral, special: false },
+        { id: 'Activation', name: locale === 'en' ? '⚡ Win & Office Activation' : locale === 'ru' ? '⚡ Активация Win & Office' : '⚡ Win & Office Aktivatsiya', special: true },
     ];
 
     // Filter systems
@@ -439,10 +441,10 @@ export default function OSPage() {
                     </div>
 
                     <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">
-                        <GradientText animate>Operatsion Tizimlar</GradientText>
+                        {t.os.title} <GradientText animate>{t.os.titleHighlight}</GradientText>
                     </h1>
                     <p className="text-gray-400 max-w-2xl mb-8">
-                        Loyihalarimiz, videodarslarimiz va kundalik ishingiz uchun eng maqbul, sinovdan o&apos;tgan va ishonchli operatsion tizimlarni yuklab oling.
+                        {t.os.subtitle}
                     </p>
 
                     {/* Filter and Search Bar */}
@@ -488,7 +490,7 @@ export default function OSPage() {
                             <input
                                 type="text"
                                 className="block w-full pl-10 pr-4 py-2.5 border border-white/10 rounded-xl bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:bg-white/10 focus:ring-1 focus:ring-blue-500/50 transition-all backdrop-blur-sm"
-                                placeholder="Operatsion tizimni qidirish..."
+                                placeholder={t.os.searchPlaceholder}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
@@ -665,7 +667,7 @@ export default function OSPage() {
                                                     <div className="space-y-2">
                                                         <div className="flex items-center gap-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                                                             <Users className="w-4 h-4" style={{ color: os.accentColor }} />
-                                                            <span>Kimlar uchun:</span>
+                                                            <span>{t.os.targetAudience}</span>
                                                         </div>
                                                         <p className="text-gray-300 text-sm italic pl-6 border-l border-white/10">
                                                             {os.targetAudience}
@@ -681,7 +683,7 @@ export default function OSPage() {
                                                             >
                                                                 <div className="flex items-center gap-2">
                                                                     <Key className="w-3.5 h-3.5" />
-                                                                    <span>Mahsulot Kalitlari</span>
+                                                                    <span>{t.os.productKeys}</span>
                                                                 </div>
                                                                 <span className={`text-[10px] border border-amber-500/30 rounded px-1.5 py-0.5 transition-transform duration-200 ${showProductKeys[os.id] ? 'rotate-180' : ''}`}>
                                                                     ▼
@@ -698,7 +700,7 @@ export default function OSPage() {
                                                                             <button
                                                                                 onClick={() => navigator.clipboard.writeText(pk.key)}
                                                                                 className="flex-shrink-0 p-1 text-gray-500 hover:text-amber-400 transition-colors"
-                                                                                title="Nusxa olish"
+                                                                                title="Copy"
                                                                             >
                                                                                 <Copy className="w-3.5 h-3.5" />
                                                                             </button>
@@ -723,7 +725,7 @@ export default function OSPage() {
                                                             }}
                                                         >
                                                             <Download className="w-4 h-4 mr-2 group-hover/btn:translate-y-0.5 transition-transform" />
-                                                            <span>Yuklab Olish</span>
+                                                            <span>{t.os.downloadBtn}</span>
                                                         </Button>
                                                     </a>
                                                 </div>
