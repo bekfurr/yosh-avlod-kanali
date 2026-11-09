@@ -675,11 +675,11 @@ export default function ProgramsPage() {
                                                     <h5 className="font-bold text-sm text-white flex items-center gap-1.5">
                                                         <Info className="w-4 h-4 text-blue-400" /> {t.programs.routingSyntaxTitle}
                                                     </h5>
-                                                    <ul className="text-xs text-gray-400 space-y-1 list-disc pl-5">
-                                                        <li>{t.programs.routingSyntax1}</li>
-                                                        <li>{t.programs.routingSyntax2}</li>
-                                                        <li>{t.programs.routingSyntax3}</li>
-                                                    </ul>
+                                                    <div className="text-xs text-gray-400 space-y-1.5 pt-1">
+                                                        <p>{t.programs.routingSyntax1}</p>
+                                                        <p>{t.programs.routingSyntax2}</p>
+                                                        <p>{t.programs.routingSyntax3}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

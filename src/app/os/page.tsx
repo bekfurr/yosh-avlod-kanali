@@ -763,10 +763,10 @@ export default function OSPage() {
                             <AlertTriangle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
                             <div className="space-y-1">
                                 <h4 className="font-bold text-red-400">MUHIM: Oldin amalga oshiring</h4>
-                                <ul className="text-sm text-gray-300 space-y-1 list-disc pl-4">
-                                    <li>PowerShell-ni <strong>Administrator</strong> huquqida ishga tushiring</li>
-                                    <li>Skript ishlashi uchun <strong>Windows Firewall va Antivirusni vaqtincha o&apos;chiring</strong></li>
-                                </ul>
+                                <div className="text-sm text-gray-300 space-y-1.5 pt-1">
+                                    <p>PowerShell-ni <strong>Administrator</strong> huquqida ishga tushiring</p>
+                                    <p>Skript ishlashi uchun <strong>Windows Firewall va Antivirusni vaqtincha o&apos;chiring</strong></p>
+                                </div>
                             </div>
                         </div>
 

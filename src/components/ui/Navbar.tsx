@@ -49,15 +49,17 @@ export default function Navbar() {
             <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="relative w-8 h-8 overflow-hidden rounded-full border border-white/10 group-hover:border-white/30 transition-colors">
+                    <div className="relative w-8 h-8 overflow-hidden rounded-full border border-amber-500/30 group-hover:border-amber-400/60 shadow-[0_0_12px_rgba(245,158,11,0.25)] transition-all flex items-center justify-center">
                         <Image
-                            src="/logo.png"
+                            src="/logo-particle.jpg"
                             alt="Yosh Avlod Kanali Logo"
-                            fill
-                            className="object-cover"
+                            width={32}
+                            height={32}
+                            className="w-full h-full object-cover"
+                            suppressHydrationWarning
                         />
                     </div>
-                    <span className="font-bold text-lg tracking-tight group-hover:text-blue-400 transition-colors">
+                    <span className="font-bold text-lg tracking-tight group-hover:text-amber-300 transition-colors">
                         Yosh Avlod Kanali
                     </span>
                 </Link>

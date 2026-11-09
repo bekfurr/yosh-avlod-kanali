@@ -45,13 +45,13 @@ export default function VideosClient({ allVideos, cyberVideos, defaultTab }: Vid
                     </p>
                 </div>
 
-                {/* Tabs selection */}
-                <div className="flex gap-4 mb-8 bg-white/5 p-1 rounded-xl max-w-xs border border-white/5">
+                {/* Tabs selection (Apple Liquid Glass Segmented Control) */}
+                <div className="flex gap-2 mb-8 apple-glass-pill p-1.5 max-w-xs">
                     <button
                         onClick={() => setActiveTab('all')}
-                        className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                        className={`flex-1 py-2 px-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                             activeTab === 'all' 
-                            ? 'bg-white text-black shadow-lg' 
+                            ? 'bg-white text-black shadow-[0_2px_12px_rgba(255,255,255,0.25)]' 
                             : 'text-gray-400 hover:text-white'
                         }`}
                     >
@@ -59,9 +59,9 @@ export default function VideosClient({ allVideos, cyberVideos, defaultTab }: Vid
                     </button>
                     <button
                         onClick={() => setActiveTab('cyber')}
-                        className={`flex-1 py-2 rounded-lg text-sm font-semibold flex items-center justify-center gap-1.5 transition-all ${
+                        className={`flex-1 py-2 px-3 rounded-full text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
                             activeTab === 'cyber' 
-                            ? 'bg-white text-black shadow-lg' 
+                            ? 'bg-white text-black shadow-[0_2px_12px_rgba(255,255,255,0.25)]' 
                             : 'text-gray-400 hover:text-white'
                         }`}
                     >
@@ -120,7 +120,7 @@ export default function VideosClient({ allVideos, cyberVideos, defaultTab }: Vid
                                             <h3 className="font-semibold text-base leading-snug group-hover:text-blue-400 transition-colors line-clamp-2">
                                                 {video.title}
                                             </h3>
-                                            <div className="flex items-center text-xs text-gray-500 gap-2 capitalize">
+                                            <div className="flex items-center text-xs text-gray-500 gap-2 capitalize" suppressHydrationWarning>
                                                 <span>{formatDistanceToNow(new Date(video.publishedAt), { addSuffix: true, locale: getDateLocale() })}</span>
                                             </div>
                                         </div>

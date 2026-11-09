@@ -1,11 +1,15 @@
 @import "tailwindcss";
 
 :root {
+  color-scheme: dark;
   --background: #000000;
   --foreground: #ededed;
   --accent-glow: rgba(255, 255, 255, 0.15);
   --card-bg: #0a0a0a;
   --card-border: #1f1f1f;
+  --apple-glass-bg: rgba(20, 20, 22, 0.65);
+  --apple-glass-border: rgba(255, 255, 255, 0.12);
+  --apple-glass-highlight: rgba(255, 255, 255, 0.06);
 }
 
 @theme inline {
@@ -25,7 +29,6 @@
       opacity: 0;
       transform: translateY(20px);
     }
-
     to {
       opacity: 1;
       transform: translateY(0);
@@ -38,7 +41,6 @@
       filter: blur(10px);
       transform: scale(0.95);
     }
-
     to {
       opacity: 1;
       filter: blur(0);
@@ -47,16 +49,20 @@
   }
 
   @keyframes glowPulse {
-
     0%,
     100% {
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
     }
-
     50% {
       box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
     }
   }
+}
+
+/* Bullet icon removal: ensure no bullet icons or dots appear anywhere on the site */
+ul, ol, li {
+  list-style: none !important;
+  list-style-type: none !important;
 }
 
 body {
@@ -65,25 +71,130 @@ body {
   font-family: var(--font-sans), sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
-  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="%23FFF" stroke="%23000" stroke-width="2" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>'), auto;
 }
 
-/* Custom Utilities */
+/* Apple Liquid Glass Utilities (Inspired by Apple VisionOS / macOS Sequoia / Glisse) */
 .glass-panel {
-  background: rgba(10, 10, 10, 0.6);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(12, 12, 14, 0.72);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.35);
+}
+
+.apple-glass {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  ), rgba(18, 18, 22, 0.65);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4),
+    0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.apple-glass:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 100%
+  ), rgba(24, 24, 28, 0.75);
+  border-color: rgba(255, 255, 255, 0.22);
+  box-shadow: 
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.25),
+    0 16px 40px -10px rgba(0, 0, 0, 0.7);
+}
+
+.apple-glass-card {
+  position: relative;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.015) 100%
+  ), rgba(14, 14, 17, 0.7);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.25rem;
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.14),
+    0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.35s ease, 
+              box-shadow 0.35s ease;
+}
+
+.apple-glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.25),
+    0 20px 48px -12px rgba(0, 0, 0, 0.6),
+    0 0 24px -4px rgba(255, 255, 255, 0.06);
+}
+
+.apple-glass-pill {
+  background: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.apple-glass-pill:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.apple-glass-button {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  ), rgba(25, 25, 30, 0.7);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.3),
+    0 4px 14px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.apple-glass-button:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  ), rgba(35, 35, 42, 0.85);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.4),
+    0 8px 24px 0 rgba(0, 0, 0, 0.45);
+}
+
+.apple-glass-button:active {
+  transform: translateY(1px) scale(0.98);
 }
 
 .text-gradient {
-  background: linear-gradient(to right, #fff, #888);
+  background: linear-gradient(to right, #fff, #999);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .spotlight-text {
-  background: linear-gradient(to right, #444 0%, #fff 50%, #444 100%);
+  background: linear-gradient(to right, #666 0%, #fff 50%, #666 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
